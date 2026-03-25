@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Cita</title>
+</head>
+<body>
+
+<h1>Solicitar cita médica</h1>
+
+<form action="/citas/crear" method="post">
+
+    <label>Paciente ID:</label>
+    <input type="number" name="pacienteId" required><br><br>
+
+    <label>Médico ID:</label>
+    <input type="number" name="medicoId" required><br><br>
+
+    <label>Fecha y hora:</label>
+    <input type="datetime-local" name="fechaHora" required><br><br>
+
+    <label>Especialidad:</label>
+    <input type="text" name="especialidad"><br><br>
+
+    <label>Motivo:</label>
+    <input type="text" name="motivo"><br><br>
+
+    <button type="submit">Crear cita</button>
+</form>
+
+</body>
+</html>

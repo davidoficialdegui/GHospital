@@ -31,4 +31,4 @@ public class PacienteController {
     public HistorialMedicoDTO historial(@PathVariable Long id) {
         return pacienteFacade.obtenerHistorial(id);
     }
-}
+}  
