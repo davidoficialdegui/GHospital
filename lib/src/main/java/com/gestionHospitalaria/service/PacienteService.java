@@ -18,13 +18,18 @@ public class PacienteService {
     private PasswordEncoder passwordEncoder;
 
     public Paciente registrar(RegistroPacienteDTO dto) {
+        if (pacienteRepository.existsByDni(dto.getDni())) {
+            throw new RuntimeException("El DNI ya está registrado");
+        }
         if (pacienteRepository.existsByEmail(dto.getEmail())) {
             throw new RuntimeException("El email ya está registrado");
         }
 
         Paciente paciente = new Paciente();
         paciente.setNombre(dto.getNombre());
-        paciente.setApellidos(dto.getApellidos());
+        paciente.setApellido1(dto.getApellido1());
+        paciente.setApellido2(dto.getApellido2());
+        paciente.setDni(dto.getDni());
         paciente.setEmail(dto.getEmail());
         paciente.setPassword(passwordEncoder.encode(dto.getPassword()));
         paciente.setFechaNacimiento(dto.getFechaNacimiento());
@@ -43,6 +48,6 @@ public class PacienteService {
             throw new RuntimeException("Contraseña incorrecta");
         }
 
-        return "Login correcto";
+        return "Login correcto para: " + paciente.getNombre();
     }
 }
