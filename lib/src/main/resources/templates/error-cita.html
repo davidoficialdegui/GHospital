@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+</head>
+<body>
+    <div style="background:#ffe0e0; padding:20px; border-radius:8px; margin:20px;">
+        <h2 style="color:red;">Error al crear la cita</h2>
+        <p><strong>Error:</strong> <span th:text="${error}"></span></p>
+        <p th:if="${causa}"><strong>Causa:</strong> <span th:text="${causa}"></span></p>
+        <a href="/citas/crear">Volver a intentarlo</a>
+    </div>
+</body>
+</html>

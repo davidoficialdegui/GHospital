@@ -1,7 +1,7 @@
 package com.gestionHospitalaria.facade;
 
-import com.gestionHospitalaria.dto.LoginDTO;
 import com.gestionHospitalaria.dto.HistorialMedicoDTO;
+import com.gestionHospitalaria.dto.LoginDTO;
 import com.gestionHospitalaria.dto.RegistroPacienteDTO;
 import com.gestionHospitalaria.entity.Paciente;
 import com.gestionHospitalaria.service.PacienteService;
@@ -21,7 +21,7 @@ public class PacienteFacade {
     public String login(LoginDTO dto) {
         return pacienteService.login(dto);
     }
-    
+
     public HistorialMedicoDTO obtenerHistorial(Long pacienteId) {
         return pacienteService.obtenerHistorial(pacienteId);
     }

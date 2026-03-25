@@ -19,6 +19,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+            .headers(headers -> headers
+                .frameOptions(frame -> frame.disable())
+            )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/login",
@@ -26,6 +29,8 @@ public class SecurityConfig {
                     "/citas",
                     "/citas/crear",
                     "/citas/ver",
+                    "/h2-console/**",
+                    "/favicon.ico", 
                     "/css/**",
                     "/api/pacientes/**",
                     "/api/citas/**"

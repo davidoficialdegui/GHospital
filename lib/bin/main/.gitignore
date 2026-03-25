@@ -1,4 +1,6 @@
 /_GestionHospitalaria/
+/application.properties
 /com/
+/data.sql
 /static/
 /templates/

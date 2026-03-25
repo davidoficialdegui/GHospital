@@ -18,11 +18,10 @@ public class CitaFacade {
         return citaService.crearCita(dto);
     }
 
-    
     public List<CitaDTO> obtenerCitasPaciente(Long pacienteId) {
         return citaService.obtenerCitasPaciente(pacienteId);
     }
-    
+
     public List<CitaDTO> obtenerAgendaDelDia(Long medicoId) {
         return citaService.obtenerAgendaDelDia(medicoId);
     }
