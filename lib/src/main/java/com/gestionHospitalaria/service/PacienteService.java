@@ -1,6 +1,7 @@
 package com.gestionHospitalaria.service;
 
 import com.gestionHospitalaria.dto.LoginDTO;
+import com.gestionHospitalaria.dto.HistorialMedicoDTO;
 import com.gestionHospitalaria.dto.RegistroPacienteDTO;
 import com.gestionHospitalaria.entity.Paciente;
 import com.gestionHospitalaria.repository.PacienteRepository;
@@ -49,5 +50,30 @@ public class PacienteService {
         }
 
         return "Login correcto para: " + paciente.getNombre();
+    }
+    
+    public HistorialMedicoDTO obtenerHistorial(Long pacienteId) {
+
+        Paciente paciente = pacienteRepository.findById(pacienteId)
+                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+
+        HistorialMedicoDTO dto = new HistorialMedicoDTO();
+
+        dto.setNombreCompleto(
+                paciente.getNombre() + " " +
+                paciente.getApellido1() + " " +
+                paciente.getApellido2()
+        );
+
+        dto.setGrupoSanguineo(paciente.getGrupoSanguineo());
+        dto.setAltura(paciente.getAltura());
+        dto.setPeso(paciente.getPeso());
+        dto.setAlergias(paciente.getAlergias());
+        dto.setEnfermedadesPrevias(paciente.getEnfermedadesPrevias());
+        dto.setMedicacionActual(paciente.getMedicacionActual());
+        dto.setAntecedentesFamiliares(paciente.getAntecedentesFamiliares());
+        dto.setObservacionesMedicas(paciente.getObservacionesMedicas());
+
+        return dto;
     }
 }

@@ -1,6 +1,8 @@
 package com.gestionHospitalaria.controller;
 
+import com.gestionHospitalaria.dto.HistorialMedicoDTO;
 import com.gestionHospitalaria.dto.LoginDTO;
+
 import com.gestionHospitalaria.dto.RegistroPacienteDTO;
 import com.gestionHospitalaria.entity.Paciente;
 import com.gestionHospitalaria.facade.PacienteFacade;
@@ -23,5 +25,10 @@ public class PacienteController {
     @PostMapping("/login")
     public String login(@RequestBody LoginDTO dto) {
         return pacienteFacade.login(dto);
+    }
+    
+    @GetMapping("/{id}/historial")
+    public HistorialMedicoDTO historial(@PathVariable Long id) {
+        return pacienteFacade.obtenerHistorial(id);
     }
 }
