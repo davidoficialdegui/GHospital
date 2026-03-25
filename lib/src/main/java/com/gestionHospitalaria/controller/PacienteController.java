@@ -31,7 +31,7 @@ public class PacienteController {
 
     @GetMapping("/{id}/historial")
     @ResponseBody
-    public HistorialMedicoDTO historial(@PathVariable Long id) {
+    public HistorialMedicoDTO historial(@PathVariable("id") Long id) {
         return pacienteFacade.obtenerHistorial(id);
     }
 }

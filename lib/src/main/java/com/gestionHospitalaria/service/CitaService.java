@@ -8,6 +8,9 @@ import com.gestionHospitalaria.entity.Paciente;
 import com.gestionHospitalaria.repository.CitaRepository;
 import com.gestionHospitalaria.repository.MedicoRepository;
 import com.gestionHospitalaria.repository.PacienteRepository;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,13 +57,15 @@ public class CitaService {
         return mapToDTO(saved);
     }
 
-    public List<CitaDTO> obtenerCitasPaciente(Long pacienteId) {
+    @Transactional
+    public List<CitaDTO> obtenerCitasPaciente(Long pacienteId) { 
         List<Cita> citas = citaRepository.findByPacienteId(pacienteId);
         return citas.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public List<CitaDTO> obtenerAgendaDelDia(Long medicoId) {
         LocalDate hoy = LocalDate.now();
         LocalDateTime inicio = hoy.atStartOfDay();

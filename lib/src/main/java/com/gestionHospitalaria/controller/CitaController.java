@@ -19,19 +19,19 @@ public class CitaController {
 
     @PostMapping
     @ResponseBody
-    public CitaDTO crearCita(@ModelAttribute CrearCitaDTO dto) {
+    public CitaDTO crearCita(@RequestBody CrearCitaDTO dto) {
         return citaFacade.crearCita(dto);
     }
 
     @GetMapping("/paciente/{id}")
     @ResponseBody
-    public List<CitaDTO> obtenerCitas(@PathVariable Long id) {
+    public List<CitaDTO> obtenerCitas(@PathVariable("id") Long id) {
         return citaFacade.obtenerCitasPaciente(id);
     }
 
     @GetMapping("/medico/{medicoId}/hoy")
     @ResponseBody
-    public List<CitaDTO> agendaHoy(@PathVariable Long medicoId) {
+    public List<CitaDTO> agendaHoy(@PathVariable("medicoId") Long medicoId) {
         return citaFacade.obtenerAgendaDelDia(medicoId);
     }
 }
