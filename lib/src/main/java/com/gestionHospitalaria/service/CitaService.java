@@ -1,6 +1,8 @@
 package com.gestionHospitalaria.service;
 
 import com.gestionHospitalaria.dto.CitaDTO;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import com.gestionHospitalaria.dto.CrearCitaDTO;
 import com.gestionHospitalaria.entity.Cita;
 import com.gestionHospitalaria.entity.Medico;
@@ -77,5 +79,20 @@ public class CitaService {
                 cita.getMedico().getNombre() + " " + cita.getMedico().getApellido1()
         );
         return dto;
+    }
+    
+    public List<CitaDTO> obtenerAgendaDelDia(Long medicoId) {
+
+        LocalDate hoy = LocalDate.now();
+
+        LocalDateTime inicio = hoy.atStartOfDay();
+        LocalDateTime fin = hoy.atTime(23, 59, 59);
+
+        List<Cita> citas = citaRepository
+                .findByMedicoIdAndFechaHoraBetween(medicoId, inicio, fin);
+
+        return citas.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 }

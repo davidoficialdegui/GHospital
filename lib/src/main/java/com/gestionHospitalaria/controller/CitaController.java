@@ -27,4 +27,9 @@ public class CitaController {
     public List<CitaDTO> obtenerCitas(@PathVariable Long id) {
         return citaFacade.obtenerCitasPaciente(id);
     }
+    
+    @GetMapping("/medico/{medicoId}/hoy")
+    public List<CitaDTO> agendaHoy(@PathVariable Long medicoId) {
+        return citaFacade.obtenerAgendaDelDia(medicoId);
+    }
 }
