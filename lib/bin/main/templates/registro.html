@@ -9,21 +9,33 @@
     <div class="contenedor">
         <h1>Registro de paciente</h1>
 
-        <form action="/api/pacientes/registro" method="post">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" required>
+		<form action="/api/pacientes/registro" method="post">
+		    <label for="nombre">Nombre</label>
+		    <input type="text" id="nombre" name="nombre" required>
 
-            <label for="apellidos">Apellidos</label>
-            <input type="text" id="apellidos" name="apellidos" required>
+		    <label for="apellido1">Primer apellido</label>
+		    <input type="text" id="apellido1" name="apellido1" required>
 
-            <label for="email">Correo electrónico</label>
-            <input type="email" id="email" name="email" required>
+		    <label for="apellido2">Segundo apellido</label>
+		    <input type="text" id="apellido2" name="apellido2">
 
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" required>
+		    <label for="dni">DNI</label>
+		    <input type="text" id="dni" name="dni" required>
 
-            <button type="submit">Registrarse</button>
-        </form>
+		    <label for="email">Correo electrónico</label>
+		    <input type="email" id="email" name="email" required>
+
+		    <label for="password">Contraseña</label>
+		    <input type="password" id="password" name="password" required>
+
+		    <label for="telefono">Teléfono</label>
+		    <input type="text" id="telefono" name="telefono">
+
+		    <label for="fechaNacimiento">Fecha de nacimiento</label>
+		    <input type="date" id="fechaNacimiento" name="fechaNacimiento">
+
+		    <button type="submit">Registrarse</button>
+		</form>
 
         <p>¿Ya tienes cuenta?</p>
         <a href="/login">Ir a login</a>
