@@ -4,11 +4,12 @@ import com.gestionHospitalaria.dto.CitaDTO;
 import com.gestionHospitalaria.dto.CrearCitaDTO;
 import com.gestionHospitalaria.facade.CitaFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api/citas")
 @CrossOrigin(origins = "*")
 public class CitaController {
@@ -16,19 +17,20 @@ public class CitaController {
     @Autowired
     private CitaFacade citaFacade;
 
-    // Solicitar cita médica
     @PostMapping
-    public CitaDTO crearCita(@RequestBody CrearCitaDTO dto) {
+    @ResponseBody
+    public CitaDTO crearCita(@ModelAttribute CrearCitaDTO dto) {
         return citaFacade.crearCita(dto);
     }
 
-    // Ver citas del paciente
     @GetMapping("/paciente/{id}")
+    @ResponseBody
     public List<CitaDTO> obtenerCitas(@PathVariable Long id) {
         return citaFacade.obtenerCitasPaciente(id);
     }
-    
+
     @GetMapping("/medico/{medicoId}/hoy")
+    @ResponseBody
     public List<CitaDTO> agendaHoy(@PathVariable Long medicoId) {
         return citaFacade.obtenerAgendaDelDia(medicoId);
     }

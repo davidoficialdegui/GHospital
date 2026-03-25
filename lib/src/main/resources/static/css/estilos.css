@@ -6,12 +6,12 @@ body {
 }
 
 .contenedor {
-    width: 350px;
-    margin: 80px auto;
+    width: 380px;
+    margin: 60px auto;
     background: white;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 12px rgba(0,0,0,0.12);
 }
 
 h1 {
@@ -22,7 +22,7 @@ h1 {
 label {
     display: block;
     margin-top: 12px;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }
 
 input {
@@ -36,10 +36,10 @@ button {
     margin-top: 20px;
     padding: 12px;
     border: none;
+    border-radius: 6px;
     background: #007bff;
     color: white;
     font-size: 16px;
-    border-radius: 6px;
     cursor: pointer;
 }
 
@@ -47,7 +47,8 @@ button:hover {
     background: #0056b3;
 }
 
-p {
+a {
+    display: block;
     text-align: center;
     margin-top: 15px;
 }

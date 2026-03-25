@@ -18,21 +18,12 @@ repositories {
 }
 
 dependencies {
-    // 🔥 SPRING WEB (para @RestController, @PostMapping, etc.)
     implementation("org.springframework.boot:spring-boot-starter-web")
-
-    // 🔥 SPRING JPA (para @Entity, @Column, etc.)
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-
-    // Base de datos (ejemplo con H2 para pruebas)
-    runtimeOnly("com.h2database:h2")
-
-    // Tests
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    
     implementation("org.springframework.boot:spring-boot-starter-security")
-    
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    runtimeOnly("com.h2database:h2")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.test {
