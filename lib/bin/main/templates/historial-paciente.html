@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial Médico</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <div class="contenedor-ancho">
+        <h1>Historial Médico</h1>
+
+        <form th:action="@{/medico/historial}" method="get">
+            <label for="pacienteId">ID del Paciente</label>
+            <input type="number" id="pacienteId" name="pacienteId"
+                   th:value="${pacienteId}" min="1" placeholder="Introduce el ID del paciente">
+            <button type="submit">Ver historial</button>
+        </form>
+
+        <a th:href="@{/medico/agenda}">Volver a mi agenda</a>
+
+        <div class="historial" th:if="${historial != null}">
+
+            <h2 th:text="${historial.nombreCompleto}">Nombre del paciente</h2>
+
+            <hr>
+
+            <div class="campo">
+                <div class="campo-label">Grupo sanguíneo</div>
+                <div class="campo-valor">
+                    <span class="grupo-sanguineo"
+                          th:if="${historial.grupoSanguineo != null}"
+                          th:text="${historial.grupoSanguineo}">A+</span>
+                    <span class="campo-valor vacio"
+                          th:unless="${historial.grupoSanguineo != null}">No registrado</span>
+                </div>
+            </div>
+
+            <div class="vitales">
+                <div class="vital">
+                    <div class="v-valor" th:text="${historial.altura != null ? historial.altura : '—'}">—</div>
+                    <div class="v-unidad">m</div>
+                    <div class="v-label">Altura</div>
+                </div>
+                <div class="vital">
+                    <div class="v-valor" th:text="${historial.peso != null ? historial.peso : '—'}">—</div>
+                    <div class="v-unidad">kg</div>
+                    <div class="v-label">Peso</div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="campo">
+                <div class="campo-label">Alergias</div>
+                <div class="campo-valor"
+                     th:if="${historial.alergias != null and !historial.alergias.isEmpty()}"
+                     th:text="${historial.alergias}">-</div>
+                <div class="campo-valor vacio"
+                     th:unless="${historial.alergias != null and !historial.alergias.isEmpty()}">Sin alergias registradas</div>
+            </div>
+
+            <div class="campo">
+                <div class="campo-label">Medicación actual</div>
+                <div class="campo-valor"
+                     th:if="${historial.medicacionActual != null and !historial.medicacionActual.isEmpty()}"
+                     th:text="${historial.medicacionActual}">-</div>
+                <div class="campo-valor vacio"
+                     th:unless="${historial.medicacionActual != null and !historial.medicacionActual.isEmpty()}">Sin medicación registrada</div>
+            </div>
+
+            <hr>
+
+            <div class="campo">
+                <div class="campo-label">Enfermedades previas</div>
+                <div class="campo-valor"
+                     th:if="${historial.enfermedadesPrevias != null and !historial.enfermedadesPrevias.isEmpty()}"
+                     th:text="${historial.enfermedadesPrevias}">-</div>
+                <div class="campo-valor vacio"
+                     th:unless="${historial.enfermedadesPrevias != null and !historial.enfermedadesPrevias.isEmpty()}">Sin enfermedades previas registradas</div>
+            </div>
+
+            <div class="campo">
+                <div class="campo-label">Antecedentes familiares</div>
+                <div class="campo-valor"
+                     th:if="${historial.antecedentesFamiliares != null and !historial.antecedentesFamiliares.isEmpty()}"
+                     th:text="${historial.antecedentesFamiliares}">-</div>
+                <div class="campo-valor vacio"
+                     th:unless="${historial.antecedentesFamiliares != null and !historial.antecedentesFamiliares.isEmpty()}">Sin antecedentes familiares registrados</div>
+            </div>
+
+            <div class="campo">
+                <div class="campo-label">Observaciones médicas</div>
+                <div class="campo-valor"
+                     th:if="${historial.observacionesMedicas != null and !historial.observacionesMedicas.isEmpty()}"
+                     th:text="${historial.observacionesMedicas}">-</div>
+                <div class="campo-valor vacio"
+                     th:unless="${historial.observacionesMedicas != null and !historial.observacionesMedicas.isEmpty()}">Sin observaciones registradas</div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

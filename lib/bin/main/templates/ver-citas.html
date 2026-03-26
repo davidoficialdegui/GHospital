@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver Citas</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <div class="contenedor">
+        <h1>Mis citas</h1>
+
+        <div th:if="${citas.empty}">
+            <p>No tienes citas registradas.</p>
+        </div>
+
+        <table th:if="${!citas.empty}">
+            <thead>
+                <tr>
+                    <th>Fecha y hora</th>
+                    <th>Médico</th>
+                    <th>Especialidad</th>
+                    <th>Motivo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="cita : ${citas}">
+                    <td th:text="${cita.fechaHora}"></td>
+                    <td th:text="${cita.medicoNombre}"></td>
+                    <td th:text="${cita.especialidad}"></td>
+                    <td th:text="${cita.motivo}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a href="/citas/crear">Crear nueva cita</a>
+        <a href="/citas">Volver</a>
+    </div>
+</body>
+</html>

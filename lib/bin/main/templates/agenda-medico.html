@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Agenda del Día</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <div class="contenedor-ancho">
+        <h1>Agenda del Día</h1>
+
+        <form action="/medico/agenda" method="get">
+            <label for="medicoId">ID del Médico</label>
+            <input type="number" id="medicoId" name="medicoId"
+                   th:value="${medicoId}" min="1" placeholder="Introduce el ID del médico">
+            <button type="submit">Ver agenda</button>
+        </form>
+
+        <a href="/medico/historial">Consultar historial de paciente</a>
+
+        <div th:if="${citas != null}">
+
+            <div class="resumen">
+                <div class="resumen-item">
+                    <div class="numero" th:text="${citas.size()}">0</div>
+                    <div class="etiqueta">Total hoy</div>
+                </div>
+                <div class="resumen-item">
+                    <div class="numero" th:text="${#lists.size(citas.?[estado == 'CONFIRMADA'])}">0</div>
+                    <div class="etiqueta">Confirmadas</div>
+                </div>
+                <div class="resumen-item">
+                    <div class="numero" th:text="${#lists.size(citas.?[estado == 'PENDIENTE'])}">0</div>
+                    <div class="etiqueta">Pendientes</div>
+                </div>
+            </div>
+
+            <table th:if="${!citas.isEmpty()}">
+                <thead>
+                    <tr>
+                        <th>Hora</th>
+                        <th>Médico</th>
+                        <th>Especialidad</th>
+                        <th>Motivo</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cita : ${citas}">
+                        <td th:text="${#temporals.format(cita.fechaHora, 'HH:mm')}">--:--</td>
+                        <td th:text="${cita.medicoNombre}">-</td>
+                        <td th:text="${cita.especialidad != null ? cita.especialidad : '-'}">-</td>
+                        <td th:text="${cita.motivo != null ? cita.motivo : '-'}">-</td>
+                        <td>
+                            <span class="badge"
+                                  th:classappend="'badge-' + ${cita.estado}"
+                                  th:text="${cita.estado}">ESTADO</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="sin-citas" th:if="${citas.isEmpty()}">
+                No hay citas programadas para hoy.
+            </p>
+
+        </div>
+    </div>
+</body>
+</html>

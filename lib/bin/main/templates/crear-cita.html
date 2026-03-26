@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Cita</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <div class="contenedor">
+        <h1>Solicitar cita médica</h1>
+
+        <p style="background:#e8f4fd; padding:10px; border-radius:6px;">
+            <strong>Datos de prueba disponibles:</strong><br>
+            Paciente ID: 1 (Ana Martínez) o 2 (Pedro López)<br>
+            Médico ID: 1 (Carlos García - Cardiología) o 2 (Laura Sánchez - Pediatría)
+        </p>
+
+        <form action="/citas/crear" method="post">
+            <label for="pacienteId">Paciente ID</label>
+            <input type="number" id="pacienteId" name="pacienteId" value="1" required>
+
+            <label for="medicoId">Médico ID</label>
+            <input type="number" id="medicoId" name="medicoId" value="1" required>
+
+            <label for="fechaHora">Fecha y hora</label>
+            <input type="datetime-local" id="fechaHora" name="fechaHora" required>
+
+            <label for="especialidad">Especialidad</label>
+            <input type="text" id="especialidad" name="especialidad">
+
+            <label for="motivo">Motivo</label>
+            <input type="text" id="motivo" name="motivo">
+
+            <button type="submit">Crear cita</button>
+        </form>
+
+        <a href="/citas">Volver a citas</a>
+    </div>
+</body>
+</html>
