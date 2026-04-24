@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Diagnóstico</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <div class="contenedor-ancho">
+        <h1>Registrar Diagnóstico</h1>
+
+        <!-- Mensaje de éxito -->
+        <div th:if="${exito}" style="background:#d1e7dd; color:#0f5132; padding:15px; border-radius:8px; margin-bottom:20px;">
+            <strong>✔ Diagnóstico registrado correctamente.</strong>
+            <p th:text="'Paciente: ' + ${diagnostico.pacienteNombre}"></p>
+            <p th:text="'Descripción: ' + ${diagnostico.descripcion}"></p>
+        </div>
+
+        <!-- Mensaje de error -->
+        <div th:if="${error}" style="background:#f8d7da; color:#842029; padding:15px; border-radius:8px; margin-bottom:20px;">
+            <strong>✖ Error:</strong> <span th:text="${error}"></span>
+        </div>
+
+        <form th:action="@{/medico/diagnostico/nuevo}" method="post">
+            <label for="pacienteId">ID del Paciente</label>
+            <input type="number" id="pacienteId" name="pacienteId"
+                   th:value="${pacienteId}" min="1" placeholder="ID del paciente" required>
+
+            <label for="medicoId">ID del Médico</label>
+            <input type="number" id="medicoId" name="medicoId"
+                   th:value="${medicoId}" min="1" placeholder="ID del médico" required>
+
+            <label for="descripcion">Descripción del diagnóstico *</label>
+            <textarea id="descripcion" name="descripcion" rows="4"
+                      style="width:100%; padding:10px; box-sizing:border-box; border:1px solid #ccc; border-radius:4px;"
+                      placeholder="Describe el diagnóstico clínico..." required></textarea>
+
+            <label for="tratamiento">Tratamiento</label>
+            <textarea id="tratamiento" name="tratamiento" rows="3"
+                      style="width:100%; padding:10px; box-sizing:border-box; border:1px solid #ccc; border-radius:4px;"
+                      placeholder="Tratamiento indicado (opcional)"></textarea>
+
+            <label for="observaciones">Observaciones</label>
+            <textarea id="observaciones" name="observaciones" rows="3"
+                      style="width:100%; padding:10px; box-sizing:border-box; border:1px solid #ccc; border-radius:4px;"
+                      placeholder="Observaciones adicionales (opcional)"></textarea>
+
+            <button type="submit">Registrar Diagnóstico</button>
+        </form>
+
+        <a th:href="@{/medico/historial(pacienteId=${pacienteId})}">Ver historial del paciente</a>
+        <a th:href="@{/medico/agenda}">Volver a mi agenda</a>
+    </div>
+</body>
+</html>
