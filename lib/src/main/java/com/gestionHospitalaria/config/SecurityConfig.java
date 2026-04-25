@@ -30,10 +30,13 @@ public class SecurityConfig {
                     "/citas/crear",
                     "/citas/ver",
                     "/h2-console/**",
-                    "/favicon.ico", 
+                    "/favicon.ico",
                     "/css/**",
                     "/api/pacientes/**",
-                    "/api/citas/**"
+                    "/api/citas/**",
+                    "/api/diagnosticos/**",
+                    "/medico/**",
+                    "/paciente/**"
                 ).permitAll()
                 .anyRequest().permitAll()
             )
