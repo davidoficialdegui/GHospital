@@ -65,6 +65,7 @@ public class CitaViewController {
     public String verCitas(@RequestParam("pacienteId") Long pacienteId, Model model) {
         List<CitaDTO> citas = citaFacade.obtenerCitasPaciente(pacienteId);
         model.addAttribute("citas", citas);
+        model.addAttribute("pacienteId", pacienteId);
         return "ver-citas";
     }
 
@@ -72,5 +73,22 @@ public class CitaViewController {
     @ResponseBody
     public String test() {
         return "FUNCIONA";
+    }
+    
+    @PostMapping("/{citaId}/cancelar")
+    public String cancelarCitaVista(
+    		@PathVariable("citaId") Long citaId,         
+            @RequestParam("pacienteId") Long pacienteId, 
+            Model model) {
+        try {
+            citaFacade.cancelarCita(citaId, pacienteId);
+            model.addAttribute("mensaje", "Cita cancelada correctamente.");
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        List<CitaDTO> citas = citaFacade.obtenerCitasPaciente(pacienteId);
+        model.addAttribute("citas", citas);
+        model.addAttribute("pacienteId", pacienteId);
+        return "ver-citas";
     }
 }

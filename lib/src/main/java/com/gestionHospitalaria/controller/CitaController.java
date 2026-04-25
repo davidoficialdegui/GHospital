@@ -34,4 +34,12 @@ public class CitaController {
     public List<CitaDTO> agendaHoy(@PathVariable("medicoId") Long medicoId) {
         return citaFacade.obtenerAgendaDelDia(medicoId);
     }
+    
+    @PatchMapping("/{citaId}/cancelar")
+    @ResponseBody
+    public CitaDTO cancelarCita(
+            @PathVariable Long citaId,
+            @RequestParam Long pacienteId) {
+        return citaFacade.cancelarCita(citaId, pacienteId);
+    }
 }

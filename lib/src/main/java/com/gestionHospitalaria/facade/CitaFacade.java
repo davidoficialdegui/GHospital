@@ -25,4 +25,8 @@ public class CitaFacade {
     public List<CitaDTO> obtenerAgendaDelDia(Long medicoId) {
         return citaService.obtenerAgendaDelDia(medicoId);
     }
+    
+    public CitaDTO cancelarCita(Long citaId, Long pacienteId) {
+        return citaService.cancelarCita(citaId, pacienteId);
+    }
 }

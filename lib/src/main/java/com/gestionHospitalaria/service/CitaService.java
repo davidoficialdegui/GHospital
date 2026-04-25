@@ -76,6 +76,28 @@ public class CitaService {
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
+    
+    @Transactional
+    public CitaDTO cancelarCita(Long citaId, Long pacienteId) {
+        Cita cita = citaRepository.findById(citaId)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada con ID: " + citaId));
+
+        if (!cita.getPaciente().getId().equals(pacienteId)) {
+            throw new RuntimeException("No tienes permiso para cancelar esta cita");
+        }
+
+        if (cita.getEstado() == Cita.EstadoCita.CANCELADA) {
+            throw new RuntimeException("La cita ya está cancelada");
+        }
+
+        if (cita.getEstado() == Cita.EstadoCita.REALIZADA) {
+            throw new RuntimeException("No se puede cancelar una cita ya realizada");
+        }
+
+        cita.setEstado(Cita.EstadoCita.CANCELADA);
+        Cita saved = citaRepository.save(cita);
+        return mapToDTO(saved);
+    }
 
     private CitaDTO mapToDTO(Cita cita) {
         CitaDTO dto = new CitaDTO();

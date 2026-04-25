@@ -9,6 +9,14 @@
     <div class="contenedor">
         <h1>Mis citas</h1>
 
+        <div th:if="${mensaje}" style="color:green; margin-bottom:10px;">
+            <p th:text="${mensaje}"></p>
+        </div>
+
+        <div th:if="${error}" style="color:red; margin-bottom:10px;">
+            <p th:text="${error}"></p>
+        </div>
+
         <div th:if="${citas.empty}">
             <p>No tienes citas registradas.</p>
         </div>
@@ -20,6 +28,8 @@
                     <th>Médico</th>
                     <th>Especialidad</th>
                     <th>Motivo</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,10 +38,25 @@
                     <td th:text="${cita.medicoNombre}"></td>
                     <td th:text="${cita.especialidad}"></td>
                     <td th:text="${cita.motivo}"></td>
+                    <td th:text="${cita.estado}"></td>
+                    <td>
+                        <form th:if="${cita.estado == 'PENDIENTE' or cita.estado == 'CONFIRMADA'}"
+                              th:action="@{/citas/{id}/cancelar(id=${cita.id})}"
+                              method="post">
+                            <input type="hidden" name="pacienteId" th:value="${pacienteId}"/>
+                            <button type="submit"
+                                    onclick="return confirm('¿Seguro que quieres cancelar esta cita?')">
+                                Cancelar cita
+                            </button>
+                        </form>
+                        <span th:if="${cita.estado == 'CANCELADA'}" style="color:gray;">Cancelada</span>
+                        <span th:if="${cita.estado == 'REALIZADA'}" style="color:gray;">Realizada</span>
+                    </td>
                 </tr>
             </tbody>
         </table>
 
+        <br>
         <a href="/citas/crear">Crear nueva cita</a>
         <a href="/citas">Volver</a>
     </div>
