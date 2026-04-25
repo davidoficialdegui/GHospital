@@ -22,6 +22,14 @@
 
             <h2 th:text="${historial.nombreCompleto}">Nombre del paciente</h2>
 
+            <!-- NUEVO: botón para descargar informe PDF -->
+            <a th:href="@{/medico/informe/descargar(pacienteId=${pacienteId})}"
+               style="display:inline-block; background:#007bff; color:white;
+                      padding:10px 18px; border-radius:6px; text-decoration:none;
+                      margin:10px 0; font-weight:bold;">
+                ⬇ Descargar informe médico en PDF
+            </a>
+
             <hr>
 
             <div class="campo">
@@ -96,6 +104,46 @@
                 <div class="campo-valor vacio"
                      th:unless="${historial.observacionesMedicas != null and !historial.observacionesMedicas.isEmpty()}">Sin observaciones registradas</div>
             </div>
+
+            
+            <hr>
+            <h3>Diagnósticos y tratamientos</h3>
+
+            <p th:if="${diagnosticos == null or diagnosticos.isEmpty()}"
+               class="campo-valor vacio">
+                No hay diagnósticos registrados para este paciente.
+            </p>
+
+            <div th:each="diag : ${diagnosticos}"
+                 style="background:#f2f4f7; border-left:4px solid #007bff;
+                        padding:12px; border-radius:6px; margin-bottom:12px;">
+                <div class="campo-label"
+                     th:text="${#temporals.format(diag.fechaDiagnostico, 'dd/MM/yyyy HH:mm')}
+                              + ' | Dr/a. ' + ${diag.medicoNombre}">
+                    Fecha y médico
+                </div>
+                <p style="margin:6px 0;">
+                    <strong>Descripción:</strong>
+                    <span th:text="${diag.descripcion}">-</span>
+                </p>
+                <p style="margin:6px 0;"
+                   th:if="${diag.tratamiento != null and !diag.tratamiento.isEmpty()}">
+                    <strong>Tratamiento:</strong>
+                    <span th:text="${diag.tratamiento}">-</span>
+                </p>
+                <p style="margin:6px 0;"
+                   th:if="${diag.observaciones != null and !diag.observaciones.isEmpty()}">
+                    <strong>Observaciones:</strong>
+                    <span th:text="${diag.observaciones}">-</span>
+                </p>
+            </div>
+
+            <a th:href="@{/medico/diagnostico/nuevo(pacienteId=${pacienteId})}"
+               style="display:inline-block; background:#28a745; color:white;
+                      padding:10px 18px; border-radius:6px; text-decoration:none;
+                      margin-top:10px; font-weight:bold;">
+                + Crear nuevo informe / diagnóstico
+            </a>
 
         </div>
     </div>

@@ -7,9 +7,13 @@ import com.gestionHospitalaria.dto.HistorialMedicoDTO;
 import com.gestionHospitalaria.facade.CitaFacade;
 import com.gestionHospitalaria.facade.DiagnosticoFacade;
 import com.gestionHospitalaria.facade.PacienteFacade;
+import com.gestionHospitalaria.service.InformeMedicoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +34,9 @@ public class MedicoViewCOntroller {
 
     @Autowired
     private DiagnosticoFacade diagnosticoFacade;
+    
+    @Autowired
+    private InformeMedicoService informeMedicoService;
 
     /** GET /medico/agenda?medicoId=1 */
     @GetMapping("/agenda")
@@ -90,5 +97,20 @@ public class MedicoViewCOntroller {
             model.addAttribute("medicoId", dto.getMedicoId());
         }
         return "nuevo-diagnostico";
+    }
+    
+    @GetMapping("/informe/descargar")
+    public ResponseEntity<byte[]> descargarInforme(
+            @RequestParam("pacienteId") Long pacienteId) {
+        logger.info("GET /medico/informe/descargar pacienteId={}", pacienteId);
+        HistorialMedicoDTO historial = pacienteFacade.obtenerHistorial(pacienteId);
+        List<DiagnosticoDTO> diagnosticos = diagnosticoFacade.obtenerDiagnosticosPaciente(pacienteId);
+        byte[] pdf = informeMedicoService.generarInformePdf(historial, diagnosticos);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"informe-paciente-" + pacienteId + ".pdf\"")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
     }
 }
