@@ -84,6 +84,72 @@ public class AdminViewController {
         return "admin-editar-recepcionista";
     }
 
+    @GetMapping("/rol/paciente/{id}")
+    public String mostrarRolPaciente(@PathVariable Long id, Model model) {
+        model.addAttribute("usuario", adminService.obtenerPaciente(id));
+        model.addAttribute("tipo", "paciente");
+        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN"});
+        return "admin-asignar-rol";
+    }
+
+    @PostMapping("/rol/paciente/{id}")
+    public String asignarRolPaciente(@PathVariable Long id, @RequestParam String rol, Model model) {
+        try {
+            adminService.asignarRolPaciente(id, rol);
+            model.addAttribute("mensaje", "Rol actualizado correctamente.");
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        model.addAttribute("usuario", adminService.obtenerPaciente(id));
+        model.addAttribute("tipo", "paciente");
+        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN"});
+        return "admin-asignar-rol";
+    }
+
+    @GetMapping("/rol/medico/{id}")
+    public String mostrarRolMedico(@PathVariable Long id, Model model) {
+        model.addAttribute("usuario", adminService.obtenerMedico(id));
+        model.addAttribute("tipo", "medico");
+        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN"});
+        return "admin-asignar-rol";
+    }
+
+    @PostMapping("/rol/medico/{id}")
+    public String asignarRolMedico(@PathVariable Long id, @RequestParam String rol, Model model) {
+        try {
+            adminService.asignarRolMedico(id, rol);
+            model.addAttribute("mensaje", "Rol actualizado correctamente.");
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        model.addAttribute("usuario", adminService.obtenerMedico(id));
+        model.addAttribute("tipo", "medico");
+        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN"});
+        return "admin-asignar-rol";
+    }
+
+    @GetMapping("/rol/recepcionista/{id}")
+    public String mostrarRolRecepcionista(@PathVariable Long id, Model model) {
+        model.addAttribute("usuario", adminService.obtenerRecepcionista(id));
+        model.addAttribute("tipo", "recepcionista");
+        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN"});
+        return "admin-asignar-rol";
+    }
+
+    @PostMapping("/rol/recepcionista/{id}")
+    public String asignarRolRecepcionista(@PathVariable Long id, @RequestParam String rol, Model model) {
+        try {
+            adminService.asignarRolRecepcionista(id, rol);
+            model.addAttribute("mensaje", "Rol actualizado correctamente.");
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        model.addAttribute("usuario", adminService.obtenerRecepcionista(id));
+        model.addAttribute("tipo", "recepcionista");
+        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN"});
+        return "admin-asignar-rol";
+    }
+
     @PostMapping("/eliminar/paciente/{id}")
     public String eliminarPaciente(@PathVariable Long id, Model model) {
         try {

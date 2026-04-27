@@ -45,11 +45,16 @@
                 <td th:text="${p.dni}">-</td>
                 <td th:text="${p.email}">-</td>
                 <td th:text="${p.activo ? 'Sí' : 'No'}">-</td>
-                <td style="display:flex; gap:6px;">
+                <td style="display:flex; gap:6px; flex-wrap:wrap;">
                     <a th:href="@{/admin/editar/paciente/{id}(id=${p.id})}"
                        style="background:#007bff; color:white; padding:5px 12px;
                               border-radius:4px; text-decoration:none; font-size:13px;">
                         Editar
+                    </a>
+                    <a th:href="@{/admin/rol/paciente/{id}(id=${p.id})}"
+                       style="background:#6f42c1; color:white; padding:5px 12px;
+                              border-radius:4px; text-decoration:none; font-size:13px;">
+                        Rol
                     </a>
                     <form th:action="@{/admin/eliminar/paciente/{id}(id=${p.id})}" method="post"
                           onsubmit="return confirm('¿Seguro que quieres eliminar este paciente?')">
@@ -85,11 +90,16 @@
                 <td th:text="${m.dni}">-</td>
                 <td th:text="${m.especialidad}">-</td>
                 <td th:text="${m.email}">-</td>
-                <td style="display:flex; gap:6px;">
+                <td style="display:flex; gap:6px; flex-wrap:wrap;">
                     <a th:href="@{/admin/editar/medico/{id}(id=${m.id})}"
                        style="background:#007bff; color:white; padding:5px 12px;
                               border-radius:4px; text-decoration:none; font-size:13px;">
                         Editar
+                    </a>
+                    <a th:href="@{/admin/rol/medico/{id}(id=${m.id})}"
+                       style="background:#6f42c1; color:white; padding:5px 12px;
+                              border-radius:4px; text-decoration:none; font-size:13px;">
+                        Rol
                     </a>
                     <form th:action="@{/admin/eliminar/medico/{id}(id=${m.id})}" method="post"
                           onsubmit="return confirm('¿Seguro que quieres eliminar este médico?')">
@@ -125,11 +135,16 @@
                 <td th:text="${r.dni}">-</td>
                 <td th:text="${r.departamentoAsignado}">-</td>
                 <td th:text="${r.email}">-</td>
-                <td style="display:flex; gap:6px;">
+                <td style="display:flex; gap:6px; flex-wrap:wrap;">
                     <a th:href="@{/admin/editar/recepcionista/{id}(id=${r.id})}"
                        style="background:#007bff; color:white; padding:5px 12px;
                               border-radius:4px; text-decoration:none; font-size:13px;">
                         Editar
+                    </a>
+                    <a th:href="@{/admin/rol/recepcionista/{id}(id=${r.id})}"
+                       style="background:#6f42c1; color:white; padding:5px 12px;
+                              border-radius:4px; text-decoration:none; font-size:13px;">
+                        Rol
                     </a>
                     <form th:action="@{/admin/eliminar/recepcionista/{id}(id=${r.id})}" method="post"
                           onsubmit="return confirm('¿Seguro que quieres eliminar este recepcionista?')">

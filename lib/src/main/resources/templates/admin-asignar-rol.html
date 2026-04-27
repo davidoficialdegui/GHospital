@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Asignar Rol</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+<div class="contenedor">
+    <h1>Asignar Rol</h1>
+
+    <div th:if="${mensaje}"
+         style="background:#d1e7dd; color:#0f5132; padding:12px; border-radius:6px; margin-bottom:15px;">
+        <span th:text="${mensaje}"></span>
+    </div>
+    <div th:if="${error}"
+         style="background:#f8d7da; color:#842029; padding:12px; border-radius:6px; margin-bottom:15px;">
+        <strong>Error:</strong> <span th:text="${error}"></span>
+    </div>
+
+    <div class="campo" style="margin-bottom:15px;">
+        <div class="campo-label">Usuario</div>
+        <div class="campo-valor" th:text="${usuario.nombre + ' ' + usuario.apellido1}">-</div>
+    </div>
+
+    <div class="campo" style="margin-bottom:15px;">
+        <div class="campo-label">Rol actual</div>
+        <div class="campo-valor" th:text="${usuario.rol != null ? usuario.rol : 'Sin asignar'}">-</div>
+    </div>
+
+    <form th:action="@{/admin/rol/{tipo}/{id}(tipo=${tipo}, id=${usuario.id})}" method="post">
+        <label for="rol">Nuevo rol</label>
+        <select id="rol" name="rol" style="width:100%; padding:10px; box-sizing:border-box; margin-top:6px;">
+            <option th:each="r : ${roles}"
+                    th:value="${r}"
+                    th:text="${r}"
+                    th:selected="${usuario.rol != null and r == usuario.rol.name()}">
+            </option>
+        </select>
+        <button type="submit">Guardar rol</button>
+    </form>
+
+    <a href="/admin/usuarios">Volver a la lista</a>
+</div>
+</body>
+</html>

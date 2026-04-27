@@ -127,6 +127,24 @@ public class AdminService {
         return stats;
     }
 
+    public void asignarRolPaciente(Long id, String rol) {
+        Paciente paciente = obtenerPaciente(id);
+        paciente.setRol(Paciente.Rol.valueOf(rol));
+        pacienteRepository.save(paciente);
+    }
+
+    public void asignarRolMedico(Long id, String rol) {
+        Medico medico = obtenerMedico(id);
+        medico.setRol(Paciente.Rol.valueOf(rol));
+        medicoRepository.save(medico);
+    }
+
+    public void asignarRolRecepcionista(Long id, String rol) {
+        Recepcionista rec = obtenerRecepcionista(id);
+        rec.setRol(Paciente.Rol.valueOf(rol));
+        recepcionistaRepository.save(rec);
+    }
+
     public void eliminarPaciente(Long id) {
         if (!pacienteRepository.existsById(id)) {
             throw new RuntimeException("Paciente no encontrado");
