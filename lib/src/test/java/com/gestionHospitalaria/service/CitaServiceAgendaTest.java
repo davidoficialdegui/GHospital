@@ -19,21 +19,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CitaServiceAgendaTest {
 
-    @Mock
-    private CitaRepository citaRepository;
-
-    @Mock
-    private PacienteRepository pacienteRepository;
-
-    @Mock
-    private MedicoRepository medicoRepository;
+    @Mock private CitaRepository citaRepository;
+    @Mock private PacienteRepository pacienteRepository;
+    @Mock private MedicoRepository medicoRepository;
 
     @InjectMocks
     private CitaService citaService;
@@ -67,15 +60,11 @@ class CitaServiceAgendaTest {
 
     @Test
     void obtenerAgendaDelDia_conCitas_devuelveLista() {
-        // Arrange
-        when(citaRepository.findByMedicoIdAndFechaHoraBetween(
-            eq(1L), any(LocalDateTime.class), any(LocalDateTime.class)))
+        when(citaRepository.findByMedicoIdOrderByFechaHoraAsc(1L))
             .thenReturn(List.of(cita));
 
-        // Act
         List<CitaDTO> resultado = citaService.obtenerAgendaDelDia(1L);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         assertEquals("Revisión", resultado.get(0).getMotivo());
@@ -84,8 +73,7 @@ class CitaServiceAgendaTest {
 
     @Test
     void obtenerAgendaDelDia_sinCitas_devuelveListaVacia() {
-        when(citaRepository.findByMedicoIdAndFechaHoraBetween(
-            eq(1L), any(LocalDateTime.class), any(LocalDateTime.class)))
+        when(citaRepository.findByMedicoIdOrderByFechaHoraAsc(1L))
             .thenReturn(List.of());
 
         List<CitaDTO> resultado = citaService.obtenerAgendaDelDia(1L);
@@ -95,7 +83,7 @@ class CitaServiceAgendaTest {
     }
 
     @Test
-    void obtenerAgendaDelDia_variasEspecialidades_mapeoCorrector() {
+    void obtenerAgendaDelDia_variasCitas_mapeoCorrector() {
         Cita c2 = new Cita();
         c2.setId(2L);
         c2.setMedico(medico);
@@ -105,8 +93,7 @@ class CitaServiceAgendaTest {
         c2.setEstado(Cita.EstadoCita.PENDIENTE);
         c2.setEspecialidad("Cardiología");
 
-        when(citaRepository.findByMedicoIdAndFechaHoraBetween(
-            eq(1L), any(LocalDateTime.class), any(LocalDateTime.class)))
+        when(citaRepository.findByMedicoIdOrderByFechaHoraAsc(1L))
             .thenReturn(Arrays.asList(cita, c2));
 
         List<CitaDTO> resultado = citaService.obtenerAgendaDelDia(1L);

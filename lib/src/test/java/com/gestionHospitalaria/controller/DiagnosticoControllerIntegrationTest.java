@@ -6,6 +6,7 @@ import com.gestionHospitalaria.dto.DiagnosticoDTO;
 import com.gestionHospitalaria.facade.DiagnosticoFacade;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -22,10 +23,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Test de integración: verifica que el controller HTTP llama
- * correctamente al servidor (facade → service → repository).
- * Este test prueba la "remoteness" exigida por el Sprint 2.
+ * correctamente al servidor. Prueba la "remoteness" del Sprint 2.
  */
-@WebMvcTest(DiagnosticoController.class)
+@WebMvcTest(controllers = DiagnosticoController.class,
+            excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class DiagnosticoControllerIntegrationTest {
 
     @Autowired
@@ -39,7 +40,6 @@ class DiagnosticoControllerIntegrationTest {
 
     @Test
     void postDiagnostico_correcto_devuelve200ConDTO() throws Exception {
-        // Arrange
         CrearDiagnosticoDTO request = new CrearDiagnosticoDTO();
         request.setPacienteId(1L);
         request.setMedicoId(1L);
@@ -59,7 +59,6 @@ class DiagnosticoControllerIntegrationTest {
         when(diagnosticoFacade.registrarDiagnostico(any(CrearDiagnosticoDTO.class)))
             .thenReturn(response);
 
-        // Act & Assert — llamada HTTP real al servidor
         mockMvc.perform(post("/api/diagnosticos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -72,7 +71,6 @@ class DiagnosticoControllerIntegrationTest {
 
     @Test
     void getDiagnosticosPaciente_devuelveLista() throws Exception {
-        // Arrange
         DiagnosticoDTO d = new DiagnosticoDTO();
         d.setId(1L);
         d.setPacienteId(1L);
@@ -82,7 +80,6 @@ class DiagnosticoControllerIntegrationTest {
         when(diagnosticoFacade.obtenerDiagnosticosPaciente(eq(1L)))
             .thenReturn(List.of(d));
 
-        // Act & Assert
         mockMvc.perform(get("/api/diagnosticos/paciente/1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(1))
