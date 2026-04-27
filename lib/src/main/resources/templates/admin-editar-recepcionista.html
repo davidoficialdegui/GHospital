@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Recepcionista</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+<div class="contenedor-ancho">
+    <h1>Editar Recepcionista</h1>
+
+    <div th:if="${mensaje}"
+         style="background:#d1e7dd; color:#0f5132; padding:12px; border-radius:6px; margin-bottom:15px;">
+        <span th:text="${mensaje}"></span>
+    </div>
+    <div th:if="${error}"
+         style="background:#f8d7da; color:#842029; padding:12px; border-radius:6px; margin-bottom:15px;">
+        <strong>Error:</strong> <span th:text="${error}"></span>
+    </div>
+
+    <form th:action="@{/admin/editar/recepcionista/{id}(id=${recepcionista.id})}" method="post">
+
+        <label>Nombre</label>
+        <input type="text" name="nombre" th:value="${recepcionista.nombre}" required>
+
+        <label>Primer apellido</label>
+        <input type="text" name="apellido1" th:value="${recepcionista.apellido1}" required>
+
+        <label>Segundo apellido</label>
+        <input type="text" name="apellido2" th:value="${recepcionista.apellido2}">
+
+        <label>DNI</label>
+        <input type="text" name="dni" th:value="${recepcionista.dni}" required>
+
+        <label>Email</label>
+        <input type="email" name="email" th:value="${recepcionista.email}">
+
+        <label>Teléfono</label>
+        <input type="text" name="telefono" th:value="${recepcionista.telefono}">
+
+        <label>Fecha de nacimiento</label>
+        <input type="date" name="fechaNacimiento" th:value="${recepcionista.fechaNacimiento}">
+
+        <label>Sexo</label>
+        <input type="text" name="sexo" th:value="${recepcionista.sexo}">
+
+        <label>Dirección</label>
+        <input type="text" name="direccion" th:value="${recepcionista.direccion}">
+
+        <label>Ciudad</label>
+        <input type="text" name="ciudad" th:value="${recepcionista.ciudad}">
+
+        <label>Provincia</label>
+        <input type="text" name="provincia" th:value="${recepcionista.provincia}">
+
+        <label>Código postal</label>
+        <input type="text" name="codigoPostal" th:value="${recepcionista.codigoPostal}">
+
+        <label>Departamento asignado</label>
+        <input type="text" name="departamentoAsignado" th:value="${recepcionista.departamentoAsignado}">
+
+        <label>Turno</label>
+        <input type="text" name="turno" th:value="${recepcionista.turno}" placeholder="MAÑANA, TARDE, NOCHE, ROTATIVO">
+
+        <button type="submit">Guardar cambios</button>
+    </form>
+
+    <a href="/admin/usuarios">Volver a la lista</a>
+</div>
+</body>
+</html>

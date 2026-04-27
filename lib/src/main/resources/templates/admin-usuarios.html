@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+<div class="contenedor-ancho" style="width:900px;">
+    <h1>Gestión de Usuarios</h1>
+
+    <div th:if="${mensaje}"
+         style="background:#d1e7dd; color:#0f5132; padding:12px; border-radius:6px; margin-bottom:15px;">
+        <span th:text="${mensaje}"></span>
+    </div>
+    <div th:if="${error}"
+         style="background:#f8d7da; color:#842029; padding:12px; border-radius:6px; margin-bottom:15px;">
+        <strong>Error:</strong> <span th:text="${error}"></span>
+    </div>
+
+    <!-- Pacientes -->
+    <h2>Pacientes</h2>
+    <p th:if="${pacientes.isEmpty()}" class="sin-citas">No hay pacientes registrados.</p>
+    <table th:unless="${pacientes.isEmpty()}">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th>Email</th>
+                <th>Activo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="p : ${pacientes}">
+                <td th:text="${p.id}">-</td>
+                <td th:text="${p.nombre + ' ' + p.apellido1}">-</td>
+                <td th:text="${p.dni}">-</td>
+                <td th:text="${p.email}">-</td>
+                <td th:text="${p.activo ? 'Sí' : 'No'}">-</td>
+                <td style="display:flex; gap:6px;">
+                    <a th:href="@{/admin/editar/paciente/{id}(id=${p.id})}"
+                       style="background:#007bff; color:white; padding:5px 12px;
+                              border-radius:4px; text-decoration:none; font-size:13px;">
+                        Editar
+                    </a>
+                    <form th:action="@{/admin/eliminar/paciente/{id}(id=${p.id})}" method="post"
+                          onsubmit="return confirm('¿Seguro que quieres eliminar este paciente?')">
+                        <button type="submit"
+                                style="background:#dc3545; color:white; padding:5px 12px;
+                                       border-radius:4px; font-size:13px; margin-top:0; width:auto;">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Médicos -->
+    <h2 style="margin-top:30px;">Médicos</h2>
+    <p th:if="${medicos.isEmpty()}" class="sin-citas">No hay médicos registrados.</p>
+    <table th:unless="${medicos.isEmpty()}">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th>Especialidad</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="m : ${medicos}">
+                <td th:text="${m.id}">-</td>
+                <td th:text="${m.nombre + ' ' + m.apellido1}">-</td>
+                <td th:text="${m.dni}">-</td>
+                <td th:text="${m.especialidad}">-</td>
+                <td th:text="${m.email}">-</td>
+                <td style="display:flex; gap:6px;">
+                    <a th:href="@{/admin/editar/medico/{id}(id=${m.id})}"
+                       style="background:#007bff; color:white; padding:5px 12px;
+                              border-radius:4px; text-decoration:none; font-size:13px;">
+                        Editar
+                    </a>
+                    <form th:action="@{/admin/eliminar/medico/{id}(id=${m.id})}" method="post"
+                          onsubmit="return confirm('¿Seguro que quieres eliminar este médico?')">
+                        <button type="submit"
+                                style="background:#dc3545; color:white; padding:5px 12px;
+                                       border-radius:4px; font-size:13px; margin-top:0; width:auto;">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Recepcionistas -->
+    <h2 style="margin-top:30px;">Recepcionistas</h2>
+    <p th:if="${recepcionistas.isEmpty()}" class="sin-citas">No hay recepcionistas registrados.</p>
+    <table th:unless="${recepcionistas.isEmpty()}">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th>Departamento</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="r : ${recepcionistas}">
+                <td th:text="${r.id}">-</td>
+                <td th:text="${r.nombre + ' ' + r.apellido1}">-</td>
+                <td th:text="${r.dni}">-</td>
+                <td th:text="${r.departamentoAsignado}">-</td>
+                <td th:text="${r.email}">-</td>
+                <td style="display:flex; gap:6px;">
+                    <a th:href="@{/admin/editar/recepcionista/{id}(id=${r.id})}"
+                       style="background:#007bff; color:white; padding:5px 12px;
+                              border-radius:4px; text-decoration:none; font-size:13px;">
+                        Editar
+                    </a>
+                    <form th:action="@{/admin/eliminar/recepcionista/{id}(id=${r.id})}" method="post"
+                          onsubmit="return confirm('¿Seguro que quieres eliminar este recepcionista?')">
+                        <button type="submit"
+                                style="background:#dc3545; color:white; padding:5px 12px;
+                                       border-radius:4px; font-size:13px; margin-top:0; width:auto;">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="/login">Volver al inicio</a>
+</div>
+</body>
+</html>
