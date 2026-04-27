@@ -3,8 +3,12 @@ package com.gestionHospitalaria.service;
 import com.gestionHospitalaria.dto.HistorialMedicoDTO;
 import com.gestionHospitalaria.dto.LoginDTO;
 import com.gestionHospitalaria.dto.RegistroPacienteDTO;
+import com.gestionHospitalaria.entity.Medico;
 import com.gestionHospitalaria.entity.Paciente;
+import com.gestionHospitalaria.entity.Recepcionista;
+import com.gestionHospitalaria.repository.MedicoRepository;
 import com.gestionHospitalaria.repository.PacienteRepository;
+import com.gestionHospitalaria.repository.RecepcionistaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +18,12 @@ public class PacienteService {
 
     @Autowired
     private PacienteRepository pacienteRepository;
+
+    @Autowired
+    private MedicoRepository medicoRepository;
+
+    @Autowired
+    private RecepcionistaRepository recepcionistaRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -41,15 +51,39 @@ public class PacienteService {
         return pacienteRepository.save(paciente);
     }
 
+    // Devuelve "ROL|ID|NOMBRE" para que el controlador redirija correctamente
     public String login(LoginDTO dto) {
-        Paciente paciente = pacienteRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        if (!passwordEncoder.matches(dto.getPassword(), paciente.getPassword())) {
-            throw new RuntimeException("Contraseña incorrecta");
+        // Buscar en pacientes
+        java.util.Optional<Paciente> pacienteOpt = pacienteRepository.findByEmail(dto.getEmail());
+        if (pacienteOpt.isPresent()) {
+            Paciente p = pacienteOpt.get();
+            if (!passwordEncoder.matches(dto.getPassword(), p.getPassword())) {
+                throw new RuntimeException("Contraseña incorrecta");
+            }
+            return p.getRol().name() + "|" + p.getId() + "|" + p.getNombre();
         }
 
-        return "Login correcto para: " + paciente.getNombre();
+        // Buscar en médicos
+        java.util.Optional<Medico> medicoOpt = medicoRepository.findByEmail(dto.getEmail());
+        if (medicoOpt.isPresent()) {
+            Medico m = medicoOpt.get();
+            if (!passwordEncoder.matches(dto.getPassword(), m.getPassword())) {
+                throw new RuntimeException("Contraseña incorrecta");
+            }
+            return m.getRol().name() + "|" + m.getId() + "|" + m.getNombre();
+        }
+
+        // Buscar en recepcionistas (también incluye admins)
+        java.util.Optional<Recepcionista> recOpt = recepcionistaRepository.findByEmail(dto.getEmail());
+        if (recOpt.isPresent()) {
+            Recepcionista r = recOpt.get();
+            if (!passwordEncoder.matches(dto.getPassword(), r.getPassword())) {
+                throw new RuntimeException("Contraseña incorrecta");
+            }
+            return r.getRol().name() + "|" + r.getId() + "|" + r.getNombre();
+        }
+
+        throw new RuntimeException("Usuario no encontrado");
     }
 
     public HistorialMedicoDTO obtenerHistorial(Long pacienteId) {

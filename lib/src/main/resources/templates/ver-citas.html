@@ -2,63 +2,158 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Ver Citas</title>
+    <title>Mis Citas</title>
     <link rel="stylesheet" href="/css/estilos.css">
+    <style>
+        .contenedor-citas {
+            width: 860px;
+            margin: 50px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.12);
+        }
+        .btn-cancelar {
+            width: auto;
+            margin-top: 0;
+            padding: 6px 14px;
+            font-size: 13px;
+            background: #dc3545;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            color: white;
+        }
+        .btn-cancelar:hover { background: #b02a37; }
+        .btn-nueva-cita {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 10px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+        .btn-nueva-cita:hover { background: #1e7e34; }
+        .alerta-ok {
+            background: #d1e7dd; color: #0f5132;
+            padding: 12px; border-radius: 6px; margin-bottom: 15px;
+        }
+        .alerta-error {
+            background: #f8d7da; color: #842029;
+            padding: 12px; border-radius: 6px; margin-bottom: 15px;
+        }
+        .acciones-bottom {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .link-volver {
+            display: inline-block;
+            margin-top: 0;
+            color: #6c757d;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .link-volver:hover { text-decoration: underline; }
+        td form { margin: 0; }
+    </style>
 </head>
 <body>
-    <div class="contenedor">
-        <h1>Mis citas</h1>
+<div class="contenedor-citas">
+    <h1>Mis Citas</h1>
 
-        <div th:if="${mensaje}" style="color:green; margin-bottom:10px;">
-            <p th:text="${mensaje}"></p>
-        </div>
-
-        <div th:if="${error}" style="color:red; margin-bottom:10px;">
-            <p th:text="${error}"></p>
-        </div>
-
-        <div th:if="${citas.empty}">
-            <p>No tienes citas registradas.</p>
-        </div>
-
-        <table th:if="${!citas.empty}">
-            <thead>
-                <tr>
-                    <th>Fecha y hora</th>
-                    <th>Médico</th>
-                    <th>Especialidad</th>
-                    <th>Motivo</th>
-                    <th>Estado</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="cita : ${citas}">
-                    <td th:text="${cita.fechaHora}"></td>
-                    <td th:text="${cita.medicoNombre}"></td>
-                    <td th:text="${cita.especialidad}"></td>
-                    <td th:text="${cita.motivo}"></td>
-                    <td th:text="${cita.estado}"></td>
-                    <td>
-                        <form th:if="${cita.estado == 'PENDIENTE' or cita.estado == 'CONFIRMADA'}"
-                              th:action="@{/citas/{id}/cancelar(id=${cita.id})}"
-                              method="post">
-                            <input type="hidden" name="pacienteId" th:value="${pacienteId}"/>
-                            <button type="submit"
-                                    onclick="return confirm('¿Seguro que quieres cancelar esta cita?')">
-                                Cancelar cita
-                            </button>
-                        </form>
-                        <span th:if="${cita.estado == 'CANCELADA'}" style="color:gray;">Cancelada</span>
-                        <span th:if="${cita.estado == 'REALIZADA'}" style="color:gray;">Realizada</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <br>
-        <a href="/citas/crear">Crear nueva cita</a>
-        <a href="/citas">Volver</a>
+    <!-- Alertas -->
+    <div th:if="${mensaje}" class="alerta-ok">
+        <span th:text="${mensaje}"></span>
     </div>
+    <div th:if="${error}" class="alerta-error">
+        <strong>Error:</strong> <span th:text="${error}"></span>
+    </div>
+
+    <!-- Resumen -->
+    <div th:if="${citas != null and !citas.empty}" class="resumen">
+        <div class="resumen-item">
+            <div class="numero" th:text="${citas.size()}">0</div>
+            <div class="etiqueta">Total</div>
+        </div>
+        <div class="resumen-item">
+            <div class="numero" style="color:#0f5132;"
+                 th:text="${#lists.size(citas.?[estado == 'CONFIRMADA'])}">0</div>
+            <div class="etiqueta">Confirmadas</div>
+        </div>
+        <div class="resumen-item">
+            <div class="numero" style="color:#856404;"
+                 th:text="${#lists.size(citas.?[estado == 'PENDIENTE'])}">0</div>
+            <div class="etiqueta">Pendientes</div>
+        </div>
+        <div class="resumen-item">
+            <div class="numero" style="color:#842029;"
+                 th:text="${#lists.size(citas.?[estado == 'CANCELADA'])}">0</div>
+            <div class="etiqueta">Canceladas</div>
+        </div>
+        <div class="resumen-item">
+            <div class="numero" style="color:#084298;"
+                 th:text="${#lists.size(citas.?[estado == 'REALIZADA'])}">0</div>
+            <div class="etiqueta">Realizadas</div>
+        </div>
+    </div>
+
+    <!-- Sin citas -->
+    <p class="sin-citas" th:if="${citas == null or citas.empty}">
+        No tienes citas registradas.
+    </p>
+
+    <!-- Tabla de citas -->
+    <table th:if="${citas != null and !citas.empty}">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Médico</th>
+                <th>Especialidad</th>
+                <th>Motivo</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cita : ${citas}">
+                <td th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy')}">-</td>
+                <td th:text="${#temporals.format(cita.fechaHora, 'HH:mm')}">-</td>
+                <td th:text="${cita.medicoNombre}">-</td>
+                <td th:text="${cita.especialidad != null ? cita.especialidad : '-'}">-</td>
+                <td th:text="${cita.motivo != null ? cita.motivo : '-'}">-</td>
+                <td>
+                    <span class="badge"
+                          th:classappend="'badge-' + ${cita.estado}"
+                          th:text="${cita.estado}">-</span>
+                </td>
+                <td>
+                    <form th:if="${cita.estado == 'PENDIENTE' or cita.estado == 'CONFIRMADA'}"
+                          th:action="@{/citas/{id}/cancelar(id=${cita.id})}"
+                          method="post">
+                        <input type="hidden" name="pacienteId" th:value="${pacienteId}"/>
+                        <button type="submit" class="btn-cancelar"
+                                onclick="return confirm('¿Seguro que quieres cancelar esta cita?')">
+                            Cancelar
+                        </button>
+                    </form>
+                    <span th:if="${cita.estado == 'CANCELADA'}" style="color:#aaa; font-size:13px;">—</span>
+                    <span th:if="${cita.estado == 'REALIZADA'}" style="color:#aaa; font-size:13px;">—</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Botones -->
+    <div class="acciones-bottom">
+        <a th:href="@{/citas/crear}" class="btn-nueva-cita">+ Nueva cita</a>
+        <a href="/login" class="link-volver">← Volver al inicio</a>
+    </div>
+</div>
 </body>
 </html>

@@ -16,5 +16,7 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
             LocalDateTime fin
     );
 
+    List<Cita> findByMedicoIdOrderByFechaHoraAsc(Long medicoId);
+
     long countByEstado(Cita.EstadoCita estado);
 }

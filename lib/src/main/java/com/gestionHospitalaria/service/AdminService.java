@@ -115,9 +115,24 @@ public class AdminService {
 
     public Map<String, Long> obtenerEstadisticas() {
         Map<String, Long> stats = new HashMap<>();
-        stats.put("totalPacientes", pacienteRepository.count());
-        stats.put("totalMedicos", medicoRepository.count());
-        stats.put("totalRecepcionistas", recepcionistaRepository.count());
+
+        // Contar por rol real en las 3 tablas (un usuario guardado en recepcionistas
+        // puede tener rol ADMIN, por eso no usamos count() a secas)
+        long pacientes = pacienteRepository.countByRol(Paciente.Rol.PACIENTE)
+                       + medicoRepository.countByRol(Paciente.Rol.PACIENTE)
+                       + recepcionistaRepository.countByRol(Paciente.Rol.PACIENTE);
+
+        long medicos = pacienteRepository.countByRol(Paciente.Rol.MEDICO)
+                     + medicoRepository.countByRol(Paciente.Rol.MEDICO)
+                     + recepcionistaRepository.countByRol(Paciente.Rol.MEDICO);
+
+        long recepcionistas = pacienteRepository.countByRol(Paciente.Rol.RECEPCIONISTA)
+                            + medicoRepository.countByRol(Paciente.Rol.RECEPCIONISTA)
+                            + recepcionistaRepository.countByRol(Paciente.Rol.RECEPCIONISTA);
+
+        stats.put("totalPacientes", pacientes);
+        stats.put("totalMedicos", medicos);
+        stats.put("totalRecepcionistas", recepcionistas);
         stats.put("totalCitas", citaRepository.count());
         stats.put("citasPendientes", citaRepository.countByEstado(Cita.EstadoCita.PENDIENTE));
         stats.put("citasConfirmadas", citaRepository.countByEstado(Cita.EstadoCita.CONFIRMADA));

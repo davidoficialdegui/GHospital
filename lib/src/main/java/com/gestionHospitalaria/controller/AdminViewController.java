@@ -88,7 +88,7 @@ public class AdminViewController {
     public String mostrarRolPaciente(@PathVariable Long id, Model model) {
         model.addAttribute("usuario", adminService.obtenerPaciente(id));
         model.addAttribute("tipo", "paciente");
-        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN"});
+        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN", "RECEPCIONISTA"});
         return "admin-asignar-rol";
     }
 
@@ -102,7 +102,7 @@ public class AdminViewController {
         }
         model.addAttribute("usuario", adminService.obtenerPaciente(id));
         model.addAttribute("tipo", "paciente");
-        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN"});
+        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN", "RECEPCIONISTA"});
         return "admin-asignar-rol";
     }
 
@@ -110,7 +110,7 @@ public class AdminViewController {
     public String mostrarRolMedico(@PathVariable Long id, Model model) {
         model.addAttribute("usuario", adminService.obtenerMedico(id));
         model.addAttribute("tipo", "medico");
-        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN"});
+        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN", "RECEPCIONISTA"});
         return "admin-asignar-rol";
     }
 
@@ -124,7 +124,7 @@ public class AdminViewController {
         }
         model.addAttribute("usuario", adminService.obtenerMedico(id));
         model.addAttribute("tipo", "medico");
-        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN"});
+        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN", "RECEPCIONISTA"});
         return "admin-asignar-rol";
     }
 
@@ -132,7 +132,7 @@ public class AdminViewController {
     public String mostrarRolRecepcionista(@PathVariable Long id, Model model) {
         model.addAttribute("usuario", adminService.obtenerRecepcionista(id));
         model.addAttribute("tipo", "recepcionista");
-        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN"});
+        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN", "RECEPCIONISTA"});
         return "admin-asignar-rol";
     }
 
@@ -146,7 +146,7 @@ public class AdminViewController {
         }
         model.addAttribute("usuario", adminService.obtenerRecepcionista(id));
         model.addAttribute("tipo", "recepcionista");
-        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN"});
+        model.addAttribute("roles", new String[]{"PACIENTE", "MEDICO", "ADMIN", "RECEPCIONISTA"});
         return "admin-asignar-rol";
     }
 

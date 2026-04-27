@@ -2,12 +2,12 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Agenda del Día</title>
+    <title>Agenda del Médico</title>
     <link rel="stylesheet" href="/css/estilos.css">
 </head>
 <body>
     <div class="contenedor-ancho">
-        <h1>Agenda del Día</h1>
+        <h1>Agenda del Médico</h1>
 
         <form action="/medico/agenda" method="get">
             <label for="medicoId">ID del Médico</label>
@@ -23,7 +23,7 @@
             <div class="resumen">
                 <div class="resumen-item">
                     <div class="numero" th:text="${citas.size()}">0</div>
-                    <div class="etiqueta">Total hoy</div>
+                    <div class="etiqueta">Total citas</div>
                 </div>
                 <div class="resumen-item">
                     <div class="numero" th:text="${#lists.size(citas.?[estado == 'CONFIRMADA'])}">0</div>
@@ -38,6 +38,7 @@
             <table th:if="${!citas.isEmpty()}">
                 <thead>
                     <tr>
+                        <th>Fecha</th>
                         <th>Hora</th>
                         <th>Médico</th>
                         <th>Especialidad</th>
@@ -47,6 +48,7 @@
                 </thead>
                 <tbody>
                     <tr th:each="cita : ${citas}">
+                        <td th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy')}">--/--/----</td>
                         <td th:text="${#temporals.format(cita.fechaHora, 'HH:mm')}">--:--</td>
                         <td th:text="${cita.medicoNombre}">-</td>
                         <td th:text="${cita.especialidad != null ? cita.especialidad : '-'}">-</td>
@@ -61,7 +63,7 @@
             </table>
 
             <p class="sin-citas" th:if="${citas.isEmpty()}">
-                No hay citas programadas para hoy.
+                Este médico no tiene citas registradas.
             </p>
 
         </div>

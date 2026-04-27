@@ -67,11 +67,8 @@ public class CitaService {
 
     @Transactional
     public List<CitaDTO> obtenerAgendaDelDia(Long medicoId) {
-        LocalDate hoy = LocalDate.now();
-        LocalDateTime inicio = hoy.atStartOfDay();
-        LocalDateTime fin = hoy.atTime(23, 59, 59);
-        List<Cita> citas = citaRepository
-                .findByMedicoIdAndFechaHoraBetween(medicoId, inicio, fin);
+        // Devuelve TODAS las citas del médico ordenadas por fecha
+        List<Cita> citas = citaRepository.findByMedicoIdOrderByFechaHoraAsc(medicoId);
         return citas.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());

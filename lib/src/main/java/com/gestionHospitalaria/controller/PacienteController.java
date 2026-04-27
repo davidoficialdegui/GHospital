@@ -24,9 +24,30 @@ public class PacienteController {
     }
 
     @PostMapping("/login")
-    @ResponseBody
-    public String login(@ModelAttribute LoginDTO dto) {
-        return pacienteFacade.login(dto);
+    public String login(@ModelAttribute LoginDTO dto,
+                        org.springframework.web.servlet.mvc.support.RedirectAttributes ra) {
+        try {
+            String resultado = pacienteFacade.login(dto);
+            // resultado = "ROL|ID|NOMBRE"
+            String[] partes = resultado.split("\\|");
+            String rol = partes[0];
+            String id  = partes[1];
+
+            switch (rol) {
+                case "ADMIN":
+                    return "redirect:/admin/usuarios";
+                case "RECEPCIONISTA":
+                    return "redirect:/citas/crear";
+                case "MEDICO":
+                    return "redirect:/medico/agenda?medicoId=" + id;
+                case "PACIENTE":
+                default:
+                    return "redirect:/paciente/historial?pacienteId=" + id;
+            }
+        } catch (RuntimeException e) {
+            ra.addFlashAttribute("error", e.getMessage());
+            return "redirect:/login";
+        }
     }
 
     @GetMapping("/{id}/historial")

@@ -88,7 +88,7 @@ public class Recepcionista {
         this.fechaCreacion = LocalDateTime.now();
         this.fechaActualizacion = LocalDateTime.now();
         if (this.activo == null) this.activo = true;
-        if (this.rol == null) this.rol = Paciente.Rol.ADMIN;
+        if (this.rol == null) this.rol = Paciente.Rol.RECEPCIONISTA;
     }
 
     @PreUpdate
