@@ -15,4 +15,6 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
             LocalDateTime inicio,
             LocalDateTime fin
     );
+
+    long countByEstado(Cita.EstadoCita estado);
 }

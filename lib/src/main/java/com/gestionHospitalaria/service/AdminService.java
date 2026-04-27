@@ -3,16 +3,21 @@ package com.gestionHospitalaria.service;
 import com.gestionHospitalaria.dto.EditarMedicoDTO;
 import com.gestionHospitalaria.dto.EditarPacienteDTO;
 import com.gestionHospitalaria.dto.EditarRecepcionistaDTO;
+import com.gestionHospitalaria.entity.Cita;
 import com.gestionHospitalaria.entity.Medico;
 import com.gestionHospitalaria.entity.Paciente;
 import com.gestionHospitalaria.entity.Recepcionista;
+import com.gestionHospitalaria.repository.CitaRepository;
+import com.gestionHospitalaria.repository.DiagnosticoRepository;
 import com.gestionHospitalaria.repository.MedicoRepository;
 import com.gestionHospitalaria.repository.PacienteRepository;
 import com.gestionHospitalaria.repository.RecepcionistaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdminService {
@@ -25,6 +30,12 @@ public class AdminService {
 
     @Autowired
     private RecepcionistaRepository recepcionistaRepository;
+
+    @Autowired
+    private CitaRepository citaRepository;
+
+    @Autowired
+    private DiagnosticoRepository diagnosticoRepository;
 
     public List<Paciente> listarPacientes() {
         return pacienteRepository.findAll();
@@ -100,6 +111,20 @@ public class AdminService {
         medico.setTurno(dto.getTurno());
         medico.setDescripcionProfesional(dto.getDescripcionProfesional());
         medicoRepository.save(medico);
+    }
+
+    public Map<String, Long> obtenerEstadisticas() {
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("totalPacientes", pacienteRepository.count());
+        stats.put("totalMedicos", medicoRepository.count());
+        stats.put("totalRecepcionistas", recepcionistaRepository.count());
+        stats.put("totalCitas", citaRepository.count());
+        stats.put("citasPendientes", citaRepository.countByEstado(Cita.EstadoCita.PENDIENTE));
+        stats.put("citasConfirmadas", citaRepository.countByEstado(Cita.EstadoCita.CONFIRMADA));
+        stats.put("citasCanceladas", citaRepository.countByEstado(Cita.EstadoCita.CANCELADA));
+        stats.put("citasRealizadas", citaRepository.countByEstado(Cita.EstadoCita.REALIZADA));
+        stats.put("totalDiagnosticos", diagnosticoRepository.count());
+        return stats;
     }
 
     public void eliminarPaciente(Long id) {

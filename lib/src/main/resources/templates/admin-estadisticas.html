@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Estadísticas del Hospital</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+<div class="contenedor-ancho">
+    <h1>Estadísticas del Hospital</h1>
+
+    <!-- Usuarios -->
+    <h2>Usuarios</h2>
+    <div class="resumen">
+        <div class="resumen-item">
+            <div class="numero" th:text="${stats['totalPacientes']}">0</div>
+            <div class="etiqueta">Pacientes</div>
+        </div>
+        <div class="resumen-item">
+            <div class="numero" th:text="${stats['totalMedicos']}">0</div>
+            <div class="etiqueta">Médicos</div>
+        </div>
+        <div class="resumen-item">
+            <div class="numero" th:text="${stats['totalRecepcionistas']}">0</div>
+            <div class="etiqueta">Recepcionistas</div>
+        </div>
+    </div>
+
+    <!-- Citas -->
+    <h2 style="margin-top:30px;">Citas</h2>
+    <div class="resumen">
+        <div class="resumen-item">
+            <div class="numero" th:text="${stats['totalCitas']}">0</div>
+            <div class="etiqueta">Total citas</div>
+        </div>
+        <div class="resumen-item">
+            <div class="numero" style="color:#856404;" th:text="${stats['citasPendientes']}">0</div>
+            <div class="etiqueta">Pendientes</div>
+        </div>
+        <div class="resumen-item">
+            <div class="numero" style="color:#0f5132;" th:text="${stats['citasConfirmadas']}">0</div>
+            <div class="etiqueta">Confirmadas</div>
+        </div>
+        <div class="resumen-item">
+            <div class="numero" style="color:#842029;" th:text="${stats['citasCanceladas']}">0</div>
+            <div class="etiqueta">Canceladas</div>
+        </div>
+        <div class="resumen-item">
+            <div class="numero" style="color:#084298;" th:text="${stats['citasRealizadas']}">0</div>
+            <div class="etiqueta">Realizadas</div>
+        </div>
+    </div>
+
+    <!-- Diagnósticos -->
+    <h2 style="margin-top:30px;">Diagnósticos</h2>
+    <div class="resumen">
+        <div class="resumen-item">
+            <div class="numero" th:text="${stats['totalDiagnosticos']}">0</div>
+            <div class="etiqueta">Total diagnósticos</div>
+        </div>
+    </div>
+
+    <a href="/admin/usuarios" style="margin-top:30px; display:inline-block;">Volver a la gestión de usuarios</a>
+</div>
+</body>
+</html>

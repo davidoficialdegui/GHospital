@@ -9,6 +9,12 @@
 <div class="contenedor-ancho" style="width:900px;">
     <h1>Gestión de Usuarios</h1>
 
+    <a href="/admin/estadisticas"
+       style="display:inline-block; background:#28a745; color:white; padding:8px 18px;
+              border-radius:6px; text-decoration:none; margin-bottom:20px;">
+        Ver estadísticas del hospital
+    </a>
+
     <div th:if="${mensaje}"
          style="background:#d1e7dd; color:#0f5132; padding:12px; border-radius:6px; margin-bottom:15px;">
         <span th:text="${mensaje}"></span>

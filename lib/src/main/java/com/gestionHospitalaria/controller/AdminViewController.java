@@ -16,6 +16,12 @@ public class AdminViewController {
     @Autowired
     private AdminService adminService;
 
+    @GetMapping("/estadisticas")
+    public String verEstadisticas(Model model) {
+        model.addAttribute("stats", adminService.obtenerEstadisticas());
+        return "admin-estadisticas";
+    }
+
     @GetMapping("/usuarios")
     public String listarUsuarios(Model model) {
         model.addAttribute("pacientes", adminService.listarPacientes());
