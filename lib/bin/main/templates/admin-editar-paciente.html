@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Paciente</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+<div class="contenedor-ancho">
+    <h1>Editar Paciente</h1>
+
+    <div th:if="${mensaje}"
+         style="background:#d1e7dd; color:#0f5132; padding:12px; border-radius:6px; margin-bottom:15px;">
+        <span th:text="${mensaje}"></span>
+    </div>
+    <div th:if="${error}"
+         style="background:#f8d7da; color:#842029; padding:12px; border-radius:6px; margin-bottom:15px;">
+        <strong>Error:</strong> <span th:text="${error}"></span>
+    </div>
+
+    <form th:action="@{/admin/editar/paciente/{id}(id=${paciente.id})}" method="post">
+
+        <label>Nombre</label>
+        <input type="text" name="nombre" th:value="${paciente.nombre}" required>
+
+        <label>Primer apellido</label>
+        <input type="text" name="apellido1" th:value="${paciente.apellido1}" required>
+
+        <label>Segundo apellido</label>
+        <input type="text" name="apellido2" th:value="${paciente.apellido2}">
+
+        <label>DNI</label>
+        <input type="text" name="dni" th:value="${paciente.dni}" required>
+
+        <label>Email</label>
+        <input type="email" name="email" th:value="${paciente.email}">
+
+        <label>Teléfono</label>
+        <input type="text" name="telefono" th:value="${paciente.telefono}">
+
+        <label>Teléfono de emergencia</label>
+        <input type="text" name="telefonoEmergencia" th:value="${paciente.telefonoEmergencia}">
+
+        <label>Fecha de nacimiento</label>
+        <input type="date" name="fechaNacimiento" th:value="${paciente.fechaNacimiento}">
+
+        <label>Sexo</label>
+        <input type="text" name="sexo" th:value="${paciente.sexo}">
+
+        <label>Dirección</label>
+        <input type="text" name="direccion" th:value="${paciente.direccion}">
+
+        <label>Ciudad</label>
+        <input type="text" name="ciudad" th:value="${paciente.ciudad}">
+
+        <label>Provincia</label>
+        <input type="text" name="provincia" th:value="${paciente.provincia}">
+
+        <label>Código postal</label>
+        <input type="text" name="codigoPostal" th:value="${paciente.codigoPostal}">
+
+        <label>Grupo sanguíneo</label>
+        <input type="text" name="grupoSanguineo" th:value="${paciente.grupoSanguineo}">
+
+        <label>Altura (m)</label>
+        <input type="number" step="0.01" name="altura" th:value="${paciente.altura}">
+
+        <label>Peso (kg)</label>
+        <input type="number" step="0.1" name="peso" th:value="${paciente.peso}">
+
+        <label>Alergias</label>
+        <input type="text" name="alergias" th:value="${paciente.alergias}">
+
+        <label>Enfermedades previas</label>
+        <input type="text" name="enfermedadesPrevias" th:value="${paciente.enfermedadesPrevias}">
+
+        <label>Medicación actual</label>
+        <input type="text" name="medicacionActual" th:value="${paciente.medicacionActual}">
+
+        <label>Antecedentes familiares</label>
+        <input type="text" name="antecedentesFamiliares" th:value="${paciente.antecedentesFamiliares}">
+
+        <label>Observaciones médicas</label>
+        <input type="text" name="observacionesMedicas" th:value="${paciente.observacionesMedicas}">
+
+        <button type="submit">Guardar cambios</button>
+    </form>
+
+    <a href="/admin/usuarios">Volver a la lista</a>
+</div>
+</body>
+</html>

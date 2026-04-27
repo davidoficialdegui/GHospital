@@ -25,10 +25,8 @@ dependencies {
     implementation("com.github.librepdf:openpdf:1.3.30")
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("com.github.librepdf:openpdf:1.3.30")   // ← así, con paréntesis y comillas dobles
 }
 
-// ↓ AÑADE ESTE BLOQUE COMPLETO
 tasks.withType<JavaCompile> {
     options.compilerArgs.add("-parameters")
 }
