@@ -24,9 +24,14 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class CitaServiceCancelacionTest {
 
-    @Mock private CitaRepository citaRepository;
-    @Mock private PacienteRepository pacienteRepository;
-    @Mock private MedicoRepository medicoRepository;
+    @Mock
+    private CitaRepository citaRepository;
+
+    @Mock
+    private PacienteRepository pacienteRepository;
+
+    @Mock
+    private MedicoRepository medicoRepository;
 
     @InjectMocks
     private CitaService citaService;
@@ -58,33 +63,36 @@ class CitaServiceCancelacionTest {
         cita.setEspecialidad("Cardiología");
     }
 
-    //cancelar una cita pendiente
     @Test
     void cancelarCita_citaPendiente_devuelveEstadoCancelada() {
-        
         when(citaRepository.findById(1L)).thenReturn(Optional.of(cita));
         when(citaRepository.save(any(Cita.class))).thenAnswer(inv -> inv.getArgument(0));
 
         CitaDTO resultado = citaService.cancelarCita(1L, 1L);
 
-
+        assertNotNull(resultado);
         assertEquals("CANCELADA", resultado.getEstado());
+
+        verify(citaRepository, times(1)).findById(1L);
         verify(citaRepository, times(1)).save(any(Cita.class));
     }
 
-    //cancelar una cita confirmada 
     @Test
     void cancelarCita_citaConfirmada_devuelveEstadoCancelada() {
         cita.setEstado(Cita.EstadoCita.CONFIRMADA);
+
         when(citaRepository.findById(1L)).thenReturn(Optional.of(cita));
         when(citaRepository.save(any(Cita.class))).thenAnswer(inv -> inv.getArgument(0));
 
         CitaDTO resultado = citaService.cancelarCita(1L, 1L);
 
+        assertNotNull(resultado);
         assertEquals("CANCELADA", resultado.getEstado());
+
+        verify(citaRepository).findById(1L);
+        verify(citaRepository).save(any(Cita.class));
     }
 
-    // cancelar una cita que no existe
     @Test
     void cancelarCita_citaNoExiste_lanzaExcepcion() {
         when(citaRepository.findById(99L)).thenReturn(Optional.empty());
@@ -93,45 +101,65 @@ class CitaServiceCancelacionTest {
                 () -> citaService.cancelarCita(99L, 1L));
 
         assertTrue(ex.getMessage().contains("Cita no encontrada"));
+
+        verify(citaRepository).findById(99L);
         verify(citaRepository, never()).save(any());
     }
 
-    //un paciente intenta cancelar la cita de otro paciente
     @Test
     void cancelarCita_pacienteNoEsDueno_lanzaExcepcion() {
-        
         when(citaRepository.findById(1L)).thenReturn(Optional.of(cita));
 
         RuntimeException ex = assertThrows(RuntimeException.class,
                 () -> citaService.cancelarCita(1L, 2L));
 
         assertTrue(ex.getMessage().contains("No tienes permiso"));
+
+        verify(citaRepository).findById(1L);
         verify(citaRepository, never()).save(any());
     }
 
-    //intentar cancelar una cita ya cancelada 
     @Test
     void cancelarCita_citaYaCancelada_lanzaExcepcion() {
         cita.setEstado(Cita.EstadoCita.CANCELADA);
+
         when(citaRepository.findById(1L)).thenReturn(Optional.of(cita));
 
         RuntimeException ex = assertThrows(RuntimeException.class,
                 () -> citaService.cancelarCita(1L, 1L));
 
         assertTrue(ex.getMessage().contains("ya está cancelada"));
+
+        verify(citaRepository).findById(1L);
         verify(citaRepository, never()).save(any());
     }
 
-    //intentar cancelar una cita ya realizada
     @Test
     void cancelarCita_citaRealizada_lanzaExcepcion() {
         cita.setEstado(Cita.EstadoCita.REALIZADA);
+
         when(citaRepository.findById(1L)).thenReturn(Optional.of(cita));
 
         RuntimeException ex = assertThrows(RuntimeException.class,
                 () -> citaService.cancelarCita(1L, 1L));
 
         assertTrue(ex.getMessage().contains("ya realizada"));
+
+        verify(citaRepository).findById(1L);
         verify(citaRepository, never()).save(any());
+    }
+
+    @Test
+    void cancelarCita_errorGuardado_lanzaExcepcion() {
+        when(citaRepository.findById(1L)).thenReturn(Optional.of(cita));
+        when(citaRepository.save(any(Cita.class)))
+                .thenThrow(new RuntimeException("Error BD"));
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> citaService.cancelarCita(1L, 1L));
+
+        assertTrue(ex.getMessage().contains("Error BD"));
+
+        verify(citaRepository).save(any(Cita.class));
     }
 }
