@@ -28,36 +28,15 @@ public class CitaViewController {
     }
 
     @PostMapping("/crear")
-    @ResponseBody
-    public String crearCita(@ModelAttribute CrearCitaDTO dto) {
+    public String crearCita(@ModelAttribute CrearCitaDTO dto,
+                            org.springframework.web.servlet.mvc.support.RedirectAttributes ra) {
         try {
-            String info = "DATOS RECIBIDOS:<br>" +
-                    "pacienteId = " + dto.getPacienteId() + "<br>" +
-                    "medicoId = " + dto.getMedicoId() + "<br>" +
-                    "fechaHora = " + dto.getFechaHora() + "<br>" +
-                    "motivo = " + dto.getMotivo() + "<br>" +
-                    "especialidad = " + dto.getEspecialidad() + "<br><br>";
-
             citaFacade.crearCita(dto);
-
-            return info + "<h2 style='color:green'>CITA CREADA OK</h2>" +
-                    "<a href='/citas/ver?pacienteId=" + dto.getPacienteId() + "'>Ver citas</a>";
-
+            ra.addFlashAttribute("mensaje", "Cita creada correctamente.");
+            return "redirect:/citas/ver?pacienteId=" + dto.getPacienteId();
         } catch (Exception e) {
-            String error = "<h2 style='color:red'>ERROR: " + e.getClass().getSimpleName() + "</h2>" +
-                    "<p>Mensaje: " + e.getMessage() + "</p>";
-            if (e.getCause() != null) {
-                error += "<p>Causa: " + e.getCause().getMessage() + "</p>";
-            }
-            error += "<pre>";
-            for (StackTraceElement el : e.getStackTrace()) {
-                if (el.getClassName().contains("gestionHospitalaria")) {
-                    error += el.toString() + "\n";
-                }
-            }
-            error += "</pre>";
-            error += "<a href='/citas/crear'>Volver</a>";
-            return error;
+            ra.addFlashAttribute("error", e.getMessage());
+            return "redirect:/citas/crear";
         }
     }
 
