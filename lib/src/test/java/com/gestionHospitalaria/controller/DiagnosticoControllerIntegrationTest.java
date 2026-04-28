@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionHospitalaria.dto.CrearDiagnosticoDTO;
 import com.gestionHospitalaria.dto.DiagnosticoDTO;
 import com.gestionHospitalaria.facade.DiagnosticoFacade;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Test de integración: verifica que el controller HTTP llama
  * correctamente al servidor. Prueba la "remoteness" del Sprint 2.
  */
+@Tag("integration")
 @WebMvcTest(controllers = DiagnosticoController.class,
             excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class DiagnosticoControllerIntegrationTest {
