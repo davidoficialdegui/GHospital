@@ -18,7 +18,9 @@ public class CitaViewController {
     private CitaFacade citaFacade;
 
     @GetMapping
-    public String mostrarCitas() {
+    public String mostrarCitas(Model model) {
+        List<CitaDTO> citas = citaFacade.obtenerTodasLasCitas();
+        model.addAttribute("citas", citas);
         return "citas";
     }
 
@@ -33,7 +35,7 @@ public class CitaViewController {
         try {
             citaFacade.crearCita(dto);
             ra.addFlashAttribute("mensaje", "Cita creada correctamente.");
-            return "redirect:/citas/ver?pacienteId=" + dto.getPacienteId();
+            return "redirect:/citas";
         } catch (Exception e) {
             ra.addFlashAttribute("error", e.getMessage());
             return "redirect:/citas/crear";
@@ -54,6 +56,20 @@ public class CitaViewController {
         return "FUNCIONA";
     }
     
+    @PostMapping("/{citaId}/estado")
+    public String cambiarEstado(
+            @PathVariable("citaId") Long citaId,
+            @RequestParam("nuevoEstado") String nuevoEstado,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes ra) {
+        try {
+            citaFacade.cambiarEstado(citaId, nuevoEstado);
+            ra.addFlashAttribute("mensaje", "Estado actualizado correctamente.");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/citas";
+    }
+
     @PostMapping("/{citaId}/cancelar")
     public String cancelarCitaVista(
     		@PathVariable("citaId") Long citaId,         

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/api/pacientes")
 @CrossOrigin(origins = "*")
@@ -32,19 +34,26 @@ public class PacienteController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute LoginDTO dto,
-                        org.springframework.web.servlet.mvc.support.RedirectAttributes ra) {
+                        org.springframework.web.servlet.mvc.support.RedirectAttributes ra,
+                        HttpSession session) {
         try {
             String resultado = pacienteFacade.login(dto);
             // resultado = "ROL|ID|NOMBRE"
             String[] partes = resultado.split("\\|");
-            String rol = partes[0];
-            String id  = partes[1];
+            String rol    = partes[0];
+            String id     = partes[1];
+            String nombre = partes.length > 2 ? partes[2] : "";
+
+            // Guardar en sesión para control de acceso
+            session.setAttribute("sessionUserRole", rol);
+            session.setAttribute("sessionUserId",   Long.parseLong(id));
+            session.setAttribute("sessionUserName", nombre);
 
             switch (rol) {
                 case "ADMIN":
                     return "redirect:/admin/usuarios";
                 case "RECEPCIONISTA":
-                    return "redirect:/citas/crear";
+                    return "redirect:/citas";
                 case "MEDICO":
                     return "redirect:/medico/agenda?medicoId=" + id;
                 case "PACIENTE":

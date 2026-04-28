@@ -18,6 +18,10 @@ public class CitaFacade {
         return citaService.crearCita(dto);
     }
 
+    public List<CitaDTO> obtenerTodasLasCitas() {
+        return citaService.obtenerTodasLasCitas();
+    }
+
     public List<CitaDTO> obtenerCitasPaciente(Long pacienteId) {
         return citaService.obtenerCitasPaciente(pacienteId);
     }
@@ -26,6 +30,10 @@ public class CitaFacade {
         return citaService.obtenerAgendaDelDia(medicoId);
     }
     
+    public CitaDTO cambiarEstado(Long citaId, String nuevoEstado) {
+        return citaService.cambiarEstado(citaId, nuevoEstado);
+    }
+
     public CitaDTO cancelarCita(Long citaId, Long pacienteId) {
         return citaService.cancelarCita(citaId, pacienteId);
     }

@@ -7,6 +7,7 @@ import com.gestionHospitalaria.facade.PacienteFacade;
 import com.gestionHospitalaria.service.InformeMedicoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -49,16 +50,26 @@ public class PacienteViewController {
     @GetMapping("/historial")
     public String verMiHistorial(
             @RequestParam(name = "pacienteId", required = false) Long pacienteId,
+            HttpSession session,
             Model model) {
- 
+
         logger.info("GET /paciente/historial pacienteId={}", pacienteId);
- 
+
+        // Control de acceso: un PACIENTE solo puede ver su propio historial
+        String rol        = (String) session.getAttribute("sessionUserRole");
+        Long   sessionId  = (Long)   session.getAttribute("sessionUserId");
+
+        if ("PACIENTE".equals(rol) && sessionId != null) {
+            // Ignorar el parámetro de la URL y forzar su propio ID
+            pacienteId = sessionId;
+        }
+
         if (pacienteId != null) {
             try {
                 HistorialMedicoDTO historial = pacienteFacade.obtenerHistorial(pacienteId);
                 List<DiagnosticoDTO> diagnosticos =
                         diagnosticoFacade.obtenerDiagnosticosPaciente(pacienteId);
- 
+
                 model.addAttribute("historial", historial);
                 model.addAttribute("diagnosticos", diagnosticos);
                 model.addAttribute("pacienteId", pacienteId);
@@ -69,7 +80,7 @@ public class PacienteViewController {
                 model.addAttribute("pacienteId", pacienteId);
             }
         }
- 
+
         return "mi-historial";
     }
  
@@ -79,8 +90,16 @@ public class PacienteViewController {
      */
     @GetMapping("/historial/descargar")
     public ResponseEntity<byte[]> descargarInforme(
-            @RequestParam("pacienteId") Long pacienteId) {
- 
+            @RequestParam("pacienteId") Long pacienteId,
+            HttpSession session) {
+
+        // Control de acceso: paciente solo puede descargar su propio informe
+        String rol       = (String) session.getAttribute("sessionUserRole");
+        Long   sessionId = (Long)   session.getAttribute("sessionUserId");
+        if ("PACIENTE".equals(rol) && sessionId != null) {
+            pacienteId = sessionId;
+        }
+
         logger.info("GET /paciente/historial/descargar pacienteId={}", pacienteId);
  
         HistorialMedicoDTO historial = pacienteFacade.obtenerHistorial(pacienteId);

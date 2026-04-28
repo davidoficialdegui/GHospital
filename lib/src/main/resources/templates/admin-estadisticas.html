@@ -61,7 +61,6 @@
 
         .cards-grid.col-3 { grid-template-columns: repeat(3, 1fr); }
         .cards-grid.col-4 { grid-template-columns: repeat(4, 1fr); }
-        .cards-grid.col-1 { grid-template-columns: 1fr; }
 
         .card {
             background: white;
@@ -72,11 +71,6 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
-        }
-
-        .card-icon {
-            font-size: 22px;
-            margin-bottom: 4px;
         }
 
         .card-number {
@@ -122,6 +116,8 @@
             color: #555;
             margin-bottom: 10px;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .citas-bar {
@@ -187,11 +183,6 @@
             font-size: 42px;
             font-weight: 700;
         }
-
-        .total-card .t-icon {
-            font-size: 48px;
-            opacity: 0.25;
-        }
     </style>
 </head>
 <body style="background:#f2f4f7; margin:0; font-family: Arial, sans-serif;">
@@ -201,7 +192,7 @@
     <!-- Cabecera -->
     <div class="stats-header">
         <div>
-            <h1>📊 Estadísticas del Hospital</h1>
+            <h1>Estadísticas del Hospital</h1>
             <span style="font-size:12px; color:#aaa;">Datos actualizados en tiempo real</span>
         </div>
         <a href="/admin/usuarios" class="back-btn">← Gestión de usuarios</a>
@@ -212,17 +203,14 @@
 
     <div class="cards-grid col-3">
         <div class="card azul">
-            <div class="card-icon">🧑‍🤝‍🧑</div>
             <div class="card-number" th:text="${stats['totalPacientes']}">0</div>
             <div class="card-label">Pacientes registrados</div>
         </div>
         <div class="card verde">
-            <div class="card-icon">👨‍⚕️</div>
             <div class="card-number" th:text="${stats['totalMedicos']}">0</div>
             <div class="card-label">Médicos activos</div>
         </div>
         <div class="card naranja">
-            <div class="card-icon">🗂️</div>
             <div class="card-number" th:text="${stats['totalRecepcionistas']}">0</div>
             <div class="card-label">Recepcionistas</div>
         </div>
@@ -235,7 +223,6 @@
             <div class="t-number"
                  th:text="${stats['totalPacientes'] + stats['totalMedicos'] + stats['totalRecepcionistas']}">0</div>
         </div>
-        <div class="t-icon">🏥</div>
     </div>
 
     <!-- ── CITAS ──────────────────────────────────────────── -->
@@ -243,22 +230,18 @@
 
     <div class="cards-grid col-4">
         <div class="card azul">
-            <div class="card-icon">📋</div>
             <div class="card-number" th:text="${stats['totalCitas']}">0</div>
             <div class="card-label">Total citas</div>
         </div>
         <div class="card naranja">
-            <div class="card-icon">⏳</div>
             <div class="card-number" th:text="${stats['citasPendientes']}">0</div>
             <div class="card-label">Pendientes</div>
         </div>
         <div class="card verde">
-            <div class="card-icon">✅</div>
             <div class="card-number" th:text="${stats['citasConfirmadas']}">0</div>
             <div class="card-label">Confirmadas</div>
         </div>
         <div class="card rojo">
-            <div class="card-icon">❌</div>
             <div class="card-number" th:text="${stats['citasCanceladas']}">0</div>
             <div class="card-label">Canceladas</div>
         </div>
@@ -308,20 +291,17 @@
 
     <div class="cards-grid col-3">
         <div class="card morado">
-            <div class="card-icon">🩺</div>
             <div class="card-number" th:text="${stats['totalDiagnosticos']}">0</div>
             <div class="card-label">Diagnósticos emitidos</div>
         </div>
         <div class="card cyan" th:if="${stats['totalCitas'] > 0}">
-            <div class="card-icon">✅</div>
             <div class="card-number" th:text="${stats['citasRealizadas']}">0</div>
             <div class="card-label">Citas realizadas</div>
         </div>
         <div class="card verde" th:if="${stats['totalCitas'] > 0 and stats['citasRealizadas'] > 0}">
-            <div class="card-icon">📈</div>
             <div class="card-number"
                  th:text="${#numbers.formatDecimal(stats['totalDiagnosticos'] * 100.0 / stats['citasRealizadas'], 1, 0) + '%'}">0%</div>
-            <div class="card-label">Diagnósticos por cita realizada</div>
+            <div class="card-label">Diagnosticos por cita realizada</div>
         </div>
     </div>
 

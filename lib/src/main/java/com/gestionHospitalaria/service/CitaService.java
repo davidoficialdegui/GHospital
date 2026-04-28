@@ -58,7 +58,14 @@ public class CitaService {
     }
 
     @Transactional
-    public List<CitaDTO> obtenerCitasPaciente(Long pacienteId) { 
+    public List<CitaDTO> obtenerTodasLasCitas() {
+        return citaRepository.findAll().stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<CitaDTO> obtenerCitasPaciente(Long pacienteId) {
         List<Cita> citas = citaRepository.findByPacienteId(pacienteId);
         return citas.stream()
                 .map(this::mapToDTO)
@@ -74,6 +81,14 @@ public class CitaService {
                 .collect(Collectors.toList());
     }
     
+    @Transactional
+    public CitaDTO cambiarEstado(Long citaId, String nuevoEstado) {
+        Cita cita = citaRepository.findById(citaId)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada con ID: " + citaId));
+        cita.setEstado(Cita.EstadoCita.valueOf(nuevoEstado));
+        return mapToDTO(citaRepository.save(cita));
+    }
+
     @Transactional
     public CitaDTO cancelarCita(Long citaId, Long pacienteId) {
         Cita cita = citaRepository.findById(citaId)
@@ -99,12 +114,16 @@ public class CitaService {
     private CitaDTO mapToDTO(Cita cita) {
         CitaDTO dto = new CitaDTO();
         dto.setId(cita.getId());
+        dto.setPacienteId(cita.getPaciente().getId());
         dto.setFechaHora(cita.getFechaHora());
         dto.setEstado(cita.getEstado() != null ? cita.getEstado().name() : "PENDIENTE");
         dto.setMotivo(cita.getMotivo());
         dto.setEspecialidad(cita.getEspecialidad());
         dto.setMedicoNombre(
                 cita.getMedico().getNombre() + " " + cita.getMedico().getApellido1()
+        );
+        dto.setPacienteNombre(
+                cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellido1()
         );
         return dto;
     }

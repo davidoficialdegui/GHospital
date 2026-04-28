@@ -7,16 +7,7 @@
 </head>
 <body>
     <div class="contenedor-ancho">
-        <h1>Agenda del Médico</h1>
-
-        <form action="/medico/agenda" method="get">
-            <label for="medicoId">ID del Médico</label>
-            <input type="number" id="medicoId" name="medicoId"
-                   th:value="${medicoId}" min="1" placeholder="Introduce el ID del médico">
-            <button type="submit">Ver agenda</button>
-        </form>
-
-        <a href="/medico/historial">Consultar historial de paciente</a>
+        <h1>Mi Agenda</h1>
 
         <div th:if="${citas != null}">
 
@@ -40,17 +31,18 @@
                     <tr>
                         <th>Fecha</th>
                         <th>Hora</th>
-                        <th>Médico</th>
+                        <th>Paciente</th>
                         <th>Especialidad</th>
                         <th>Motivo</th>
                         <th>Estado</th>
+                        <th>Historial paciente</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="cita : ${citas}">
                         <td th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy')}">--/--/----</td>
                         <td th:text="${#temporals.format(cita.fechaHora, 'HH:mm')}">--:--</td>
-                        <td th:text="${cita.medicoNombre}">-</td>
+                        <td th:text="${cita.pacienteNombre != null ? cita.pacienteNombre : '-'}">-</td>
                         <td th:text="${cita.especialidad != null ? cita.especialidad : '-'}">-</td>
                         <td th:text="${cita.motivo != null ? cita.motivo : '-'}">-</td>
                         <td>
@@ -58,15 +50,21 @@
                                   th:classappend="'badge-' + ${cita.estado}"
                                   th:text="${cita.estado}">ESTADO</span>
                         </td>
+                        <td>
+                            <a th:href="@{/medico/historial(pacienteId=${cita.pacienteId})}"
+                               style="font-size:13px; color:#007bff;">Ver historial</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
 
             <p class="sin-citas" th:if="${citas.isEmpty()}">
-                Este médico no tiene citas registradas.
+                No tienes citas registradas.
             </p>
 
         </div>
+
+        <a href="/login">Volver al login</a>
     </div>
 </body>
 </html>

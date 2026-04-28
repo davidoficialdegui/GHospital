@@ -8,6 +8,7 @@ import com.gestionHospitalaria.facade.CitaFacade;
 import com.gestionHospitalaria.facade.DiagnosticoFacade;
 import com.gestionHospitalaria.facade.PacienteFacade;
 import com.gestionHospitalaria.service.InformeMedicoService;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,14 @@ public class MedicoViewCOntroller {
     @GetMapping("/agenda")
     public String verAgenda(
             @RequestParam(name = "medicoId", required = false) Long medicoId,
+            HttpSession session,
             Model model) {
+        // Un MEDICO solo puede ver su propia agenda
+        Long sessionId = (Long) session.getAttribute("sessionUserId");
+        String rol     = (String) session.getAttribute("sessionUserRole");
+        if ("MEDICO".equals(rol) && sessionId != null) {
+            medicoId = sessionId;
+        }
         logger.info("GET /medico/agenda medicoId={}", medicoId);
         if (medicoId != null) {
             List<CitaDTO> citas = citaFacade.obtenerAgendaDelDia(medicoId);
