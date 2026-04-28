@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Crear Cita</title>
@@ -9,8 +9,13 @@
     <div class="contenedor">
         <h1>Solicitar cita médica</h1>
 
+        <div th:if="${error}"
+             style="background:#f8d7da; color:#842029; padding:12px; border-radius:6px; margin-bottom:15px;">
+            <strong>Error:</strong> <span th:text="${error}"></span>
+        </div>
+
         <p style="background:#e8f4fd; padding:10px; border-radius:6px;">
-            <strong>Datos de prueba disponibles:</strong><br>
+            <strong>Datos disponibles:</strong><br>
             Paciente ID: 1 (Ana Martínez) o 2 (Pedro López)<br>
             Médico ID: 1 (Carlos García - Cardiología) o 2 (Laura Sánchez - Pediatría)
         </p>
@@ -34,7 +39,7 @@
             <button type="submit">Crear cita</button>
         </form>
 
-        <a href="/citas">Volver a citas</a>
+        <a href="/login">Volver al inicio</a>
     </div>
 </body>
 </html>

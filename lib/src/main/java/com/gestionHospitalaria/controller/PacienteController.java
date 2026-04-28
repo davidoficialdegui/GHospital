@@ -18,9 +18,16 @@ public class PacienteController {
     private PacienteFacade pacienteFacade;
 
     @PostMapping("/registro")
-    @ResponseBody
-    public Paciente registrar(@ModelAttribute RegistroPacienteDTO dto) {
-        return pacienteFacade.registrar(dto);
+    public String registrar(@ModelAttribute RegistroPacienteDTO dto,
+                            org.springframework.web.servlet.mvc.support.RedirectAttributes ra) {
+        try {
+            pacienteFacade.registrar(dto);
+            ra.addFlashAttribute("mensaje", "Registro completado. Ya puedes iniciar sesión.");
+            return "redirect:/login";
+        } catch (RuntimeException e) {
+            ra.addFlashAttribute("error", e.getMessage());
+            return "redirect:/registro";
+        }
     }
 
     @PostMapping("/login")

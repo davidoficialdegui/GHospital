@@ -4,63 +4,328 @@
     <meta charset="UTF-8">
     <title>Estadísticas del Hospital</title>
     <link rel="stylesheet" href="/css/estilos.css">
+    <style>
+        /* ── Layout principal ─────────────────────────────── */
+        .stats-wrapper {
+            max-width: 860px;
+            margin: 40px auto;
+            padding: 0 20px 40px;
+        }
+
+        .stats-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+
+        .stats-header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #1a1a2e;
+            text-align: left;
+        }
+
+        .stats-header .back-btn {
+            display: inline-block;
+            padding: 8px 18px;
+            background: #007bff;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .stats-header .back-btn:hover {
+            background: #0056b3;
+        }
+
+        /* ── Sección con título ───────────────────────────── */
+        .section-title {
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            margin: 28px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        /* ── Grid de tarjetas ────────────────────────────── */
+        .cards-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .cards-grid.col-3 { grid-template-columns: repeat(3, 1fr); }
+        .cards-grid.col-4 { grid-template-columns: repeat(4, 1fr); }
+        .cards-grid.col-1 { grid-template-columns: 1fr; }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px 18px 16px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+            border-left: 4px solid #007bff;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .card-icon {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .card-number {
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1;
+            color: #1a1a2e;
+        }
+
+        .card-label {
+            font-size: 13px;
+            color: #777;
+            margin-top: 2px;
+        }
+
+        /* Colores de borde por tipo */
+        .card.azul   { border-left-color: #007bff; }
+        .card.verde  { border-left-color: #198754; }
+        .card.naranja{ border-left-color: #fd7e14; }
+        .card.rojo   { border-left-color: #dc3545; }
+        .card.morado { border-left-color: #6f42c1; }
+        .card.cyan   { border-left-color: #0dcaf0; }
+
+        /* Color del número según tipo */
+        .card.azul    .card-number { color: #007bff; }
+        .card.verde   .card-number { color: #198754; }
+        .card.naranja .card-number { color: #fd7e14; }
+        .card.rojo    .card-number { color: #dc3545; }
+        .card.morado  .card-number { color: #6f42c1; }
+        .card.cyan    .card-number { color: #0dcaf0; }
+
+        /* ── Barra de distribución de citas ──────────────── */
+        .citas-bar-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+            margin-top: 14px;
+        }
+
+        .citas-bar-label {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .citas-bar {
+            display: flex;
+            height: 22px;
+            border-radius: 6px;
+            overflow: hidden;
+            gap: 2px;
+        }
+
+        .bar-seg {
+            transition: width 0.4s ease;
+            min-width: 2px;
+        }
+
+        .bar-pendiente  { background: #ffc107; }
+        .bar-confirmada { background: #198754; }
+        .bar-cancelada  { background: #dc3545; }
+        .bar-realizada  { background: #0d6efd; }
+
+        .citas-legend {
+            display: flex;
+            gap: 18px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ── Tarjeta resumen total usuarios ──────────────── */
+        .total-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            margin-top: 14px;
+        }
+
+        .total-card .t-label {
+            font-size: 13px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+
+        .total-card .t-number {
+            font-size: 42px;
+            font-weight: 700;
+        }
+
+        .total-card .t-icon {
+            font-size: 48px;
+            opacity: 0.25;
+        }
+    </style>
 </head>
-<body>
-<div class="contenedor-ancho">
-    <h1>Estadísticas del Hospital</h1>
+<body style="background:#f2f4f7; margin:0; font-family: Arial, sans-serif;">
 
-    <!-- Usuarios -->
-    <h2>Usuarios</h2>
-    <div class="resumen">
-        <div class="resumen-item">
-            <div class="numero" th:text="${stats['totalPacientes']}">0</div>
-            <div class="etiqueta">Pacientes</div>
+<div class="stats-wrapper">
+
+    <!-- Cabecera -->
+    <div class="stats-header">
+        <div>
+            <h1>📊 Estadísticas del Hospital</h1>
+            <span style="font-size:12px; color:#aaa;">Datos actualizados en tiempo real</span>
         </div>
-        <div class="resumen-item">
-            <div class="numero" th:text="${stats['totalMedicos']}">0</div>
-            <div class="etiqueta">Médicos</div>
+        <a href="/admin/usuarios" class="back-btn">← Gestión de usuarios</a>
+    </div>
+
+    <!-- ── USUARIOS ────────────────────────────────────────── -->
+    <div class="section-title">Usuarios del sistema</div>
+
+    <div class="cards-grid col-3">
+        <div class="card azul">
+            <div class="card-icon">🧑‍🤝‍🧑</div>
+            <div class="card-number" th:text="${stats['totalPacientes']}">0</div>
+            <div class="card-label">Pacientes registrados</div>
         </div>
-        <div class="resumen-item">
-            <div class="numero" th:text="${stats['totalRecepcionistas']}">0</div>
-            <div class="etiqueta">Recepcionistas</div>
+        <div class="card verde">
+            <div class="card-icon">👨‍⚕️</div>
+            <div class="card-number" th:text="${stats['totalMedicos']}">0</div>
+            <div class="card-label">Médicos activos</div>
+        </div>
+        <div class="card naranja">
+            <div class="card-icon">🗂️</div>
+            <div class="card-number" th:text="${stats['totalRecepcionistas']}">0</div>
+            <div class="card-label">Recepcionistas</div>
         </div>
     </div>
 
-    <!-- Citas -->
-    <h2 style="margin-top:30px;">Citas</h2>
-    <div class="resumen">
-        <div class="resumen-item">
-            <div class="numero" th:text="${stats['totalCitas']}">0</div>
-            <div class="etiqueta">Total citas</div>
+    <!-- Total usuarios (tarjeta oscura) -->
+    <div class="total-card">
+        <div>
+            <div class="t-label">Total usuarios en el sistema</div>
+            <div class="t-number"
+                 th:text="${stats['totalPacientes'] + stats['totalMedicos'] + stats['totalRecepcionistas']}">0</div>
         </div>
-        <div class="resumen-item">
-            <div class="numero" style="color:#856404;" th:text="${stats['citasPendientes']}">0</div>
-            <div class="etiqueta">Pendientes</div>
+        <div class="t-icon">🏥</div>
+    </div>
+
+    <!-- ── CITAS ──────────────────────────────────────────── -->
+    <div class="section-title">Citas médicas</div>
+
+    <div class="cards-grid col-4">
+        <div class="card azul">
+            <div class="card-icon">📋</div>
+            <div class="card-number" th:text="${stats['totalCitas']}">0</div>
+            <div class="card-label">Total citas</div>
         </div>
-        <div class="resumen-item">
-            <div class="numero" style="color:#0f5132;" th:text="${stats['citasConfirmadas']}">0</div>
-            <div class="etiqueta">Confirmadas</div>
+        <div class="card naranja">
+            <div class="card-icon">⏳</div>
+            <div class="card-number" th:text="${stats['citasPendientes']}">0</div>
+            <div class="card-label">Pendientes</div>
         </div>
-        <div class="resumen-item">
-            <div class="numero" style="color:#842029;" th:text="${stats['citasCanceladas']}">0</div>
-            <div class="etiqueta">Canceladas</div>
+        <div class="card verde">
+            <div class="card-icon">✅</div>
+            <div class="card-number" th:text="${stats['citasConfirmadas']}">0</div>
+            <div class="card-label">Confirmadas</div>
         </div>
-        <div class="resumen-item">
-            <div class="numero" style="color:#084298;" th:text="${stats['citasRealizadas']}">0</div>
-            <div class="etiqueta">Realizadas</div>
+        <div class="card rojo">
+            <div class="card-icon">❌</div>
+            <div class="card-number" th:text="${stats['citasCanceladas']}">0</div>
+            <div class="card-label">Canceladas</div>
         </div>
     </div>
 
-    <!-- Diagnósticos -->
-    <h2 style="margin-top:30px;">Diagnósticos</h2>
-    <div class="resumen">
-        <div class="resumen-item">
-            <div class="numero" th:text="${stats['totalDiagnosticos']}">0</div>
-            <div class="etiqueta">Total diagnósticos</div>
+    <!-- Barra de distribución de citas -->
+    <div class="citas-bar-wrapper" th:if="${stats['totalCitas'] > 0}">
+        <div class="citas-bar-label">Distribución de citas</div>
+        <div class="citas-bar">
+            <div class="bar-seg bar-pendiente"
+                 th:style="'width:' + (${stats['citasPendientes']} * 100 / ${stats['totalCitas']}) + '%'"></div>
+            <div class="bar-seg bar-confirmada"
+                 th:style="'width:' + (${stats['citasConfirmadas']} * 100 / ${stats['totalCitas']}) + '%'"></div>
+            <div class="bar-seg bar-cancelada"
+                 th:style="'width:' + (${stats['citasCanceladas']} * 100 / ${stats['totalCitas']}) + '%'"></div>
+            <div class="bar-seg bar-realizada"
+                 th:style="'width:' + (${stats['citasRealizadas']} * 100 / ${stats['totalCitas']}) + '%'"></div>
+        </div>
+        <div class="citas-legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background:#ffc107;"></div>
+                <span>Pendientes (<span th:text="${stats['citasPendientes']}">0</span>)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background:#198754;"></div>
+                <span>Confirmadas (<span th:text="${stats['citasConfirmadas']}">0</span>)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background:#dc3545;"></div>
+                <span>Canceladas (<span th:text="${stats['citasCanceladas']}">0</span>)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background:#0d6efd;"></div>
+                <span>Realizadas (<span th:text="${stats['citasRealizadas']}">0</span>)</span>
+            </div>
         </div>
     </div>
 
-    <a href="/admin/usuarios" style="margin-top:30px; display:inline-block;">Volver a la gestión de usuarios</a>
+    <!-- Si no hay citas -->
+    <div class="citas-bar-wrapper" th:if="${stats['totalCitas'] == 0}"
+         style="text-align:center; color:#aaa; font-size:14px;">
+        No hay citas registradas aún.
+    </div>
+
+    <!-- ── DIAGNÓSTICOS ───────────────────────────────────── -->
+    <div class="section-title">Diagnósticos</div>
+
+    <div class="cards-grid col-3">
+        <div class="card morado">
+            <div class="card-icon">🩺</div>
+            <div class="card-number" th:text="${stats['totalDiagnosticos']}">0</div>
+            <div class="card-label">Diagnósticos emitidos</div>
+        </div>
+        <div class="card cyan" th:if="${stats['totalCitas'] > 0}">
+            <div class="card-icon">✅</div>
+            <div class="card-number" th:text="${stats['citasRealizadas']}">0</div>
+            <div class="card-label">Citas realizadas</div>
+        </div>
+        <div class="card verde" th:if="${stats['totalCitas'] > 0 and stats['citasRealizadas'] > 0}">
+            <div class="card-icon">📈</div>
+            <div class="card-number"
+                 th:text="${#numbers.formatDecimal(stats['totalDiagnosticos'] * 100.0 / stats['citasRealizadas'], 1, 0) + '%'}">0%</div>
+            <div class="card-label">Diagnósticos por cita realizada</div>
+        </div>
+    </div>
+
 </div>
+
 </body>
 </html>

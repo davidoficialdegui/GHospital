@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Registro Paciente</title>
@@ -9,33 +9,38 @@
     <div class="contenedor">
         <h1>Registro de paciente</h1>
 
-		<form action="/api/pacientes/registro" method="post">
-		    <label for="nombre">Nombre</label>
-		    <input type="text" id="nombre" name="nombre" required>
+        <div th:if="${error}"
+             style="background:#f8d7da; color:#842029; padding:12px; border-radius:6px; margin-bottom:15px;">
+            <strong>Error:</strong> <span th:text="${error}"></span>
+        </div>
 
-		    <label for="apellido1">Primer apellido</label>
-		    <input type="text" id="apellido1" name="apellido1" required>
+        <form action="/api/pacientes/registro" method="post">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" required>
 
-		    <label for="apellido2">Segundo apellido</label>
-		    <input type="text" id="apellido2" name="apellido2">
+            <label for="apellido1">Primer apellido</label>
+            <input type="text" id="apellido1" name="apellido1" required>
 
-		    <label for="dni">DNI</label>
-		    <input type="text" id="dni" name="dni" required>
+            <label for="apellido2">Segundo apellido</label>
+            <input type="text" id="apellido2" name="apellido2">
 
-		    <label for="email">Correo electrónico</label>
-		    <input type="email" id="email" name="email" required>
+            <label for="dni">DNI</label>
+            <input type="text" id="dni" name="dni" required>
 
-		    <label for="password">Contraseña</label>
-		    <input type="password" id="password" name="password" required>
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" name="email" required>
 
-		    <label for="telefono">Teléfono</label>
-		    <input type="text" id="telefono" name="telefono">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" required>
 
-		    <label for="fechaNacimiento">Fecha de nacimiento</label>
-		    <input type="date" id="fechaNacimiento" name="fechaNacimiento">
+            <label for="telefono">Teléfono</label>
+            <input type="text" id="telefono" name="telefono">
 
-		    <button type="submit">Registrarse</button>
-		</form>
+            <label for="fechaNacimiento">Fecha de nacimiento</label>
+            <input type="date" id="fechaNacimiento" name="fechaNacimiento">
+
+            <button type="submit">Registrarse</button>
+        </form>
 
         <p>¿Ya tienes cuenta?</p>
         <a href="/login">Ir a login</a>
