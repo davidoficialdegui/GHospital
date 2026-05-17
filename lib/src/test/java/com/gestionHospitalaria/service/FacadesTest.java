@@ -55,7 +55,7 @@ class FacadesTest {
         dto.setEmail("ana@test.com");
 
         Paciente esperado = new Paciente();
-        esperado.setId(1L);
+        esperado.setId(1L); 
         esperado.setNombre("Ana");
 
         when(pacienteService.registrar(any(RegistroPacienteDTO.class))).thenReturn(esperado);
