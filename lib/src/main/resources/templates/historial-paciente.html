@@ -144,6 +144,20 @@
                       margin-top:10px; font-weight:bold;">
                 + Crear nuevo informe / diagnóstico
             </a>
+            
+            <a th:href="@{/medico/receta/nueva(pacienteId=${pacienteId})}"
+               style="display:inline-block; background:#6f42c1; color:white;
+                      padding:10px 18px; border-radius:6px; text-decoration:none;
+                      margin-top:10px; margin-left:8px; font-weight:bold;">
+                💊 Recetar medicamento
+            </a>
+            
+            <a th:href="@{/medico/receta/ver(pacienteId=${pacienteId})}"
+               style="display:inline-block; background:#fd7e14; color:white;
+                      padding:10px 18px; border-radius:6px; text-decoration:none;
+                      margin-top:10px; margin-left:8px; font-weight:bold;">
+                📋 Ver recetas del paciente
+            </a>
 
         </div>
     </div>

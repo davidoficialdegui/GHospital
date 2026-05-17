@@ -18,6 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.gestionHospitalaria.dto.CrearRecetaDTO;
+import com.gestionHospitalaria.dto.RecetaDTO;
+import com.gestionHospitalaria.facade.RecetaFacade;
+
 
 import java.util.List;
 
@@ -38,6 +42,9 @@ public class MedicoViewCOntroller {
     
     @Autowired
     private InformeMedicoService informeMedicoService;
+    
+    @Autowired
+    private RecetaFacade recetaFacade;
 
     /** GET /medico/agenda?medicoId=1 */
     @GetMapping("/agenda")
@@ -120,5 +127,59 @@ public class MedicoViewCOntroller {
                         "attachment; filename=\"informe-paciente-" + pacienteId + ".pdf\"")
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdf);
+    }
+    
+    
+    @GetMapping("/receta/nueva")
+    public String formNuevaReceta(
+            @RequestParam(name = "pacienteId", required = false) Long pacienteId,
+            @RequestParam(name = "medicoId", required = false) Long medicoId,
+            HttpSession session,
+            Model model) {
+        Long sessionId = (Long) session.getAttribute("sessionUserId");
+        String rol = (String) session.getAttribute("sessionUserRole");
+        if ("MEDICO".equals(rol) && sessionId != null) {
+            medicoId = sessionId;
+        }
+        logger.info("GET /medico/receta/nueva pacienteId={} medicoId={}", pacienteId, medicoId);
+        model.addAttribute("pacienteId", pacienteId);
+        model.addAttribute("medicoId", medicoId);
+        return "nueva-receta";
+    }
+    
+    
+    @PostMapping("/receta/nueva")
+    public String emitirReceta(@ModelAttribute CrearRecetaDTO dto, Model model) {
+        logger.info("POST /medico/receta/nueva pacienteId={} medicamento={}", dto.getPacienteId(), dto.getMedicamento());
+        try {
+            RecetaDTO guardada = recetaFacade.crearReceta(dto);
+            model.addAttribute("exito", true);
+            model.addAttribute("receta", guardada);
+            logger.info("Receta emitida con id={}", guardada.getId());
+        } catch (Exception e) {
+            logger.error("Error al emitir receta: {}", e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("pacienteId", dto.getPacienteId());
+            model.addAttribute("medicoId", dto.getMedicoId());
+        }
+        return "nueva-receta";
+    }
+    
+    
+    @GetMapping("/receta/ver")
+    public String verRecetasPaciente(
+            @RequestParam(name = "pacienteId") Long pacienteId,
+            Model model) {
+        logger.info("GET /medico/receta/ver pacienteId={}", pacienteId);
+        try {
+            List<RecetaDTO> recetas = recetaFacade.obtenerRecetasPaciente(pacienteId);
+            model.addAttribute("recetas", recetas);
+        } catch (Exception e) {
+            logger.error("Error al obtener recetas: {}", e.getMessage());
+            model.addAttribute("recetas", java.util.Collections.emptyList());
+            model.addAttribute("error", e.getMessage());
+        }
+        model.addAttribute("pacienteId", pacienteId);
+        return "ver-recetas-paciente";
     }
 }

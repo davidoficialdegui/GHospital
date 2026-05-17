@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recetar Medicamento</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <div class="contenedor-ancho">
+        <h1>Recetar Medicamento</h1>
+
+        <!-- Mensaje de éxito -->
+        <div th:if="${exito}" style="background:#d1e7dd; color:#0f5132; padding:15px; border-radius:8px; margin-bottom:20px;">
+            <strong>✔ Receta emitida correctamente.</strong>
+            <p th:text="'Paciente: ' + ${receta.pacienteNombre}"></p>
+            <p th:text="'Medicamento: ' + ${receta.medicamento} + ' — ' + ${receta.dosis}"></p>
+            <p th:text="'Posología: ' + ${receta.posologia}"></p>
+            <a th:href="@{/medico/receta/ver(pacienteId=${receta.pacienteId})}"
+               style="display:inline-block; background:#007bff; color:white;
+                      padding:8px 16px; border-radius:6px; text-decoration:none; margin-top:8px;">
+                Ver todas las recetas del paciente
+            </a>
+        </div>
+
+        <!-- Mensaje de error -->
+        <div th:if="${error}" style="background:#f8d7da; color:#842029; padding:15px; border-radius:8px; margin-bottom:20px;">
+            <strong>✖ Error:</strong> <span th:text="${error}"></span>
+        </div>
+
+        <form th:action="@{/medico/receta/nueva}" method="post">
+
+            <label for="pacienteId">ID del Paciente *</label>
+            <input type="number" id="pacienteId" name="pacienteId"
+                   th:value="${pacienteId}" min="1" placeholder="ID del paciente" required>
+
+            <label for="medicoId">ID del Médico *</label>
+            <input type="number" id="medicoId" name="medicoId"
+                   th:value="${medicoId}" min="1" placeholder="ID del médico" required>
+
+            <label for="medicamento">Medicamento *</label>
+            <input type="text" id="medicamento" name="medicamento"
+                   placeholder="Ej: Ibuprofeno 600mg" required
+                   style="width:100%; padding:10px; box-sizing:border-box; border:1px solid #ccc; border-radius:4px;">
+
+            <label for="dosis">Dosis *</label>
+            <input type="text" id="dosis" name="dosis"
+                   placeholder="Ej: 1 comprimido" required
+                   style="width:100%; padding:10px; box-sizing:border-box; border:1px solid #ccc; border-radius:4px;">
+
+            <label for="posologia">Posología *</label>
+            <input type="text" id="posologia" name="posologia"
+                   placeholder="Ej: Cada 8 horas con las comidas" required
+                   style="width:100%; padding:10px; box-sizing:border-box; border:1px solid #ccc; border-radius:4px;">
+
+            <label for="duracionDias">Duración (días)</label>
+            <input type="number" id="duracionDias" name="duracionDias"
+                   min="1" max="365" placeholder="Ej: 7"
+                   style="width:100%; padding:10px; box-sizing:border-box; border:1px solid #ccc; border-radius:4px;">
+
+            <label for="fechaVencimiento">Fecha de vencimiento</label>
+            <input type="date" id="fechaVencimiento" name="fechaVencimiento"
+                   style="width:100%; padding:10px; box-sizing:border-box; border:1px solid #ccc; border-radius:4px;">
+
+            <label for="instrucciones">Instrucciones adicionales</label>
+            <textarea id="instrucciones" name="instrucciones" rows="3"
+                      style="width:100%; padding:10px; box-sizing:border-box; border:1px solid #ccc; border-radius:4px;"
+                      placeholder="Ej: Tomar con el estómago lleno. Evitar alcohol."></textarea>
+
+            <button type="submit">Emitir Receta</button>
+        </form>
+
+        <br>
+        <a th:href="@{/medico/historial(pacienteId=${pacienteId})}">Ver historial del paciente</a>
+        &nbsp;|&nbsp;
+        <a th:href="@{/medico/agenda}">Volver a mi agenda</a>
+    </div>
+</body>
+</html>
