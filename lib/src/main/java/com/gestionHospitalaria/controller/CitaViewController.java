@@ -70,6 +70,31 @@ public class CitaViewController {
         return "redirect:/citas";
     }
 
+    @GetMapping("/{citaId}/reprogramar")
+    public String mostrarFormReprogramar(@PathVariable("citaId") Long citaId, Model model) {
+        try {
+            CitaDTO cita = citaFacade.obtenerCitaPorId(citaId);
+            model.addAttribute("cita", cita);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "reprogramar-cita";
+    }
+
+    @PostMapping("/{citaId}/reprogramar")
+    public String reprogramarCita(
+            @PathVariable("citaId") Long citaId,
+            @RequestParam("nuevaFechaHora") String nuevaFechaHora,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes ra) {
+        try {
+            citaFacade.reprogramarCita(citaId, nuevaFechaHora);
+            ra.addFlashAttribute("mensaje", "Cita reprogramada correctamente.");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/citas";
+    }
+
     @PostMapping("/{citaId}/cancelar")
     public String cancelarCitaVista(
     		@PathVariable("citaId") Long citaId,         

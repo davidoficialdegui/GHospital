@@ -90,6 +90,31 @@ public class CitaService {
     }
 
     @Transactional
+    public CitaDTO obtenerCitaPorId(Long citaId) {
+        Cita cita = citaRepository.findById(citaId)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada con ID: " + citaId));
+        return mapToDTO(cita);
+    }
+
+    @Transactional
+    public CitaDTO reprogramarCita(Long citaId, String nuevaFechaHora) {
+        Cita cita = citaRepository.findById(citaId)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada con ID: " + citaId));
+
+        if (cita.getEstado() == Cita.EstadoCita.CANCELADA) {
+            throw new RuntimeException("No se puede reprogramar una cita cancelada");
+        }
+        if (cita.getEstado() == Cita.EstadoCita.REALIZADA) {
+            throw new RuntimeException("No se puede reprogramar una cita ya realizada");
+        }
+
+        LocalDateTime nuevaFecha = LocalDateTime.parse(nuevaFechaHora);
+        cita.setFechaHora(nuevaFecha);
+        cita.setEstado(Cita.EstadoCita.PENDIENTE);
+        return mapToDTO(citaRepository.save(cita));
+    }
+
+    @Transactional
     public CitaDTO cancelarCita(Long citaId, Long pacienteId) {
         Cita cita = citaRepository.findById(citaId)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada con ID: " + citaId));

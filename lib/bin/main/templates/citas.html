@@ -131,6 +131,7 @@
                 <th>Motivo</th>
                 <th>Estado actual</th>
                 <th>Cambiar estado</th>
+                <th>Reprogramar</th>
             </tr>
         </thead>
         <tbody>
@@ -157,6 +158,13 @@
                         </select>
                         <button type="submit" class="btn-guardar">Guardar</button>
                     </form>
+                </td>
+                <td>
+                    <a th:href="@{/citas/{id}/reprogramar(id=${cita.id})}"
+                       class="btn-guardar"
+                       style="text-decoration:none; display:inline-block; background:#fd7e14;">
+                        Reprogramar
+                    </a>
                 </td>
             </tr>
         </tbody>

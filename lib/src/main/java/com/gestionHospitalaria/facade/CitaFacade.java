@@ -34,6 +34,14 @@ public class CitaFacade {
         return citaService.cambiarEstado(citaId, nuevoEstado);
     }
 
+    public CitaDTO obtenerCitaPorId(Long citaId) {
+        return citaService.obtenerCitaPorId(citaId);
+    }
+
+    public CitaDTO reprogramarCita(Long citaId, String nuevaFechaHora) {
+        return citaService.reprogramarCita(citaId, nuevaFechaHora);
+    }
+
     public CitaDTO cancelarCita(Long citaId, Long pacienteId) {
         return citaService.cancelarCita(citaId, pacienteId);
     }
