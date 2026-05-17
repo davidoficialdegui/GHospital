@@ -9,11 +9,18 @@
 <div class="contenedor-ancho" style="width:980px;">
     <h1>Gestión de Usuarios</h1>
 
-    <a href="/admin/estadisticas"
-       style="display:inline-block; background:#28a745; color:white; padding:8px 18px;
-              border-radius:6px; text-decoration:none; margin-bottom:20px;">
-        Ver estadísticas del hospital
-    </a>
+    <div style="display:flex; gap:12px; margin-bottom:20px;">
+        <a href="/admin/estadisticas"
+           style="display:inline-block; background:#28a745; color:white; padding:8px 18px;
+                  border-radius:6px; text-decoration:none;">
+            Ver estadísticas del hospital
+        </a>
+        <a href="/admin/crear"
+           style="display:inline-block; background:#007bff; color:white; padding:8px 18px;
+                  border-radius:6px; text-decoration:none; font-weight:bold;">
+            + Crear usuario
+        </a>
+    </div>
 
     <div th:if="${mensaje}"
          style="background:#d1e7dd; color:#0f5132; padding:12px; border-radius:6px; margin-bottom:15px;">

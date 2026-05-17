@@ -1,5 +1,6 @@
 package com.gestionHospitalaria.controller;
 
+import com.gestionHospitalaria.dto.CrearUsuarioAdminDTO;
 import com.gestionHospitalaria.dto.EditarMedicoDTO;
 import com.gestionHospitalaria.dto.EditarPacienteDTO;
 import com.gestionHospitalaria.dto.EditarRecepcionistaDTO;
@@ -15,6 +16,25 @@ public class AdminViewController {
 
     @Autowired
     private AdminService adminService;
+
+    @GetMapping("/crear")
+    public String mostrarFormCrear(Model model) {
+        model.addAttribute("dto", new CrearUsuarioAdminDTO());
+        return "admin-crear-usuario";
+    }
+
+    @PostMapping("/crear")
+    public String crearUsuario(@ModelAttribute CrearUsuarioAdminDTO dto,
+                               org.springframework.web.servlet.mvc.support.RedirectAttributes ra) {
+        try {
+            adminService.crearUsuario(dto);
+            ra.addFlashAttribute("mensaje", "Usuario creado correctamente.");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", e.getMessage());
+            return "redirect:/admin/crear";
+        }
+        return "redirect:/admin/usuarios";
+    }
 
     @GetMapping("/estadisticas")
     public String verEstadisticas(Model model) {

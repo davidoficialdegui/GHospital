@@ -1,5 +1,6 @@
 package com.gestionHospitalaria.service;
 
+import com.gestionHospitalaria.dto.CrearUsuarioAdminDTO;
 import com.gestionHospitalaria.dto.EditarMedicoDTO;
 import com.gestionHospitalaria.dto.EditarPacienteDTO;
 import com.gestionHospitalaria.dto.EditarRecepcionistaDTO;
@@ -13,6 +14,7 @@ import com.gestionHospitalaria.repository.MedicoRepository;
 import com.gestionHospitalaria.repository.PacienteRepository;
 import com.gestionHospitalaria.repository.RecepcionistaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -36,6 +38,49 @@ public class AdminService {
 
     @Autowired
     private DiagnosticoRepository diagnosticoRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public void crearUsuario(CrearUsuarioAdminDTO dto) {
+        String passwordEncoded = passwordEncoder.encode(dto.getPassword());
+        switch (dto.getTipo()) {
+            case "MEDICO" -> {
+                Medico m = new Medico();
+                m.setNombre(dto.getNombre());
+                m.setApellido1(dto.getApellido1());
+                m.setApellido2(dto.getApellido2());
+                m.setDni(dto.getDni());
+                m.setEmail(dto.getEmail());
+                m.setPassword(passwordEncoded);
+                m.setEspecialidad(dto.getEspecialidad() != null ? dto.getEspecialidad() : "General");
+                m.setRol(Paciente.Rol.MEDICO);
+                medicoRepository.save(m);
+            }
+            case "RECEPCIONISTA" -> {
+                Recepcionista r = new Recepcionista();
+                r.setNombre(dto.getNombre());
+                r.setApellido1(dto.getApellido1());
+                r.setApellido2(dto.getApellido2());
+                r.setDni(dto.getDni());
+                r.setEmail(dto.getEmail());
+                r.setPassword(passwordEncoded);
+                r.setRol(Paciente.Rol.RECEPCIONISTA);
+                recepcionistaRepository.save(r);
+            }
+            default -> {
+                Paciente p = new Paciente();
+                p.setNombre(dto.getNombre());
+                p.setApellido1(dto.getApellido1());
+                p.setApellido2(dto.getApellido2());
+                p.setDni(dto.getDni());
+                p.setEmail(dto.getEmail());
+                p.setPassword(passwordEncoded);
+                p.setRol(Paciente.Rol.PACIENTE);
+                pacienteRepository.save(p);
+            }
+        }
+    }
 
     public List<Paciente> listarPacientes() {
         return pacienteRepository.findAll();
