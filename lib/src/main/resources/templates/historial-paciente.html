@@ -22,7 +22,7 @@
 
             <h2 th:text="${historial.nombreCompleto}">Nombre del paciente</h2>
 
-            <!-- NUEVO: botón para descargar informe PDF -->
+            <!-- Botón para descargar informe PDF -->
             <a th:href="@{/medico/informe/descargar(pacienteId=${pacienteId})}"
                style="display:inline-block; background:#007bff; color:white;
                       padding:10px 18px; border-radius:6px; text-decoration:none;
@@ -105,7 +105,99 @@
                      th:unless="${historial.observacionesMedicas != null and !historial.observacionesMedicas.isEmpty()}">Sin observaciones registradas</div>
             </div>
 
-            
+            <!-- ================================================================
+                 CONSTANTES VITALES REGISTRADAS POR ENFERMERÍA (HU-17)
+                 ================================================================ -->
+            <hr>
+            <h3>Constantes vitales recientes</h3>
+
+            <!-- Última toma destacada -->
+            <div th:if="${ultimaConstante != null}"
+                 style="background:#fff3cd; border-left:4px solid #ffc107;
+                        padding:12px 16px; border-radius:6px; margin-bottom:15px;">
+                <div class="campo-label"
+                     th:text="'Última toma · ' + ${#temporals.format(ultimaConstante.fechaRegistro, 'dd/MM/yyyy HH:mm')}
+                              + ' · ' + ${ultimaConstante.enfermeroNombre}">
+                    Última toma
+                </div>
+                <div class="vitales" style="margin-top:8px;">
+                    <div class="vital" th:if="${ultimaConstante.tensionSistolica != null or ultimaConstante.tensionDiastolica != null}">
+                        <div class="v-valor" th:text="${ultimaConstante.tensionFormateada}">—</div>
+                        <div class="v-unidad">mmHg</div>
+                        <div class="v-label">Tensión</div>
+                    </div>
+                    <div class="vital" th:if="${ultimaConstante.frecuenciaCardiaca != null}">
+                        <div class="v-valor" th:text="${ultimaConstante.frecuenciaCardiaca}">—</div>
+                        <div class="v-unidad">lpm</div>
+                        <div class="v-label">FC</div>
+                    </div>
+                    <div class="vital" th:if="${ultimaConstante.temperatura != null}">
+                        <div class="v-valor" th:text="${ultimaConstante.temperatura}">—</div>
+                        <div class="v-unidad">ºC</div>
+                        <div class="v-label">Temperatura</div>
+                    </div>
+                    <div class="vital" th:if="${ultimaConstante.saturacionOxigeno != null}">
+                        <div class="v-valor" th:text="${ultimaConstante.saturacionOxigeno}">—</div>
+                        <div class="v-unidad">%</div>
+                        <div class="v-label">SatO₂</div>
+                    </div>
+                    <div class="vital" th:if="${ultimaConstante.frecuenciaRespiratoria != null}">
+                        <div class="v-valor" th:text="${ultimaConstante.frecuenciaRespiratoria}">—</div>
+                        <div class="v-unidad">rpm</div>
+                        <div class="v-label">FR</div>
+                    </div>
+                    <div class="vital" th:if="${ultimaConstante.glucemia != null}">
+                        <div class="v-valor" th:text="${ultimaConstante.glucemia}">—</div>
+                        <div class="v-unidad">mg/dL</div>
+                        <div class="v-label">Glucemia</div>
+                    </div>
+                </div>
+                <p th:if="${ultimaConstante.observaciones != null and !ultimaConstante.observaciones.isEmpty()}"
+                   style="margin:10px 0 0; font-size:14px;">
+                    <strong>Observaciones de enfermería:</strong>
+                    <span th:text="${ultimaConstante.observaciones}">-</span>
+                </p>
+            </div>
+
+            <!-- Histórico completo (plegable) -->
+            <details th:if="${constantes != null and !constantes.isEmpty()}" style="margin-bottom:15px;">
+                <summary style="cursor:pointer; font-weight:bold; color:#007bff;">
+                    Ver todas las tomas (<span th:text="${constantes.size()}">0</span>)
+                </summary>
+                <table style="margin-top:10px;">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>TA</th>
+                            <th>FC</th>
+                            <th>FR</th>
+                            <th>Tª</th>
+                            <th>SatO₂</th>
+                            <th>Enfermero/a</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="t : ${constantes}">
+                            <td th:text="${#temporals.format(t.fechaRegistro, 'dd/MM/yyyy HH:mm')}">-</td>
+                            <td th:text="${t.tensionFormateada}">—</td>
+                            <td th:text="${t.frecuenciaCardiaca     != null ? t.frecuenciaCardiaca     : '—'}">—</td>
+                            <td th:text="${t.frecuenciaRespiratoria != null ? t.frecuenciaRespiratoria : '—'}">—</td>
+                            <td th:text="${t.temperatura            != null ? t.temperatura            : '—'}">—</td>
+                            <td th:text="${t.saturacionOxigeno      != null ? t.saturacionOxigeno      : '—'}">—</td>
+                            <td th:text="${t.enfermeroNombre}">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </details>
+
+            <p th:if="${constantes == null or constantes.isEmpty()}"
+               class="campo-valor vacio">
+                No hay constantes vitales registradas por enfermería para este paciente.
+            </p>
+            <!-- ================================================================
+                 FIN BLOQUE CONSTANTES VITALES
+                 ================================================================ -->
+
             <hr>
             <h3>Diagnósticos y tratamientos</h3>
 
@@ -144,14 +236,14 @@
                       margin-top:10px; font-weight:bold;">
                 + Crear nuevo informe / diagnóstico
             </a>
-            
+
             <a th:href="@{/medico/receta/nueva(pacienteId=${pacienteId})}"
                style="display:inline-block; background:#6f42c1; color:white;
                       padding:10px 18px; border-radius:6px; text-decoration:none;
                       margin-top:10px; margin-left:8px; font-weight:bold;">
                 💊 Recetar medicamento
             </a>
-            
+
             <a th:href="@{/medico/receta/ver(pacienteId=${pacienteId})}"
                style="display:inline-block; background:#fd7e14; color:white;
                       padding:10px 18px; border-radius:6px; text-decoration:none;

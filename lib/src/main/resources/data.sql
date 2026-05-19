@@ -37,3 +37,16 @@ ALTER TABLE pacientes ALTER COLUMN id RESTART WITH 10;
 ALTER TABLE medicos ALTER COLUMN id RESTART WITH 10;
 ALTER TABLE recepcionistas ALTER COLUMN id RESTART WITH 10;
 ALTER TABLE citas ALTER COLUMN id RESTART WITH 10;
+
+-- Enfermeros
+INSERT INTO enfermeros (id, nombre, apellido1, apellido2, dni, email, password,
+                        activo, rol, unidad, turno, numero_colegiado)
+VALUES (1, 'Lucía', 'Hernández', 'Vega', '55555555E', 'enfermeria@hospital.com',
+        '1234', true, 'ENFERMERO', 'Cardiología', 'MAÑANA', 'COL-12345');
+
+INSERT INTO enfermeros (id, nombre, apellido1, apellido2, dni, email, password,
+                        activo, rol, unidad, turno, numero_colegiado)
+VALUES (2, 'Javier', 'Romero', 'Díaz', '66666666F', 'javier.enf@hospital.com',
+        '1234', true, 'ENFERMERO', 'Urgencias', 'TARDE', 'COL-12346');
+
+ALTER TABLE enfermeros ALTER COLUMN id RESTART WITH 10;

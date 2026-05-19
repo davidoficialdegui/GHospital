@@ -77,7 +77,7 @@ public class Paciente {
     private Rol rol;
 
     public enum Rol {
-        PACIENTE, MEDICO, ADMIN, RECEPCIONISTA
+        PACIENTE, MEDICO, ADMIN, RECEPCIONISTA, ENFERMERO
     }
 
     // Información médica básica

@@ -3,9 +3,11 @@ package com.gestionHospitalaria.service;
 import com.gestionHospitalaria.dto.HistorialMedicoDTO;
 import com.gestionHospitalaria.dto.LoginDTO;
 import com.gestionHospitalaria.dto.RegistroPacienteDTO;
+import com.gestionHospitalaria.entity.Enfermero;
 import com.gestionHospitalaria.entity.Medico;
 import com.gestionHospitalaria.entity.Paciente;
 import com.gestionHospitalaria.entity.Recepcionista;
+import com.gestionHospitalaria.repository.EnfermeroRepository;
 import com.gestionHospitalaria.repository.MedicoRepository;
 import com.gestionHospitalaria.repository.PacienteRepository;
 import com.gestionHospitalaria.repository.RecepcionistaRepository;
@@ -24,6 +26,9 @@ public class PacienteService {
 
     @Autowired
     private RecepcionistaRepository recepcionistaRepository;
+
+    @Autowired
+    private EnfermeroRepository enfermeroRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -81,6 +86,16 @@ public class PacienteService {
                 throw new RuntimeException("Contraseña incorrecta");
             }
             return r.getRol().name() + "|" + r.getId() + "|" + r.getNombre();
+        }
+
+        // Buscar en enfermeros
+        java.util.Optional<Enfermero> enfOpt = enfermeroRepository.findByEmail(dto.getEmail());
+        if (enfOpt.isPresent()) {
+            Enfermero e = enfOpt.get();
+            if (!passwordEncoder.matches(dto.getPassword(), e.getPassword())) {
+                throw new RuntimeException("Contraseña incorrecta");
+            }
+            return e.getRol().name() + "|" + e.getId() + "|" + e.getNombre();
         }
 
         throw new RuntimeException("Usuario no encontrado");

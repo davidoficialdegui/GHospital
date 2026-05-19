@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Constantes Vitales</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <div class="contenedor-ancho">
+        <h1>Registrar Constantes Vitales</h1>
+
+        <!-- Mensaje de éxito -->
+        <div th:if="${exito}"
+             style="background:#d1e7dd; color:#0f5132; padding:15px;
+                    border-radius:8px; margin-bottom:20px;">
+            <strong>✔ Constantes registradas correctamente.</strong>
+            <p th:text="'Paciente: ' + ${constante.pacienteNombre}"></p>
+            <p th:if="${constante.tensionSistolica != null or constante.tensionDiastolica != null}"
+               th:text="'Tensión: ' + ${constante.tensionFormateada} + ' mmHg'"></p>
+            <p th:if="${constante.frecuenciaCardiaca != null}"
+               th:text="'FC: ' + ${constante.frecuenciaCardiaca} + ' lpm'"></p>
+            <p th:if="${constante.temperatura != null}"
+               th:text="'Temperatura: ' + ${constante.temperatura} + ' ºC'"></p>
+            <p th:if="${constante.saturacionOxigeno != null}"
+               th:text="'SatO₂: ' + ${constante.saturacionOxigeno} + ' %'"></p>
+        </div>
+
+        <!-- Mensaje de error -->
+        <div th:if="${error}"
+             style="background:#f8d7da; color:#842029; padding:15px;
+                    border-radius:8px; margin-bottom:20px;">
+            <strong>✖ Error:</strong> <span th:text="${error}"></span>
+        </div>
+
+        <form th:action="@{/enfermero/constantes/nueva}" method="post">
+            <label for="pacienteId">ID del Paciente *</label>
+            <input type="number" id="pacienteId" name="pacienteId"
+                   th:value="${pacienteId}" min="1" placeholder="ID del paciente" required>
+
+            <label for="enfermeroId">ID del Enfermero/a *</label>
+            <input type="number" id="enfermeroId" name="enfermeroId"
+                   th:value="${enfermeroId}" min="1" placeholder="ID del enfermero" required>
+
+            <h3 style="margin-top:25px; border-bottom:2px solid #007bff; padding-bottom:6px;">
+                Tensión arterial
+            </h3>
+            <div style="display:flex; gap:10px;">
+                <div style="flex:1;">
+                    <label for="tensionSistolica">Sistólica (mmHg)</label>
+                    <input type="number" id="tensionSistolica" name="tensionSistolica"
+                           min="40" max="300" placeholder="Ej. 120">
+                </div>
+                <div style="flex:1;">
+                    <label for="tensionDiastolica">Diastólica (mmHg)</label>
+                    <input type="number" id="tensionDiastolica" name="tensionDiastolica"
+                           min="20" max="200" placeholder="Ej. 80">
+                </div>
+            </div>
+
+            <h3 style="margin-top:25px; border-bottom:2px solid #007bff; padding-bottom:6px;">
+                Frecuencias
+            </h3>
+            <div style="display:flex; gap:10px;">
+                <div style="flex:1;">
+                    <label for="frecuenciaCardiaca">Cardíaca (lpm)</label>
+                    <input type="number" id="frecuenciaCardiaca" name="frecuenciaCardiaca"
+                           min="20" max="250" placeholder="Ej. 72">
+                </div>
+                <div style="flex:1;">
+                    <label for="frecuenciaRespiratoria">Respiratoria (rpm)</label>
+                    <input type="number" id="frecuenciaRespiratoria" name="frecuenciaRespiratoria"
+                           min="4" max="80" placeholder="Ej. 16">
+                </div>
+            </div>
+
+            <h3 style="margin-top:25px; border-bottom:2px solid #007bff; padding-bottom:6px;">
+                Otras constantes
+            </h3>
+            <div style="display:flex; gap:10px;">
+                <div style="flex:1;">
+                    <label for="temperatura">Temperatura (ºC)</label>
+                    <input type="number" step="0.1" id="temperatura" name="temperatura"
+                           min="28" max="45" placeholder="Ej. 36.7">
+                </div>
+                <div style="flex:1;">
+                    <label for="saturacionOxigeno">Saturación O₂ (%)</label>
+                    <input type="number" id="saturacionOxigeno" name="saturacionOxigeno"
+                           min="40" max="100" placeholder="Ej. 98">
+                </div>
+            </div>
+
+            <div style="display:flex; gap:10px;">
+                <div style="flex:1;">
+                    <label for="glucemia">Glucemia (mg/dL)</label>
+                    <input type="number" id="glucemia" name="glucemia"
+                           min="20" max="800" placeholder="Ej. 95">
+                </div>
+                <div style="flex:1;">
+                    <label for="peso">Peso (kg)</label>
+                    <input type="number" step="0.1" id="peso" name="peso"
+                           min="0" max="400" placeholder="Opcional">
+                </div>
+            </div>
+
+            <label for="observaciones" style="margin-top:20px;">Observaciones</label>
+            <textarea id="observaciones" name="observaciones" rows="3"
+                      style="width:100%; padding:10px; box-sizing:border-box;
+                             border:1px solid #ccc; border-radius:4px;"
+                      placeholder="Notas para el médico (opcional)"></textarea>
+
+            <button type="submit">Registrar constantes</button>
+        </form>
+
+        <a th:href="@{/enfermero/constantes/ver(pacienteId=${pacienteId})}"
+           th:if="${pacienteId != null}">
+            Ver historial de constantes de este paciente
+        </a>
+        <a th:href="@{/enfermero/inicio}">Volver al panel de enfermería</a>
+    </div>
+</body>
+</html>

@@ -1,8 +1,10 @@
 package com.gestionHospitalaria.config;
 
+import com.gestionHospitalaria.entity.Enfermero;
 import com.gestionHospitalaria.entity.Medico;
 import com.gestionHospitalaria.entity.Paciente;
 import com.gestionHospitalaria.entity.Recepcionista;
+import com.gestionHospitalaria.repository.EnfermeroRepository;
 import com.gestionHospitalaria.repository.MedicoRepository;
 import com.gestionHospitalaria.repository.PacienteRepository;
 import com.gestionHospitalaria.repository.RecepcionistaRepository;
@@ -25,6 +27,9 @@ public class DataInitializer implements ApplicationRunner {
     private RecepcionistaRepository recepcionistaRepository;
 
     @Autowired
+    private EnfermeroRepository enfermeroRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -32,6 +37,7 @@ public class DataInitializer implements ApplicationRunner {
         encodePasswordsPacientes();
         encodePasswordsMedicos();
         encodePasswordsRecepcionistas();
+        encodePasswordsEnfermeros();
     }
 
     private void encodePasswordsPacientes() {
@@ -60,5 +66,13 @@ public class DataInitializer implements ApplicationRunner {
             }
         }
     }
+
+    private void encodePasswordsEnfermeros() {
+        for (Enfermero e : enfermeroRepository.findAll()) {
+            if (e.getPassword() != null && !e.getPassword().startsWith("$2")) {
+                e.setPassword(passwordEncoder.encode(e.getPassword()));
+                enfermeroRepository.save(e);
+            }
+        }
+    }
 }
-//ultimo commit sprint 2
