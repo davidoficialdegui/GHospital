@@ -6,11 +6,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,13 +25,3 @@ jobs:
 
       - name: Ejecutar tests
         run: ./gradlew test
-
-      - name: Generar Javadoc
-        run: ./gradlew javadoc
-
-      - name: Publicar Javadoc en GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/master'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./lib/build/docs/javadoc
