@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tratamientos Prescritos</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <div class="contenedor-ancho">
+        <h1>Tratamientos Prescritos</h1>
+        <p style="color:#555;">Paciente ID: <strong th:text="${pacienteId}"></strong></p>
+
+        <!-- Mensaje de error -->
+        <div th:if="${error}"
+             style="background:#f8d7da; color:#842029; padding:15px; border-radius:8px; margin-bottom:20px;">
+            <strong>✖ Error:</strong> <span th:text="${error}"></span>
+        </div>
+
+        <p th:if="${recetas == null or recetas.isEmpty()}"
+           class="campo-valor vacio">
+            No hay tratamientos prescritos para este paciente.
+        </p>
+
+        <div th:each="receta : ${recetas}"
+             style="background:#f2f4f7; border-left:4px solid #6f42c1;
+                    padding:14px; border-radius:6px; margin-bottom:14px;">
+
+            <div class="campo-label"
+                 th:text="${#temporals.format(receta.fechaEmision, 'dd/MM/yyyy')}
+                          + ' — Dr/a. ' + ${receta.medicoNombre}">
+            </div>
+
+            <p style="margin:6px 0; font-size:1.05em;">
+                <strong>💊 Medicamento:</strong>
+                <span th:text="${receta.medicamento}">-</span>
+            </p>
+            <p style="margin:6px 0;">
+                <strong>Dosis:</strong>
+                <span th:text="${receta.dosis}">-</span>
+            </p>
+            <p style="margin:6px 0;">
+                <strong>Posología:</strong>
+                <span th:text="${receta.posologia}">-</span>
+            </p>
+            <p style="margin:6px 0;" th:if="${receta.duracionDias != null}">
+                <strong>Duración:</strong>
+                <span th:text="${receta.duracionDias} + ' días'">-</span>
+            </p>
+            <p style="margin:6px 0;" th:if="${receta.fechaVencimiento != null}">
+                <strong>Válida hasta:</strong>
+                <span th:text="${#temporals.format(receta.fechaVencimiento, 'dd/MM/yyyy')}">-</span>
+            </p>
+            <p style="margin:6px 0;"
+               th:if="${receta.instrucciones != null and !receta.instrucciones.isEmpty()}">
+                <strong>⚠ Instrucciones:</strong>
+                <span th:text="${receta.instrucciones}">-</span>
+            </p>
+        </div>
+
+        <br>
+        <a th:href="@{/enfermero/inicio}"
+           style="display:inline-block; background:#6c757d; color:white;
+                  padding:10px 18px; border-radius:6px; text-decoration:none; font-weight:bold;">
+            ← Volver al panel
+        </a>
+    </div>
+</body>
+</html>

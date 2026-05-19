@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Enfermería</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <div class="contenedor-ancho">
+        <h1>Panel de Enfermería</h1>
+        <p th:if="${enfermeroNombre != null}">
+            Bienvenido/a, <strong th:text="${enfermeroNombre}"></strong>
+        </p>
+
+        <div style="background:#e9f5fb; border-radius:8px; padding:20px; margin-bottom:30px;">
+            <h2>Registrar constantes vitales</h2>
+            <p>Introduce el ID del paciente para registrar una nueva toma de constantes.</p>
+            <form th:action="@{/enfermero/constantes/nueva}" method="get">
+                <input type="hidden" name="enfermeroId" th:value="${enfermeroId}">
+                <label for="pacienteId">ID del Paciente *</label>
+                <input type="number" id="pacienteId" name="pacienteId"
+                       min="1" placeholder="Ej. 5" required
+                       style="width:200px; margin-right:10px;">
+                <button type="submit" style="background:#007bff; color:white; border:none;
+                        padding:10px 20px; border-radius:4px; cursor:pointer;">
+                    Ir al formulario
+                </button>
+            </form>
+        </div>
+
+        <div style="background:#f0fdf4; border-radius:8px; padding:20px; margin-bottom:30px;">
+            <h2>Ver historial de constantes</h2>
+            <p>Consulta las tomas anteriores de un paciente.</p>
+            <form th:action="@{/enfermero/constantes/ver}" method="get">
+                <label for="pacienteIdVer">ID del Paciente *</label>
+                <input type="number" id="pacienteIdVer" name="pacienteId"
+                       min="1" placeholder="Ej. 5" required
+                       style="width:200px; margin-right:10px;">
+                <button type="submit" style="background:#28a745; color:white; border:none;
+                        padding:10px 20px; border-radius:4px; cursor:pointer;">
+                    Ver historial
+                </button>
+            </form>
+        </div>
+        
+                <div style="background:#f5f0ff; border-radius:8px; padding:20px; margin-bottom:30px;">
+            <h2>Ver tratamientos prescritos</h2>
+            <p>Consulta los medicamentos recetados por el médico para administrarlos correctamente.</p>
+            <form th:action="@{/enfermero/tratamientos/ver}" method="get">
+                <label for="pacienteIdTrat">ID del Paciente *</label>
+                <input type="number" id="pacienteIdTrat" name="pacienteId"
+                       min="1" placeholder="Ej. 5" required
+                       style="width:200px; margin-right:10px;">
+                <button type="submit" style="background:#6f42c1; color:white; border:none;
+                        padding:10px 20px; border-radius:4px; cursor:pointer;">
+                    Ver tratamientos
+                </button>
+            </form>
+        </div>
+
+        <a th:href="@{/}" style="color:#6c757d;">Cerrar sesión</a>
+    </div>
+</body>
+</html>
