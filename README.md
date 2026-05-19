@@ -182,20 +182,44 @@ Content-Type: application/json
 
 ---
 
-### HU0 — Crear una receta de prueba (prerequisito)
+### HU0 — Recetas precargadas (no requiere acción manual)
 
-1. Inicia sesión como médico con `carlos@hospital.com` / `1234`
-2. En la agenda, localiza una cita de Ana Martínez
-3. Ve a **"Nueva receta"** e introduce: medicamento, dosis, posología y duración
-4. Guarda la receta — ya estará disponible para el farmacéutico
+Al arrancar la aplicación ya existen **3 recetas de demo** en la base de datos:
+
+| ID | Paciente | Medicamento | Estado |
+|---|---|---|---|
+| 1 | Ana (DNI `12345678A`) | Ibuprofeno 600mg | Ya dispensada |
+| 2 | Ana (DNI `12345678A`) | Amoxicilina 500mg | Pendiente de dispensar |
+| 3 | Pedro (DNI `87654321B`) | Paracetamol 1g | Pendiente de dispensar |
+
+Si quieres crear más recetas: inicia sesión como médico (`carlos@hospital.com` / `1234`), ve a la agenda y usa **"Nueva receta"**.
 
 ---
 
-## Base de datos
+## Base de datos y datos de demo
 
 La aplicación usa **H2 en memoria**. Los datos se inicializan automáticamente al arrancar desde `data.sql` y `DataInitializer.java`.
 
-La base de datos se resetea en cada reinicio de la aplicación.
+**La base de datos se resetea en cada reinicio** de la aplicación.
+
+### Datos precargados al arrancar
+
+| Tipo | Cantidad | Detalle |
+|---|---|---|
+| Médicos | 2 | Carlos (Cardiología), Laura (Pediatría) |
+| Pacientes | 2 | Ana (DNI `12345678A`), Pedro (DNI `87654321B`) |
+| Recepcionistas | 2 | Admin y Recepcionista |
+| Enfermeros | 2 | Lucía (Cardiología), Javier (Urgencias) |
+| Farmacéuticos | 1 | Marta |
+| Citas | 4 | En distintos estados (REALIZADA, CONFIRMADA, PENDIENTE, CANCELADA) |
+| Recetas | 3 | Ibuprofeno y Amoxicilina para Ana, Paracetamol para Pedro |
+| Dispensaciones | 1 | Marta dispensó Ibuprofeno a Ana |
+
+Con estos datos se puede probar **todo el flujo** sin crear datos manualmente:
+- El farmacéutico busca por DNI `12345678A` y ve las recetas de Ana
+- Puede dispensar la receta 2 (Amoxicilina) que aún no ha sido entregada
+- El médico ve las recetas emitidas desde su panel
+- La consola H2 está disponible en `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:hospitaldb`)
 
 ---
 
@@ -225,8 +249,53 @@ gradlew.bat test
 
 ---
 
+## API REST — Swagger / OpenAPI
+
+Con la aplicación en marcha, la documentación interactiva del API está disponible en:
+
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
+El JSON de la especificación OpenAPI 3.0:
+
+```
+http://localhost:8080/v3/api-docs
+```
+
+Los endpoints están agrupados por etiqueta:
+
+| Etiqueta | Endpoints |
+|---|---|
+| Citas | `/api/citas` |
+| Diagnósticos | `/api/diagnosticos` |
+| Recetas | `/api/recetas` |
+| Dispensaciones | `/api/dispensaciones` |
+| Constantes Vitales | `/api/constantes` |
+| Pacientes | `/api/pacientes` |
+
+---
+
+## Documentación Javadoc
+
+La documentación Javadoc se genera automáticamente y se publica en **GitHub Pages** en cada push a `master`.
+
+Para generarla localmente:
+
+```bash
+./gradlew :lib:javadoc
+```
+
+El resultado se guarda en `lib/build/docs/javadoc/index.html`.
+
+---
+
 ## Integración Continua
 
-El proyecto usa **GitHub Actions**. En cada push a `master` se ejecuta automáticamente la compilación y los tests.
+El proyecto usa **GitHub Actions**. En cada push a `master` se ejecuta automáticamente:
+1. Compilación
+2. Tests unitarios
+3. Generación de Javadoc
+4. Publicación del Javadoc en GitHub Pages
 
 Configuración en: `.github/workflows/main.yml`

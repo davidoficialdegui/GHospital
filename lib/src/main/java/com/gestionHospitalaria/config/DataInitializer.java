@@ -1,10 +1,12 @@
 package com.gestionHospitalaria.config;
 
 import com.gestionHospitalaria.entity.Enfermero;
+import com.gestionHospitalaria.entity.Farmaceutico;
 import com.gestionHospitalaria.entity.Medico;
 import com.gestionHospitalaria.entity.Paciente;
 import com.gestionHospitalaria.entity.Recepcionista;
 import com.gestionHospitalaria.repository.EnfermeroRepository;
+import com.gestionHospitalaria.repository.FarmaceuticoRepository;
 import com.gestionHospitalaria.repository.MedicoRepository;
 import com.gestionHospitalaria.repository.PacienteRepository;
 import com.gestionHospitalaria.repository.RecepcionistaRepository;
@@ -30,6 +32,9 @@ public class DataInitializer implements ApplicationRunner {
     private EnfermeroRepository enfermeroRepository;
 
     @Autowired
+    private FarmaceuticoRepository farmaceuticoRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -38,6 +43,7 @@ public class DataInitializer implements ApplicationRunner {
         encodePasswordsMedicos();
         encodePasswordsRecepcionistas();
         encodePasswordsEnfermeros();
+        encodePasswordsFarmaceuticos();
     }
 
     private void encodePasswordsPacientes() {
@@ -72,6 +78,15 @@ public class DataInitializer implements ApplicationRunner {
             if (e.getPassword() != null && !e.getPassword().startsWith("$2")) {
                 e.setPassword(passwordEncoder.encode(e.getPassword()));
                 enfermeroRepository.save(e);
+            }
+        }
+    }
+
+    private void encodePasswordsFarmaceuticos() {
+        for (Farmaceutico f : farmaceuticoRepository.findAll()) {
+            if (f.getPassword() != null && !f.getPassword().startsWith("$2")) {
+                f.setPassword(passwordEncoder.encode(f.getPassword()));
+                farmaceuticoRepository.save(f);
             }
         }
     }
