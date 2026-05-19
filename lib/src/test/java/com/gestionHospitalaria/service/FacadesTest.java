@@ -5,6 +5,7 @@ import com.gestionHospitalaria.entity.Paciente;
 import com.gestionHospitalaria.facade.CitaFacade;
 import com.gestionHospitalaria.facade.DiagnosticoFacade;
 import com.gestionHospitalaria.facade.PacienteFacade;
+import com.gestionHospitalaria.facade.RecetaFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,6 +46,12 @@ class FacadesTest {
 
     @InjectMocks
     private DiagnosticoFacade diagnosticoFacade;
+    
+    @Mock
+    private RecetaService recetaService;
+
+    @InjectMocks
+    private RecetaFacade recetaFacade;
 
     // ── PacienteFacade tests ─────────────────────────────────────
 
@@ -232,4 +239,70 @@ class FacadesTest {
         assertTrue(resultado.isEmpty());
         verify(diagnosticoService, times(1)).obtenerDiagnosticosPaciente(99L);
     }
+    
+    @Test
+    void recetaFacade_crearReceta_delegaEnServicio() {
+        CrearRecetaDTO dto = new CrearRecetaDTO();
+        dto.setPacienteId(1L);
+        dto.setMedicoId(2L);
+        dto.setMedicamento("Ibuprofeno 600mg");
+        dto.setDosis("1 comprimido");
+        dto.setPosologia("Cada 8 horas");
+
+        RecetaDTO esperada = new RecetaDTO();
+        esperada.setId(10L);
+        esperada.setMedicamento("Ibuprofeno 600mg");
+
+        when(recetaService.crearReceta(any(CrearRecetaDTO.class))).thenReturn(esperada);
+
+        RecetaDTO resultado = recetaFacade.crearReceta(dto);
+
+        assertNotNull(resultado);
+        assertEquals(10L, resultado.getId());
+        assertEquals("Ibuprofeno 600mg", resultado.getMedicamento());
+        verify(recetaService, times(1)).crearReceta(dto);
+    }
+    
+    @Test
+    void recetaFacade_obtenerRecetasPaciente_delegaEnServicio() {
+        RecetaDTO r = new RecetaDTO();
+        r.setId(1L);
+        r.setMedicamento("Paracetamol 1g");
+
+        when(recetaService.obtenerRecetasPaciente(1L)).thenReturn(List.of(r));
+
+        List<RecetaDTO> resultado = recetaFacade.obtenerRecetasPaciente(1L);
+
+        assertEquals(1, resultado.size());
+        assertEquals("Paracetamol 1g", resultado.get(0).getMedicamento());
+        verify(recetaService, times(1)).obtenerRecetasPaciente(1L);
+    }
+    
+    @Test
+    void recetaFacade_obtenerRecetasPaciente_sinRecetas_listaVacia() {
+        when(recetaService.obtenerRecetasPaciente(99L)).thenReturn(List.of());
+
+        List<RecetaDTO> resultado = recetaFacade.obtenerRecetasPaciente(99L);
+
+        assertNotNull(resultado);
+        assertTrue(resultado.isEmpty());
+        verify(recetaService, times(1)).obtenerRecetasPaciente(99L);
+    }
+    
+    @Test
+    void recetaFacade_obtenerRecetaPorId_delegaEnServicio() {
+        RecetaDTO esperada = new RecetaDTO();
+        esperada.setId(5L);
+        esperada.setMedicamento("Amoxicilina 500mg");
+
+        when(recetaService.obtenerRecetaPorId(5L)).thenReturn(esperada);
+
+        RecetaDTO resultado = recetaFacade.obtenerRecetaPorId(5L);
+
+        assertNotNull(resultado);
+        assertEquals(5L, resultado.getId());
+        assertEquals("Amoxicilina 500mg", resultado.getMedicamento());
+        verify(recetaService, times(1)).obtenerRecetaPorId(5L);
+    }
+
 }
