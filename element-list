@@ -1,0 +1,9 @@
+_GestionHospitalaria
+com.gestionHospitalaria
+com.gestionHospitalaria.config
+com.gestionHospitalaria.controller
+com.gestionHospitalaria.dto
+com.gestionHospitalaria.entity
+com.gestionHospitalaria.facade
+com.gestionHospitalaria.repository
+com.gestionHospitalaria.service
