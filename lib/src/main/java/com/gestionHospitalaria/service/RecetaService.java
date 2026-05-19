@@ -93,6 +93,27 @@ public class RecetaService {
         return mapToDTO(receta);
     }
 
+    @Transactional(readOnly = true)
+    public List<RecetaDTO> obtenerTodasLasRecetas() {
+        logger.info("Obteniendo todas las recetas");
+        List<Receta> recetas = recetaRepository.findAll();
+        logger.info("Se encontraron {} recetas en total", recetas.size());
+        return recetas.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<RecetaDTO> obtenerRecetasPorDniPaciente(String dni) {
+        logger.info("Obteniendo recetas para el paciente con DNI={}", dni);
+        Paciente paciente = pacienteRepository.findByDni(dni)
+                .orElseThrow(() -> {
+                    logger.error("Paciente no encontrado con DNI={}", dni);
+                    return new RuntimeException("Paciente no encontrado con DNI: " + dni);
+                });
+        List<Receta> recetas = recetaRepository.findByPacienteIdOrderByFechaEmisionDesc(paciente.getId());
+        logger.info("Se encontraron {} recetas para DNI={}", recetas.size(), dni);
+        return recetas.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
     private RecetaDTO mapToDTO(Receta r) {
         RecetaDTO dto = new RecetaDTO();
         dto.setId(r.getId());

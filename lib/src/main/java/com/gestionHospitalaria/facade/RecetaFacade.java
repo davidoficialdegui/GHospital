@@ -25,4 +25,12 @@ public class RecetaFacade {
     public RecetaDTO obtenerRecetaPorId(Long id) {
         return recetaService.obtenerRecetaPorId(id);
     }
+
+    public List<RecetaDTO> obtenerTodasLasRecetas() {
+        return recetaService.obtenerTodasLasRecetas();
+    }
+
+    public List<RecetaDTO> obtenerRecetasPorDniPaciente(String dni) {
+        return recetaService.obtenerRecetasPorDniPaciente(dni);
+    }
 }

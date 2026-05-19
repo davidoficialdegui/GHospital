@@ -10,5 +10,6 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     boolean existsByDni(String dni);
     boolean existsByEmail(String email);
     Optional<Paciente> findByEmail(String email);
+    Optional<Paciente> findByDni(String dni);
     long countByRol(Paciente.Rol rol);
 }
