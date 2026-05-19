@@ -102,12 +102,13 @@ class EntidadesYDtosTest {
 
     @Test
     void paciente_roles_todosDisponibles() {
-        assertEquals(5, Paciente.Rol.values().length);
+        assertEquals(6, Paciente.Rol.values().length);
         assertNotNull(Paciente.Rol.valueOf("PACIENTE"));
         assertNotNull(Paciente.Rol.valueOf("MEDICO"));
         assertNotNull(Paciente.Rol.valueOf("ADMIN"));
         assertNotNull(Paciente.Rol.valueOf("RECEPCIONISTA"));
         assertNotNull(Paciente.Rol.valueOf("ENFERMERO"));
+        assertNotNull(Paciente.Rol.valueOf("FARMACEUTICO"));
     }
 
     // ── ENTIDAD MEDICO ───────────────────────────────────────────
