@@ -73,3 +73,20 @@ tasks.jacocoTestReport {
         csv.required.set(false)
     }
 }
+
+// ── Javadoc ──────────────────────────────────────────────────────
+tasks.javadoc {
+    title = "GHospital - Documentación API"
+    options {
+        (this as StandardJavadocDocletOptions).apply {
+            encoding = "UTF-8"
+            charSet = "UTF-8"
+            author(true)
+            version(true)
+            use(true)
+            windowTitle = "GHospital API"
+            locale = "es_ES"
+            addStringOption("Xdoclint:none", "-quiet")
+        }
+    }
+}
