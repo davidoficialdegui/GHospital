@@ -26,6 +26,7 @@ dependencies {
     implementation("com.github.librepdf:openpdf:1.3.30")
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 }
 
 tasks.withType<JavaCompile> {
