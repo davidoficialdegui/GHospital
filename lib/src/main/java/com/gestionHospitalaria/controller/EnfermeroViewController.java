@@ -2,7 +2,9 @@ package com.gestionHospitalaria.controller;
 
 import com.gestionHospitalaria.dto.ConstanteVitalDTO;
 import com.gestionHospitalaria.dto.CrearConstanteVitalDTO;
+import com.gestionHospitalaria.dto.RecetaDTO;
 import com.gestionHospitalaria.facade.ConstanteVitalFacade;
+import com.gestionHospitalaria.facade.RecetaFacade;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,8 @@ public class EnfermeroViewController {
 
     @Autowired
     private ConstanteVitalFacade constanteVitalFacade;
+    @Autowired
+    private RecetaFacade recetaFacade;
 
     /** Pantalla de inicio para enfermería: pide el ID de paciente. */
     @GetMapping("/inicio")
@@ -100,5 +104,22 @@ public class EnfermeroViewController {
         }
         model.addAttribute("pacienteId", pacienteId);
         return "ver-constantes-paciente";
+    }
+    
+    @GetMapping("/tratamientos/ver")
+    public String verTratamientos(
+            @RequestParam(name = "pacienteId") Long pacienteId,
+            Model model) {
+        logger.info("GET /enfermero/tratamientos/ver pacienteId={}", pacienteId);
+        try {
+            List<RecetaDTO> recetas = recetaFacade.obtenerRecetasPaciente(pacienteId);
+            model.addAttribute("recetas", recetas);
+        } catch (Exception e) {
+            logger.error("Error al obtener tratamientos: {}", e.getMessage());
+            model.addAttribute("recetas", java.util.Collections.emptyList());
+            model.addAttribute("error", e.getMessage());
+        }
+        model.addAttribute("pacienteId", pacienteId);
+        return "ver-tratamientos-enfermero";
     }
 }

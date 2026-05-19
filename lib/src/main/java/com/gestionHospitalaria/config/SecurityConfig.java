@@ -37,7 +37,8 @@ public class SecurityConfig {
                     "/api/diagnosticos/**",
                     "/medico/**",
                     "/paciente/**",
-                    "/admin/**"
+                    "/admin/**",
+                    "/enfermero/**"
                 ).permitAll()
                 .anyRequest().permitAll()
             )
