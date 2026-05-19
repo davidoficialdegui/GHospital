@@ -50,3 +50,11 @@ VALUES (2, 'Javier', 'Romero', 'Díaz', '66666666F', 'javier.enf@hospital.com',
         '1234', true, 'ENFERMERO', 'Urgencias', 'TARDE', 'COL-12346');
 
 ALTER TABLE enfermeros ALTER COLUMN id RESTART WITH 10;
+
+-- Farmacéuticos
+INSERT INTO farmaceuticos (id, nombre, apellido1, apellido2, dni, email, password,
+                           activo, rol, numero_colegiado, turno)
+VALUES (1, 'Marta', 'Ruiz', 'Navarro', '77777777G', 'farmacia@hospital.com',
+        '1234', true, 'FARMACEUTICO', 'COL-99001', 'MAÑANA');
+
+ALTER TABLE farmaceuticos ALTER COLUMN id RESTART WITH 10;

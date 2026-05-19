@@ -93,12 +93,14 @@ http://localhost:8080/login
 
 | Rol | Email | Contraseña |
 |---|---|---|
-| Administrador | admin@hospital.com | 123 |
-| Médico | carlos@hospital.com | 123 |
-| Médico | laura@hospital.com | 123 |
-| Recepcionista | recep@hospital.com | 123 |
-| Paciente | ana@email.com | 123 |
-| Paciente | pedro@email.com | 123 |
+| Administrador | admin@hospital.com | 1234 |
+| Médico | carlos@hospital.com | 1234 |
+| Médico | laura@hospital.com | 1234 |
+| Recepcionista | recepcion@hospital.com | 1234 |
+| Enfermero | enfermeria@hospital.com | 1234 |
+| Farmacéutico | farmacia@hospital.com | 1234 |
+| Paciente | ana@email.com | 1234 |
+| Paciente | pedro@email.com | 1234 |
 
 ---
 
@@ -121,10 +123,71 @@ http://localhost:8080/login
 - Registrar diagnósticos y tratamientos
 - Descargar informes médicos en PDF
 
+### Farmacéutico
+- Consultar las recetas médicas emitidas buscando por DNI del paciente
+- Registrar la entrega de medicamentos (dispensación) a partir del ID de receta
+
 ### Paciente
 - Consultar su propio historial médico
 - Ver y cancelar sus citas
 - Descargar su informe médico en PDF
+
+---
+
+## Verificación de las historias de usuario del farmacéutico
+
+### HU1 — Como farmacéutico, quiero consultar las recetas médicas emitidas
+
+**Prerequisito:** debe existir al menos una receta para el paciente Ana (DNI `12345678A`).  
+Si no hay ninguna, créala primero siguiendo los pasos de la HU0 más abajo.
+
+1. Inicia sesión con `farmacia@hospital.com` / `1234`
+2. El sistema redirige automáticamente a `/farmaceutico/inicio`
+3. En la sección **"Consultar recetas médicas"**, introduce el DNI `12345678A` y pulsa **Buscar recetas**
+4. Se muestra la lista de recetas del paciente con medicamento, dosis, posología, duración e instrucciones
+5. Cada receta incluye el botón **"Dispensar medicamento"**
+
+**Verificación por API:**
+```
+GET http://localhost:8080/api/recetas/paciente/dni/12345678A
+GET http://localhost:8080/api/recetas
+```
+
+---
+
+### HU2 — Como farmacéutico, quiero registrar la entrega de medicamentos
+
+1. Desde la lista de recetas (paso anterior), pulsa **"Dispensar medicamento"** en la receta deseada
+2. El formulario se precarga con el ID de la receta y el ID del farmacéutico en sesión
+3. Rellena la **cantidad dispensada** (mínimo 1), selecciona el **estado** (DISPENSADO / PARCIAL / PENDIENTE) y añade observaciones si procede
+4. Pulsa **"Registrar dispensación"**
+5. Se muestra el resumen con medicamento, paciente, cantidad y estado
+
+También puedes acceder directamente desde el panel con el ID de la receta:  
+`/farmaceutico/dispensar?recetaId=<ID>`
+
+**Verificación por API:**
+```
+POST http://localhost:8080/api/dispensaciones
+Content-Type: application/json
+
+{
+  "recetaId": 1,
+  "farmaceuticoId": 1,
+  "cantidadDispensada": 2,
+  "estado": "DISPENSADO",
+  "observaciones": "Entrega correcta"
+}
+```
+
+---
+
+### HU0 — Crear una receta de prueba (prerequisito)
+
+1. Inicia sesión como médico con `carlos@hospital.com` / `1234`
+2. En la agenda, localiza una cita de Ana Martínez
+3. Ve a **"Nueva receta"** e introduce: medicamento, dosis, posología y duración
+4. Guarda la receta — ya estará disponible para el farmacéutico
 
 ---
 
@@ -149,6 +212,10 @@ Los tests se encuentran en `lib/src/test/java/com/gestionHospitalaria/`:
 | `PacienteServiceHistorialTest` | Unitario | Historial del paciente |
 | `InformeMedicoServiceTest` | Unitario | Generación de informes PDF |
 | `DiagnosticoControllerIntegrationTest` | Integración | Test de integración del controlador |
+| `RecetaServiceTest` | Unitario | 14 tests: crear receta, obtener por id/paciente/DNI |
+| `RecetaControllerIntegrationTest` | Integración | 6 tests: endpoints GET y POST de recetas |
+| `DispensacionServiceTest` | Unitario | 11 tests: registrar dispensación, obtener por farmacéutico/paciente/receta |
+| `DispensacionControllerIntegrationTest` | Integración | 4 tests: endpoints POST y GET de dispensaciones |
 
 ### Ejecutar todos los tests
 
