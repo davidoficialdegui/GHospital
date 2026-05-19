@@ -1,5 +1,6 @@
 package com.gestionHospitalaria.service;
 
+import com.gestionHospitalaria.dto.CrearRecetaDTO;
 import com.gestionHospitalaria.dto.RecetaDTO;
 import com.gestionHospitalaria.entity.Medico;
 import com.gestionHospitalaria.entity.Paciente;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @Tag("unit")
@@ -58,6 +60,110 @@ class RecetaServiceTest {
         receta.setDosis("400mg");
         receta.setPosologia("1 comprimido cada 8 horas");
         receta.setFechaEmision(LocalDate.now());
+    }
+
+    // ── crearReceta ───────────────────────────────────────────────────────
+
+    @Test
+    void crearReceta_correcto_devuelveDTO() {
+        CrearRecetaDTO dto = new CrearRecetaDTO();
+        dto.setPacienteId(1L);
+        dto.setMedicoId(2L);
+        dto.setMedicamento("Ibuprofeno");
+        dto.setDosis("400mg");
+        dto.setPosologia("1 comprimido cada 8 horas");
+
+        when(pacienteRepository.findById(1L)).thenReturn(Optional.of(paciente));
+        when(medicoRepository.findById(2L)).thenReturn(Optional.of(medico));
+        when(recetaRepository.save(any(Receta.class))).thenReturn(receta);
+
+        RecetaDTO resultado = recetaService.crearReceta(dto);
+
+        assertNotNull(resultado);
+        assertEquals("Ibuprofeno", resultado.getMedicamento());
+        assertEquals("Ana Martínez", resultado.getPacienteNombre());
+        assertEquals("Carlos García", resultado.getMedicoNombre());
+        verify(recetaRepository).save(any(Receta.class));
+    }
+
+    @Test
+    void crearReceta_medicamentoVacio_lanzaExcepcion() {
+        CrearRecetaDTO dto = new CrearRecetaDTO();
+        dto.setPacienteId(1L);
+        dto.setMedicoId(2L);
+        dto.setMedicamento("");
+        dto.setDosis("400mg");
+        dto.setPosologia("1 comprimido cada 8 horas");
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+            () -> recetaService.crearReceta(dto));
+        assertTrue(ex.getMessage().contains("medicamento"));
+        verify(recetaRepository, never()).save(any());
+    }
+
+    @Test
+    void crearReceta_dosisVacia_lanzaExcepcion() {
+        CrearRecetaDTO dto = new CrearRecetaDTO();
+        dto.setPacienteId(1L);
+        dto.setMedicoId(2L);
+        dto.setMedicamento("Ibuprofeno");
+        dto.setDosis("");
+        dto.setPosologia("1 comprimido cada 8 horas");
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+            () -> recetaService.crearReceta(dto));
+        assertTrue(ex.getMessage().contains("dosis"));
+        verify(recetaRepository, never()).save(any());
+    }
+
+    @Test
+    void crearReceta_posologiaVacia_lanzaExcepcion() {
+        CrearRecetaDTO dto = new CrearRecetaDTO();
+        dto.setPacienteId(1L);
+        dto.setMedicoId(2L);
+        dto.setMedicamento("Ibuprofeno");
+        dto.setDosis("400mg");
+        dto.setPosologia("");
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+            () -> recetaService.crearReceta(dto));
+        assertTrue(ex.getMessage().contains("posología"));
+        verify(recetaRepository, never()).save(any());
+    }
+
+    @Test
+    void crearReceta_pacienteNoExiste_lanzaExcepcion() {
+        CrearRecetaDTO dto = new CrearRecetaDTO();
+        dto.setPacienteId(999L);
+        dto.setMedicoId(2L);
+        dto.setMedicamento("Ibuprofeno");
+        dto.setDosis("400mg");
+        dto.setPosologia("1 comprimido cada 8 horas");
+
+        when(pacienteRepository.findById(999L)).thenReturn(Optional.empty());
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+            () -> recetaService.crearReceta(dto));
+        assertTrue(ex.getMessage().contains("Paciente no encontrado"));
+        verify(recetaRepository, never()).save(any());
+    }
+
+    @Test
+    void crearReceta_medicoNoExiste_lanzaExcepcion() {
+        CrearRecetaDTO dto = new CrearRecetaDTO();
+        dto.setPacienteId(1L);
+        dto.setMedicoId(999L);
+        dto.setMedicamento("Ibuprofeno");
+        dto.setDosis("400mg");
+        dto.setPosologia("1 comprimido cada 8 horas");
+
+        when(pacienteRepository.findById(1L)).thenReturn(Optional.of(paciente));
+        when(medicoRepository.findById(999L)).thenReturn(Optional.empty());
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+            () -> recetaService.crearReceta(dto));
+        assertTrue(ex.getMessage().contains("Médico no encontrado"));
+        verify(recetaRepository, never()).save(any());
     }
 
     // ── obtenerTodasLasRecetas ────────────────────────────────────────────

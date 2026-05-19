@@ -58,6 +58,8 @@ public class PacienteController {
                     return "redirect:/medico/agenda?medicoId=" + id;
                 case "ENFERMERO":
                     return "redirect:/enfermero/inicio";
+                case "FARMACEUTICO":
+                    return "redirect:/farmaceutico/inicio";
                 case "PACIENTE":
                 default:
                     return "redirect:/paciente/historial?pacienteId=" + id;

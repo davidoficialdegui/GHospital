@@ -38,7 +38,8 @@ public class SecurityConfig {
                     "/medico/**",
                     "/paciente/**",
                     "/admin/**",
-                    "/enfermero/**"
+                    "/enfermero/**",
+                    "/farmaceutico/**"
                 ).permitAll()
                 .anyRequest().permitAll()
             )
