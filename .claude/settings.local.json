@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\ane.lecue\\\\Documents\\\\GitHub\\\\GHospital\" -Force)",
+      "Bash(Select-Object Name, Mode)",
+      "Bash(git -C \"C:\\\\Users\\\\ane.lecue\\\\Documents\\\\GitHub\\\\GHospital\" log --oneline)",
+      "Bash(git -C \"C:\\\\Users\\\\ane.lecue\\\\Documents\\\\GitHub\\\\GHospital\" log --grep=\"Sprint\\\\|HU\\\\|Historia\\\\|historia de usuario\" --oneline)",
+      "Bash(git -C \"C:\\\\Users\\\\ane.lecue\\\\Documents\\\\GitHub\\\\GHospital\" log --all --oneline)",
+      "Bash(./gradlew test *)"
+    ]
+  }
+}
