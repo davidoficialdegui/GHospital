@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Constantes Vitales</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <div class="contenedor-ancho">
+        <h1>Historial de Constantes Vitales</h1>
+        <p>Paciente ID: <strong th:text="${pacienteId}"></strong></p>
+
+        <!-- Error -->
+        <div th:if="${error}"
+             style="background:#f8d7da; color:#842029; padding:15px;
+                    border-radius:8px; margin-bottom:20px;">
+            <strong>Error:</strong> <span th:text="${error}"></span>
+        </div>
+
+        <!-- Sin tomas -->
+        <div th:if="${tomas == null or #lists.isEmpty(tomas)}"
+             style="background:#fff3cd; color:#856404; padding:15px;
+                    border-radius:8px; margin-bottom:20px;">
+            No hay constantes vitales registradas para este paciente.
+        </div>
+
+        <!-- Tabla de tomas -->
+        <div th:if="${tomas != null and not #lists.isEmpty(tomas)}">
+            <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                <thead>
+                    <tr style="background:#007bff; color:white;">
+                        <th style="padding:10px; border:1px solid #dee2e6;">Fecha</th>
+                        <th style="padding:10px; border:1px solid #dee2e6;">Enfermero/a</th>
+                        <th style="padding:10px; border:1px solid #dee2e6;">T.A. (mmHg)</th>
+                        <th style="padding:10px; border:1px solid #dee2e6;">FC (lpm)</th>
+                        <th style="padding:10px; border:1px solid #dee2e6;">FR (rpm)</th>
+                        <th style="padding:10px; border:1px solid #dee2e6;">Temp (ºC)</th>
+                        <th style="padding:10px; border:1px solid #dee2e6;">SatO₂ (%)</th>
+                        <th style="padding:10px; border:1px solid #dee2e6;">Glucemia</th>
+                        <th style="padding:10px; border:1px solid #dee2e6;">Peso (kg)</th>
+                        <th style="padding:10px; border:1px solid #dee2e6;">Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="toma : ${tomas}"
+                        style="border-bottom:1px solid #dee2e6;">
+                        <td style="padding:8px; border:1px solid #dee2e6;"
+                            th:text="${#temporals.format(toma.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td style="padding:8px; border:1px solid #dee2e6;"
+                            th:text="${toma.enfermeroNombre}"></td>
+                        <td style="padding:8px; border:1px solid #dee2e6; text-align:center;"
+                            th:text="${toma.tensionSistolica != null ? toma.tensionSistolica + '/' + toma.tensionDiastolica : '-'}"></td>
+                        <td style="padding:8px; border:1px solid #dee2e6; text-align:center;"
+                            th:text="${toma.frecuenciaCardiaca != null ? toma.frecuenciaCardiaca : '-'}"></td>
+                        <td style="padding:8px; border:1px solid #dee2e6; text-align:center;"
+                            th:text="${toma.frecuenciaRespiratoria != null ? toma.frecuenciaRespiratoria : '-'}"></td>
+                        <td style="padding:8px; border:1px solid #dee2e6; text-align:center;"
+                            th:text="${toma.temperatura != null ? toma.temperatura : '-'}"></td>
+                        <td style="padding:8px; border:1px solid #dee2e6; text-align:center;"
+                            th:text="${toma.saturacionOxigeno != null ? toma.saturacionOxigeno : '-'}"></td>
+                        <td style="padding:8px; border:1px solid #dee2e6; text-align:center;"
+                            th:text="${toma.glucemia != null ? toma.glucemia : '-'}"></td>
+                        <td style="padding:8px; border:1px solid #dee2e6; text-align:center;"
+                            th:text="${toma.peso != null ? toma.peso : '-'}"></td>
+                        <td style="padding:8px; border:1px solid #dee2e6;"
+                            th:text="${toma.observaciones != null ? toma.observaciones : ''}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top:20px; display:flex; gap:15px;">
+            <a th:href="@{/enfermero/constantes/nueva(pacienteId=${pacienteId})}"
+               style="background:#007bff; color:white; padding:10px 20px;
+                      border-radius:4px; text-decoration:none;">
+                Nueva toma
+            </a>
+            <a th:href="@{/enfermero/inicio}"
+               style="background:#6c757d; color:white; padding:10px 20px;
+                      border-radius:4px; text-decoration:none;">
+                Volver al panel
+            </a>
+        </div>
+    </div>
+</body>
+</html>

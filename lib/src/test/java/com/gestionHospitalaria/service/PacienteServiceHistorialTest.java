@@ -2,13 +2,17 @@ package com.gestionHospitalaria.service;
 
 import com.gestionHospitalaria.dto.HistorialMedicoDTO;
 import com.gestionHospitalaria.entity.Paciente;
+import com.gestionHospitalaria.repository.EnfermeroRepository;
+import com.gestionHospitalaria.repository.MedicoRepository;
 import com.gestionHospitalaria.repository.PacienteRepository;
+import com.gestionHospitalaria.repository.RecepcionistaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -20,6 +24,18 @@ class PacienteServiceHistorialTest {
 
     @Mock
     private PacienteRepository pacienteRepository;
+
+    @Mock
+    private MedicoRepository medicoRepository;
+
+    @Mock
+    private RecepcionistaRepository recepcionistaRepository;
+
+    @Mock
+    private EnfermeroRepository enfermeroRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private PacienteService pacienteService;
