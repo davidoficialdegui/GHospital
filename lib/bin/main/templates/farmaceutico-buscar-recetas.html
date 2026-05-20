@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Recetas</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <div class="contenedor-ancho">
+        <h1>Consultar Recetas Médicas</h1>
+
+        <form th:action="@{/farmaceutico/recetas/buscar}" method="get"
+              style="margin-bottom:30px;">
+            <label for="dni">DNI del Paciente *</label>
+            <input type="text" id="dni" name="dni"
+                   th:value="${dni}" placeholder="Ej. 12345678A" required
+                   style="width:200px; margin-right:10px;">
+            <button type="submit" style="background:#007bff; color:white; border:none;
+                    padding:10px 20px; border-radius:4px; cursor:pointer;">
+                Buscar
+            </button>
+        </form>
+
+        <div th:if="${error}" style="background:#f8d7da; color:#842029;
+             padding:15px; border-radius:8px; margin-bottom:20px;">
+            <strong>Error:</strong> <span th:text="${error}"></span>
+        </div>
+
+        <div th:if="${recetas != null}">
+            <p th:if="${recetas.isEmpty()}" class="campo-valor vacio">
+                No hay recetas registradas para este paciente.
+            </p>
+
+            <div th:each="receta : ${recetas}"
+                 style="background:#f2f4f7; border-left:4px solid #28a745;
+                        padding:14px; border-radius:6px; margin-bottom:14px;">
+                <div class="campo-label"
+                     th:text="${#temporals.format(receta.fechaEmision, 'dd/MM/yyyy')}
+                              + ' | Dr/a. ' + ${receta.medicoNombre}">
+                    Fecha y médico
+                </div>
+                <p style="margin:6px 0;">
+                    <strong>Medicamento:</strong>
+                    <span th:text="${receta.medicamento}">-</span>
+                </p>
+                <p style="margin:6px 0;">
+                    <strong>Dosis:</strong>
+                    <span th:text="${receta.dosis}">-</span>
+                </p>
+                <p style="margin:6px 0;">
+                    <strong>Posología:</strong>
+                    <span th:text="${receta.posologia}">-</span>
+                </p>
+                <p style="margin:6px 0;" th:if="${receta.duracionDias != null}">
+                    <strong>Duración:</strong>
+                    <span th:text="${receta.duracionDias} + ' días'">-</span>
+                </p>
+                <p style="margin:6px 0;" th:if="${receta.fechaVencimiento != null}">
+                    <strong>Válida hasta:</strong>
+                    <span th:text="${#temporals.format(receta.fechaVencimiento, 'dd/MM/yyyy')}">-</span>
+                </p>
+                <p style="margin:6px 0;"
+                   th:if="${receta.instrucciones != null and !receta.instrucciones.isEmpty()}">
+                    <strong>Instrucciones:</strong>
+                    <span th:text="${receta.instrucciones}">-</span>
+                </p>
+                <div style="margin-top:10px;">
+                    <a th:href="@{/farmaceutico/dispensar(recetaId=${receta.id})}"
+                       style="display:inline-block; background:#28a745; color:white;
+                              padding:8px 16px; border-radius:4px; text-decoration:none;
+                              font-weight:bold; font-size:0.9em;">
+                        Dispensar medicamento
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <a th:href="@{/farmaceutico/inicio}" style="color:#6c757d;">Volver al panel</a>
+    </div>
+</body>
+</html>

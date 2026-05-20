@@ -6,7 +6,14 @@
       "Bash(git -C \"C:\\\\Users\\\\ane.lecue\\\\Documents\\\\GitHub\\\\GHospital\" log --oneline)",
       "Bash(git -C \"C:\\\\Users\\\\ane.lecue\\\\Documents\\\\GitHub\\\\GHospital\" log --grep=\"Sprint\\\\|HU\\\\|Historia\\\\|historia de usuario\" --oneline)",
       "Bash(git -C \"C:\\\\Users\\\\ane.lecue\\\\Documents\\\\GitHub\\\\GHospital\" log --all --oneline)",
-      "Bash(./gradlew test *)"
+      "Bash(./gradlew test *)",
+      "Bash(.\\\\gradlew.bat test *)",
+      "Bash(Select-String -Pattern \"FAILED|ERROR|Exception|PASSED|tests were\")",
+      "Bash(Select-Object -First 60)",
+      "PowerShell(Get-Process -Name \"java\" -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force)",
+      "PowerShell(Remove-Item -Recurse -Force \"$env:USERPROFILE\\\\.gradle\\\\daemon\" -ErrorAction SilentlyContinue; Write-Host \"Daemon eliminado\")",
+      "PowerShell(Get-Process -Name \"java\" -ErrorAction SilentlyContinue | Stop-Process -Force; $env:JAVA_OPTS = \"-Djava.net.preferIPv4Stack=true\"; cd \"C:\\\\Users\\\\ane.lecue\\\\Documents\\\\GitHub\\\\GHospital\"; .\\\\gradlew.bat test 2>&1 | Out-String)"
     ]
   }
 }

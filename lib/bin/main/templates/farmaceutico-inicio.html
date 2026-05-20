@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Farmacia</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <div class="contenedor-ancho">
+        <h1>Panel de Farmacia</h1>
+        <p th:if="${farmaceuticoNombre != null}">
+            Bienvenido/a, <strong th:text="${farmaceuticoNombre}"></strong>
+        </p>
+
+        <div style="background:#e9f5fb; border-radius:8px; padding:20px; margin-bottom:30px;">
+            <h2>Consultar recetas médicas</h2>
+            <p>Busca las recetas emitidas para un paciente introduciendo su DNI.</p>
+            <form th:action="@{/farmaceutico/recetas/buscar}" method="get">
+                <label for="dni">DNI del Paciente *</label>
+                <input type="text" id="dni" name="dni"
+                       placeholder="Ej. 12345678A" required
+                       style="width:200px; margin-right:10px;">
+                <button type="submit" style="background:#007bff; color:white; border:none;
+                        padding:10px 20px; border-radius:4px; cursor:pointer;">
+                    Buscar recetas
+                </button>
+            </form>
+        </div>
+
+        <div style="background:#f0fdf4; border-radius:8px; padding:20px; margin-bottom:30px;">
+            <h2>Registrar dispensación</h2>
+            <p>Registra la entrega de medicamentos a partir del ID de una receta.</p>
+            <form th:action="@{/farmaceutico/dispensar}" method="get">
+                <label for="recetaId">ID de Receta *</label>
+                <input type="number" id="recetaId" name="recetaId"
+                       min="1" placeholder="Ej. 10" required
+                       style="width:200px; margin-right:10px;">
+                <button type="submit" style="background:#28a745; color:white; border:none;
+                        padding:10px 20px; border-radius:4px; cursor:pointer;">
+                    Ir al formulario
+                </button>
+            </form>
+        </div>
+
+        <a th:href="@{/login}" style="color:#6c757d;">Cerrar sesión</a>
+    </div>
+</body>
+</html>

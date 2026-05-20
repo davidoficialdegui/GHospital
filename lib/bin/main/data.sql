@@ -50,3 +50,29 @@ VALUES (2, 'Javier', 'Romero', 'Díaz', '66666666F', 'javier.enf@hospital.com',
         '1234', true, 'ENFERMERO', 'Urgencias', 'TARDE', 'COL-12346');
 
 ALTER TABLE enfermeros ALTER COLUMN id RESTART WITH 10;
+
+-- Farmacéuticos
+INSERT INTO farmaceuticos (id, nombre, apellido1, apellido2, dni, email, password,
+                           activo, rol, numero_colegiado, turno)
+VALUES (1, 'Marta', 'Ruiz', 'Navarro', '77777777G', 'farmacia@hospital.com',
+        '1234', true, 'FARMACEUTICO', 'COL-99001', 'MAÑANA');
+
+ALTER TABLE farmaceuticos ALTER COLUMN id RESTART WITH 10;
+
+-- Recetas de demo (emitidas por Carlos, paciente Ana)
+INSERT INTO recetas (id, paciente_id, medico_id, medicamento, dosis, posologia, duracion_dias, instrucciones, fecha_emision, fecha_creacion)
+VALUES (1, 1, 1, 'Ibuprofeno', '600mg', '1 comprimido cada 8 horas con las comidas', 7, 'No superar 3 comprimidos al día', CURRENT_DATE, CURRENT_TIMESTAMP);
+
+INSERT INTO recetas (id, paciente_id, medico_id, medicamento, dosis, posologia, duracion_dias, instrucciones, fecha_emision, fecha_creacion)
+VALUES (2, 1, 1, 'Amoxicilina', '500mg', '1 cápsula cada 8 horas', 10, 'Completar el tratamiento aunque mejore', CURRENT_DATE, CURRENT_TIMESTAMP);
+
+INSERT INTO recetas (id, paciente_id, medico_id, medicamento, dosis, posologia, duracion_dias, instrucciones, fecha_emision, fecha_creacion)
+VALUES (3, 2, 2, 'Paracetamol', '1g', '1 comprimido cada 6 horas si hay dolor', 5, 'Máximo 4 comprimidos al día', CURRENT_DATE, CURRENT_TIMESTAMP);
+
+ALTER TABLE recetas ALTER COLUMN id RESTART WITH 10;
+
+-- Dispensaciones de demo (farmacéutico Marta entrega receta 1 a Ana)
+INSERT INTO dispensaciones (id, receta_id, farmaceutico_id, cantidad_dispensada, estado, observaciones, fecha_dispensacion, fecha_creacion)
+VALUES (1, 1, 1, 1, 'DISPENSADO', 'Entrega completa sin incidencias', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+ALTER TABLE dispensaciones ALTER COLUMN id RESTART WITH 10;
