@@ -17,6 +17,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -27,6 +30,8 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class CitaServiceReprogramarTest {
+
+    private static final Logger log = LoggerFactory.getLogger(CitaServiceReprogramarTest.class);
 
     @Mock
     private CitaRepository citaRepository;
@@ -47,6 +52,7 @@ class CitaServiceReprogramarTest {
 
     @BeforeEach
     void setUp() {
+        log.info("Preparando datos de prueba para CitaServiceReprogramarTest");
         paciente = new Paciente();
         paciente.setId(1L);
         paciente.setNombre("Ana");

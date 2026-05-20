@@ -20,6 +20,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -27,6 +30,8 @@ import static org.mockito.Mockito.*;
 @Tag("unit")
 @ExtendWith(MockitoExtension.class)
 class RecetaServiceTest {
+
+    private static final Logger log = LoggerFactory.getLogger(RecetaServiceTest.class);
 
     @Mock private RecetaRepository recetaRepository;
     @Mock private PacienteRepository pacienteRepository;
@@ -41,6 +46,7 @@ class RecetaServiceTest {
 
     @BeforeEach
     void setUp() {
+        log.info("Preparando datos de prueba para RecetaServiceTest");
         paciente = new Paciente();
         paciente.setId(1L);
         paciente.setNombre("Ana");
@@ -66,6 +72,7 @@ class RecetaServiceTest {
 
     @Test
     void crearReceta_correcto_devuelveDTO() {
+        log.info("Test: crear receta con datos válidos");
         CrearRecetaDTO dto = new CrearRecetaDTO();
         dto.setPacienteId(1L);
         dto.setMedicoId(2L);

@@ -15,12 +15,17 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EnfermeroViewControllerTest {
+
+    private static final Logger log = LoggerFactory.getLogger(EnfermeroViewControllerTest.class);
 
     @Mock
     private ConstanteVitalFacade constanteVitalFacade;
@@ -38,6 +43,7 @@ class EnfermeroViewControllerTest {
 
     @BeforeEach
     void setUp() {
+        log.info("Preparando datos de prueba para EnfermeroViewControllerTest");
         recetaDTO = new RecetaDTO();
         recetaDTO.setId(1L);
         recetaDTO.setPacienteId(1L);
@@ -54,6 +60,7 @@ class EnfermeroViewControllerTest {
 
     @Test
     void verTratamientos_pacienteConRecetas_devuelveVistaCorrecta() {
+        log.info("Test: enfermero ve tratamientos de paciente con recetas");
         // Arrange
         when(recetaFacade.obtenerRecetasPaciente(1L)).thenReturn(List.of(recetaDTO));
 

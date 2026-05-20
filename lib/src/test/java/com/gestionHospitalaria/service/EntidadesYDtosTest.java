@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -15,10 +18,13 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class EntidadesYDtosTest {
 
+    private static final Logger log = LoggerFactory.getLogger(EntidadesYDtosTest.class);
+
     // ── ENTIDAD PACIENTE ─────────────────────────────────────────
 
     @Test
     void paciente_gettersYSetters_funcionanCorrectamente() {
+        log.info("Test: verificar getters y setters de la entidad Paciente");
         Paciente p = new Paciente();
         p.setId(1L);
         p.setNombre("Ana");

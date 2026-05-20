@@ -20,12 +20,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DiagnosticoServiceTest {
+
+    private static final Logger log = LoggerFactory.getLogger(DiagnosticoServiceTest.class);
 
     @Mock
     private DiagnosticoRepository diagnosticoRepository;
@@ -45,6 +50,7 @@ class DiagnosticoServiceTest {
 
     @BeforeEach
     void setUp() {
+        log.info("Preparando datos de prueba para DiagnosticoServiceTest");
         paciente = new Paciente();
         paciente.setId(1L);
         paciente.setNombre("Ana");
@@ -69,6 +75,7 @@ class DiagnosticoServiceTest {
 
     @Test
     void registrarDiagnostico_correcto_devuelveDTO() {
+        log.info("Test: registrar diagnóstico con datos correctos");
         // Arrange
         CrearDiagnosticoDTO dto = new CrearDiagnosticoDTO();
         dto.setPacienteId(1L);

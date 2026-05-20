@@ -16,6 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -26,6 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = DispensacionController.class,
             excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class DispensacionControllerIntegrationTest {
+
+    private static final Logger log = LoggerFactory.getLogger(DispensacionControllerIntegrationTest.class);
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,6 +43,7 @@ class DispensacionControllerIntegrationTest {
 
     @Test
     void postDispensacion_correcto_devuelve200ConDTO() throws Exception {
+        log.info("Test de integración: POST /api/dispensaciones devuelve 200 con DTO");
         CrearDispensacionDTO request = new CrearDispensacionDTO();
         request.setRecetaId(10L);
         request.setFarmaceuticoId(5L);

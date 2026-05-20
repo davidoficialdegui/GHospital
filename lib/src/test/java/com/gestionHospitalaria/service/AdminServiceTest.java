@@ -19,12 +19,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AdminServiceTest {
+
+    private static final Logger log = LoggerFactory.getLogger(AdminServiceTest.class);
 
     @Mock private PacienteRepository      pacienteRepository;
     @Mock private MedicoRepository        medicoRepository;
@@ -41,6 +46,7 @@ class AdminServiceTest {
 
     @BeforeEach
     void setUp() {
+        log.info("Preparando datos de prueba para AdminServiceTest");
         paciente = new Paciente();
         paciente.setId(1L);
         paciente.setNombre("Ana");
@@ -75,6 +81,7 @@ class AdminServiceTest {
     /** Test 1: editar paciente existente actualiza nombre y email */
     @Test
     void editarPaciente_correcto_actualizaNombreYEmail() {
+        log.info("Test: editar paciente existente - actualizando nombre y email");
         EditarPacienteDTO dto = new EditarPacienteDTO();
         dto.setNombre("Ana Nueva");
         dto.setApellido1("Martínez");

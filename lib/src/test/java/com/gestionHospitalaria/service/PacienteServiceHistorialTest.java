@@ -16,11 +16,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PacienteServiceHistorialTest {
+
+    private static final Logger log = LoggerFactory.getLogger(PacienteServiceHistorialTest.class);
 
     @Mock
     private PacienteRepository pacienteRepository;
@@ -44,6 +49,7 @@ class PacienteServiceHistorialTest {
 
     @BeforeEach
     void setUp() {
+        log.info("Preparando datos de prueba para PacienteServiceHistorialTest");
         paciente = new Paciente();
         paciente.setId(1L);
         paciente.setNombre("Ana");
@@ -61,6 +67,7 @@ class PacienteServiceHistorialTest {
 
     @Test
     void obtenerHistorial_pacienteExiste_devuelveDTO() {
+        log.info("Test: obtener historial médico de paciente existente");
         when(pacienteRepository.findById(1L)).thenReturn(Optional.of(paciente));
 
         HistorialMedicoDTO resultado = pacienteService.obtenerHistorial(1L);

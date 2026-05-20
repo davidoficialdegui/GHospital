@@ -8,19 +8,26 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InformeMedicoServiceTest {
+
+    private static final Logger log = LoggerFactory.getLogger(InformeMedicoServiceTest.class);
 
     private InformeMedicoService informeMedicoService;
 
     @BeforeEach
     void setUp() {
+        log.info("Preparando InformeMedicoService para los tests de generación de PDF");
         informeMedicoService = new InformeMedicoService();
     }
 
     @Test
     void generarInformePdf_conDatos_devuelvePdfNoVacio() {
+        log.info("Test: generar informe PDF con historial y diagnóstico");
         HistorialMedicoDTO historial = new HistorialMedicoDTO();
         historial.setNombreCompleto("Ana Martínez");
         historial.setGrupoSanguineo("A+");

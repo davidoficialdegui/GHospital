@@ -4,10 +4,16 @@
 package _GestionHospitalaria;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LibraryTest {
+
+    private static final Logger log = LoggerFactory.getLogger(LibraryTest.class);
+
     @Test void someLibraryMethodReturnsTrue() {
+        log.info("Test: Library.someLibraryMethod devuelve true");
         Library classUnderTest = new Library();
         assertTrue(classUnderTest.someLibraryMethod(), "someLibraryMethod should return 'true'");
     }

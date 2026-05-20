@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -26,6 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class AdminControllerIntegrationTest {
 
+    private static final Logger log = LoggerFactory.getLogger(AdminControllerIntegrationTest.class);
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -34,6 +39,7 @@ class AdminControllerIntegrationTest {
 
     @Test
     void getEstadisticas_devuelve200ConStats() throws Exception {
+        log.info("Test de integración: GET /admin/estadisticas devuelve 200 con estadísticas");
         Map<String, Long> stats = new HashMap<>();
         stats.put("totalPacientes", 2L);
         stats.put("totalMedicos", 2L);

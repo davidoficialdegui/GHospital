@@ -13,6 +13,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -24,6 +27,8 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class AdminServiceCrearUsuarioTest {
+
+    private static final Logger log = LoggerFactory.getLogger(AdminServiceCrearUsuarioTest.class);
 
     @Mock private PacienteRepository      pacienteRepository;
     @Mock private MedicoRepository        medicoRepository;
@@ -39,6 +44,7 @@ class AdminServiceCrearUsuarioTest {
 
     @BeforeEach
     void setUp() {
+        log.info("Preparando datos de prueba para AdminServiceCrearUsuarioTest");
         dto = new CrearUsuarioAdminDTO();
         dto.setNombre("Juan");
         dto.setApellido1("Pérez");
@@ -54,6 +60,7 @@ class AdminServiceCrearUsuarioTest {
 
     @Test
     void crearUsuario_tipoPaciente_guardaEnPacienteRepository() {
+        log.info("Test: crear usuario de tipo PACIENTE");
         dto.setTipo("PACIENTE");
         when(pacienteRepository.save(any(Paciente.class))).thenAnswer(inv -> {
             Paciente p = inv.getArgument(0);

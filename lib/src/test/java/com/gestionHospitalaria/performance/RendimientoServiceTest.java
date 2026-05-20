@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -24,10 +27,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("performance")
 class RendimientoServiceTest {
 
+    private static final Logger log = LoggerFactory.getLogger(RendimientoServiceTest.class);
+
     private InformeMedicoService informeMedicoService;
 
     @BeforeEach
     void setUp() {
+        log.info("Preparando InformeMedicoService para los tests de rendimiento");
         informeMedicoService = new InformeMedicoService();
     }
 
@@ -35,6 +41,7 @@ class RendimientoServiceTest {
 
     @Test
     void generarPdf_sinDiagnosticos_menosDe500ms() {
+        log.info("Test de rendimiento: generación de PDF sin diagnósticos (límite 500ms)");
         HistorialMedicoDTO historial = historialBase("Ana Martínez");
 
         long inicio = System.currentTimeMillis();

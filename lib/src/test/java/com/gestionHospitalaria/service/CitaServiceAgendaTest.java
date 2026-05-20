@@ -18,11 +18,16 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CitaServiceAgendaTest {
+
+    private static final Logger log = LoggerFactory.getLogger(CitaServiceAgendaTest.class);
 
     @Mock private CitaRepository citaRepository;
     @Mock private PacienteRepository pacienteRepository;
@@ -37,6 +42,7 @@ class CitaServiceAgendaTest {
 
     @BeforeEach
     void setUp() {
+        log.info("Preparando datos de prueba para CitaServiceAgendaTest");
         medico = new Medico();
         medico.setId(1L);
         medico.setNombre("Carlos");
@@ -60,6 +66,7 @@ class CitaServiceAgendaTest {
 
     @Test
     void obtenerAgendaDelDia_conCitas_devuelveLista() {
+        log.info("Test: obtenerAgendaDelDia con citas existentes para médico id=1");
         when(citaRepository.findByMedicoIdOrderByFechaHoraAsc(1L))
             .thenReturn(List.of(cita));
 

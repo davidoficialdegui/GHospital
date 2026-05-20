@@ -23,6 +23,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -30,6 +33,8 @@ import static org.mockito.Mockito.*;
 @Tag("unit")
 @ExtendWith(MockitoExtension.class)
 class DispensacionServiceTest {
+
+    private static final Logger log = LoggerFactory.getLogger(DispensacionServiceTest.class);
 
     @Mock private DispensacionRepository dispensacionRepository;
     @Mock private RecetaRepository recetaRepository;
@@ -46,6 +51,7 @@ class DispensacionServiceTest {
 
     @BeforeEach
     void setUp() {
+        log.info("Preparando datos de prueba para DispensacionServiceTest");
         paciente = new Paciente();
         paciente.setId(1L);
         paciente.setNombre("Ana");
@@ -84,6 +90,7 @@ class DispensacionServiceTest {
 
     @Test
     void registrarDispensacion_correcto_devuelveDTO() {
+        log.info("Test: registrar dispensación con datos correctos");
         CrearDispensacionDTO dto = new CrearDispensacionDTO();
         dto.setRecetaId(10L);
         dto.setFarmaceuticoId(5L);

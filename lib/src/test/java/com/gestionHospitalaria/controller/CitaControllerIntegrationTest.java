@@ -13,6 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -27,6 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class CitaControllerIntegrationTest {
 
+    private static final Logger log = LoggerFactory.getLogger(CitaControllerIntegrationTest.class);
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -35,6 +40,7 @@ class CitaControllerIntegrationTest {
 
     @Test
     void getCitasGestor_devuelve200() throws Exception {
+        log.info("Test de integración: GET /citas devuelve 200");
         CitaDTO cita = new CitaDTO();
         cita.setId(1L);
         cita.setEstado("PENDIENTE");

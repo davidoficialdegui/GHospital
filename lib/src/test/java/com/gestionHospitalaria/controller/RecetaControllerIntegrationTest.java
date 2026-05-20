@@ -17,6 +17,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -27,6 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = RecetaController.class,
             excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class RecetaControllerIntegrationTest {
+
+    private static final Logger log = LoggerFactory.getLogger(RecetaControllerIntegrationTest.class);
 
     @Autowired
     private MockMvc mockMvc;
@@ -54,6 +59,7 @@ class RecetaControllerIntegrationTest {
 
     @Test
     void getTodas_devuelveLista() throws Exception {
+        log.info("Test de integración: GET /api/recetas devuelve lista de recetas");
         when(recetaFacade.obtenerTodasLasRecetas()).thenReturn(List.of(buildRecetaDTO()));
 
         mockMvc.perform(get("/api/recetas"))

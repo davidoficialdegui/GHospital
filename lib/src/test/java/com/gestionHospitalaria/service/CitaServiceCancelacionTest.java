@@ -17,12 +17,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CitaServiceCancelacionTest {
+
+    private static final Logger log = LoggerFactory.getLogger(CitaServiceCancelacionTest.class);
 
     @Mock
     private CitaRepository citaRepository;
@@ -42,6 +47,7 @@ class CitaServiceCancelacionTest {
 
     @BeforeEach
     void setUp() {
+        log.info("Preparando datos de prueba para CitaServiceCancelacionTest");
         paciente = new Paciente();
         paciente.setId(1L);
         paciente.setNombre("Ana");
@@ -65,6 +71,8 @@ class CitaServiceCancelacionTest {
 
     @Test
     void cancelarCita_citaPendiente_devuelveEstadoCancelada() {
+        log.info("Test: cancelar cita en estado PENDIENTE");
+
         when(citaRepository.findById(1L)).thenReturn(Optional.of(cita));
         when(citaRepository.save(any(Cita.class))).thenAnswer(inv -> inv.getArgument(0));
 

@@ -16,6 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -31,6 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class DiagnosticoControllerIntegrationTest {
 
+    private static final Logger log = LoggerFactory.getLogger(DiagnosticoControllerIntegrationTest.class);
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -42,6 +47,7 @@ class DiagnosticoControllerIntegrationTest {
 
     @Test
     void postDiagnostico_correcto_devuelve200ConDTO() throws Exception {
+        log.info("Test de integración: POST /api/diagnosticos devuelve 200 con DTO");
         CrearDiagnosticoDTO request = new CrearDiagnosticoDTO();
         request.setPacienteId(1L);
         request.setMedicoId(1L);

@@ -16,6 +16,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -26,6 +29,8 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class FacadesTest {
+
+    private static final Logger log = LoggerFactory.getLogger(FacadesTest.class);
 
     // ── PacienteFacade ───────────────────────────────────────────
 
@@ -57,6 +62,7 @@ class FacadesTest {
 
     @Test
     void pacienteFacade_registrar_delegaEnServicio() {
+        log.info("Test: PacienteFacade delega registro en PacienteService");
         RegistroPacienteDTO dto = new RegistroPacienteDTO();
         dto.setNombre("Ana");
         dto.setEmail("ana@test.com");
